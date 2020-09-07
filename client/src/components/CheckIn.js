@@ -78,7 +78,7 @@ const CheckIn = () => {
 
 </div>
 <Link to="/CheckInForm" style={{ textDecoration: 'none' }}>
-  <button type="button" class="btn btn-success btn-lg btn-block">
+  <button type="button" className="btn btn-success btn-lg btn-block">
     Check In
   </button>	
 </Link>
