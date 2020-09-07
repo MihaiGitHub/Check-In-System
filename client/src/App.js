@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import CheckIn from './components/CheckIn';
+import CheckInForm from './components/CheckInForm';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+
+    return (
+      <Router>
+        <nav className="navbar navbar-dark bg-dark">
+            <Link to="/CheckIn" style={{ color: 'white', textDecoration: 'none' }}>
+            <img src="https://static.wixstatic.com/media/5b7a8b_794550fc91634cc2b734cb1eb8afc2ba~mv2.jpg/v1/fill/w_325,h_165,al_c,q_80/5b7a8b_794550fc91634cc2b734cb1eb8afc2ba~mv2.webp" width="30" height="30" class="d-inline-block align-top" alt="" />
+                &nbsp;Tucson Neighborhood Food Pantry
+            </Link>
+        </nav>
+          <Switch>
+            <Route path="/CheckInForm">
+              <CheckInForm />
+            </Route>
+            <Route path="/">
+              <CheckIn />
+            </Route>
+          </Switch>
+      </Router>
+    );
 }
-
-export default App;
