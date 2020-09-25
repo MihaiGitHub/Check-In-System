@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,7 +15,12 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -25,57 +30,80 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>TNFP</title>
-  <style type="text/css">
-  .nav {
-      background-color: #336683;
-      padding: 25px;
-  }
-  .nav-tabs {
-      border-bottom: none !important;
-  }
-  #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-      color: #336683 !important;
-      background-color: #a4d6ef !important;
-      border-color: transparent transparent #f3f3f3;
-  }
-  #tabs .nav-tabs .nav-link {
-      border: 1px solid transparent;
-      color: #eee;
-      font-size: 20px;
-      background-color: #336683;
-      border: 1px solid #a4d6ef;
-      color: #a4d6ef;
-  }
-  .nav-item {
-      border-radius: 0 !important;
-  }
-  .nav-item:last-child {
-      border-top-right-radius: .5rem !important;
-      border-bottom-right-radius: .5rem !important;
-  }
-  .nav-item:first-child {
-      border-top-left-radius: .5rem !important;
-      border-bottom-left-radius: .5rem !important;
-  }
-  .nav-tabs .nav-link.active {
-      background-color: #a4d6ef !important; 
-  }
-  .my-custom-scrollbar {
-      position: relative;
-      height: 500px;
-      overflow: auto;
-  }
-  .table-wrapper-scroll-y {
-      display: block;
-  }
-  </style>
-</head>
-<body>
+    <title>TNFP</title>
+    <style type="text/css">
+      .nav {
+        background-color: #336683;
+        padding: 25px;
+      }
+      .nav-tabs {
+        border-bottom: none !important;
+      }
+      #tabs .nav-tabs .nav-item.show .nav-link,
+      .nav-tabs .nav-link.active {
+        color: #336683 !important;
+        background-color: #a4d6ef !important;
+        border-color: transparent transparent #f3f3f3;
+      }
+      #tabs .nav-tabs .nav-link {
+        border: 1px solid transparent;
+        color: #eee;
+        font-size: 20px;
+        background-color: #336683;
+        border: 1px solid #a4d6ef;
+        color: #a4d6ef;
+      }
+      .nav-item {
+        border-radius: 0 !important;
+      }
+      .nav-item:last-child {
+        border-top-right-radius: 0.5rem !important;
+        border-bottom-right-radius: 0.5rem !important;
+      }
+      .nav-item:first-child {
+        border-top-left-radius: 0.5rem !important;
+        border-bottom-left-radius: 0.5rem !important;
+      }
+      .nav-tabs .nav-link.active {
+        background-color: #a4d6ef !important;
+      }
+      .my-custom-scrollbar {
+        position: relative;
+        height: 500px;
+        overflow: auto;
+      }
+      .table-wrapper-scroll-y {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).on("click", "#modalLaunch", function (e) {
+        console.log("event ", $(this).attr("data-id"));
+
+        $("#myModal").modal();
+
+        //    var ids = $(this).data("id");
+        //   $(".modal-body #idkl").val(ids);
+      });
+    </script>
   </body>
 </html>

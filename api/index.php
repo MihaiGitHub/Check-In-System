@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include 'dbconnect.php';
 
 if($_GET['clients'] == 'all'){
