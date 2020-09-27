@@ -101,7 +101,6 @@ const Main = () => {
           </div>
         </div>
       </section>
-      <Modal />
     </Fragment>
   );
 };

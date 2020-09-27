@@ -7,12 +7,12 @@ const Home = () => {
   const [error, setError] = useState(false);
 
   const init = () => {
-    getSession().then(({ data }) => {
-      if (!data.auth) {
-        setAuth(false);
-        setError(true);
-      }
-    });
+    // getSession().then(({ data }) => {
+    //   if (!data.auth) {
+    //     setAuth(false);
+    //     setError(true);
+    //   }
+    // });
   };
 
   useEffect(() => {

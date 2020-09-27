@@ -14,7 +14,9 @@ export const getSession = () => {
 
 export const getClients = () => {
   return axios
-    .get(`${API}?clients=all`)
+    .post(`XXXX`, {
+      jwt: "XXXX",
+    })
     .then((response) => {
       return response;
     })

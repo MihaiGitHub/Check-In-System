@@ -1,20 +1,20 @@
 import React from "react";
 
-const Modal = () => {
+const Modal = ({ client, type }) => {
   return (
     <div
       className="modal fade"
-      id="myModal"
+      id="clientModal"
       tabIndex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="clientModalTitle"
       aria-hidden="true"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Move client to Serving
+            <h5 className="modal-title" id="clientModalTitle">
+              Move {client.fname} {client.lname} to {type}?
             </h5>
             <button
               type="button"
@@ -25,17 +25,17 @@ const Modal = () => {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body">Move John Smith to Serving?</div>
+          <div className="modal-body">They will be moved to the {type} tab</div>
           <div className="modal-footer">
             <button
               type="button"
               className="btn btn-secondary"
               data-dismiss="modal"
             >
-              Close
+              Cancel
             </button>
             <button type="button" className="btn btn-primary">
-              Move
+              Yes
             </button>
           </div>
         </div>
