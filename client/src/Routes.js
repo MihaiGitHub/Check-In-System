@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Home from "./core/Home";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import CheckInForm from "./core/CheckInForm";
+import Home from "./core/Home";
 
-export default function App() {
+const Routes = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <nav className="navbar navbar-dark bg-dark">
         <Link to="/CheckIn" style={{ color: "white", textDecoration: "none" }}>
           Tucson Neighborhood Food Pantry
@@ -19,6 +19,8 @@ export default function App() {
           <Home />
         </Route>
       </Switch>
-    </Router>
+    </BrowserRouter>
   );
-}
+};
+
+export default Routes;

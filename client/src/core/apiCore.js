@@ -23,10 +23,11 @@ export const getSession = () => {
 };
 
 export const getClients = () => {
+  const jwt = sessionStorage.getItem("jwt");
+
   return axios
-    .post(`https://www.tnfpapp.org/beta/checkin/api/client_list.php`, {
-      jwt:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImlkIjoiOCIsInVzZXJuYW1lIjoiZGVtbyIsInJvbGUiOiJhZG1pbiJ9fQ.7mmHx8yac4i5BbyyZuFZMaCOsNur0uAHM8gbk64euWU",
+    .post(`${API}/client_list.php`, {
+      jwt,
     })
     .then((response) => {
       return response;
