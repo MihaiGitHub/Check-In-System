@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Link } from "react-router-dom";
+import Navigation from "./Navigation";
 
 const CheckInForm = () => {
   const [redirect, setRedirect] = useState(false);
@@ -23,18 +24,7 @@ const CheckInForm = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-dark bg-dark">
-        <Link to="/main" style={{ color: "white", textDecoration: "none" }}>
-          Tucson Neighborhood Food Pantry
-        </Link>
-        <Link
-          onClick={doLogout}
-          to="#"
-          style={{ color: "white", textDecoration: "none" }}
-        >
-          Log out
-        </Link>
-      </nav>
+      <Navigation logoutFunction={doLogout} logoutLink={true} />
       <form style={{ padding: 15 }}>
         <div className="form-row">
           <div className="form-group col-md-6">

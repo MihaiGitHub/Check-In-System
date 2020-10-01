@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Redirect, Link } from "react-router-dom";
+import Navigation from "./Navigation";
 import Checkout from "./Checkout";
 import Serving from "./Serving";
 import CheckIn from "./CheckIn";
@@ -26,18 +27,7 @@ const Main = () => {
 
   return (
     <Fragment>
-      <nav className="navbar navbar-dark bg-dark">
-        <Link to="/main" style={{ color: "white", textDecoration: "none" }}>
-          Tucson Neighborhood Food Pantry
-        </Link>
-        <Link
-          onClick={doLogout}
-          to="#"
-          style={{ color: "white", textDecoration: "none" }}
-        >
-          Log out
-        </Link>
-      </nav>
+      <Navigation logoutFunction={doLogout} logoutLink={true} />
       <section id="tabs">
         <div className="container" style={{ maxWidth: "100%" }}>
           <div className="row">

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { doLogin } from "./apiCore";
+import Navigation from "./Navigation";
 
 const Login = () => {
   const [error, setError] = useState(false);
@@ -108,11 +109,7 @@ const Login = () => {
 
   return (
     <Fragment>
-      <nav className="navbar navbar-dark bg-dark">
-        <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-          Tucson Neighborhood Food Pantry
-        </Link>
-      </nav>
+      <Navigation logoutLink={false} />
       <main role="main" className="container" style={{ maxWidth: "100%" }}>
         {showLogin()}
       </main>
