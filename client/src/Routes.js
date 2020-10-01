@@ -1,22 +1,21 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CheckInForm from "./core/CheckInForm";
-import Home from "./core/Home";
+import Main from "./core/Main";
+import Login from "./core/Login";
 
 const Routes = () => {
   return (
     <BrowserRouter>
-      <nav className="navbar navbar-dark bg-dark">
-        <Link to="/CheckIn" style={{ color: "white", textDecoration: "none" }}>
-          Tucson Neighborhood Food Pantry
-        </Link>
-      </nav>
       <Switch>
-        <Route path="/CheckInForm">
+        <Route path="/saveclient">
           <CheckInForm />
         </Route>
+        <Route path="/main">
+          <Main />
+        </Route>
         <Route path="/">
-          <Home />
+          <Login />
         </Route>
       </Switch>
     </BrowserRouter>

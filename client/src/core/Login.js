@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
+import { Redirect, Link } from "react-router-dom";
 import { doLogin } from "./apiCore";
-import Main from "./Main";
 
-const Home = () => {
-  const [auth, setAuth] = useState(false);
+const Login = () => {
   const [error, setError] = useState(false);
-  // const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -13,20 +12,13 @@ const Home = () => {
 
   const { username, password } = values;
 
-  const init = () => {};
-
-  useEffect(() => {
-    // init();
-  }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     doLogin(values).then(({ data }) => {
       if (data.jwt) {
         sessionStorage.setItem("jwt", data.jwt);
-        setAuth(true);
-        //    setRedirect(true);
+        setRedirect(true);
       } else {
         setError(true);
       }
@@ -106,12 +98,26 @@ const Home = () => {
     </div>
   );
 
+  if (redirect) {
+    return <Redirect to="/main" />;
+  }
+
+  if (sessionStorage.getItem("jwt")) {
+    return <Redirect to="/main" />;
+  }
+
   return (
-    <main role="main" className="container" style={{ maxWidth: "100%" }}>
-      {!auth && showLogin()}
-      {auth && <Main />}
-    </main>
+    <Fragment>
+      <nav className="navbar navbar-dark bg-dark">
+        <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+          Tucson Neighborhood Food Pantry
+        </Link>
+      </nav>
+      <main role="main" className="container" style={{ maxWidth: "100%" }}>
+        {showLogin()}
+      </main>
+    </Fragment>
   );
 };
 
-export default Home;
+export default Login;

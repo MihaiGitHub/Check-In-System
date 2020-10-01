@@ -1,13 +1,43 @@
-import React, { Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { useState, useEffect, Fragment } from "react";
+import { Redirect, Link } from "react-router-dom";
 import Checkout from "./Checkout";
 import Serving from "./Serving";
 import CheckIn from "./CheckIn";
-import Modal from "./Modal";
 
 const Main = () => {
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("jwt")) {
+    } else {
+      setRedirect(true);
+    }
+  }, []);
+
+  const doLogout = () => {
+    sessionStorage.setItem("jwt", "");
+    sessionStorage.clear();
+    setRedirect(true);
+  };
+
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <Fragment>
+      <nav className="navbar navbar-dark bg-dark">
+        <Link to="/main" style={{ color: "white", textDecoration: "none" }}>
+          Tucson Neighborhood Food Pantry
+        </Link>
+        <Link
+          onClick={doLogout}
+          to="#"
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          Log out
+        </Link>
+      </nav>
       <section id="tabs">
         <div className="container" style={{ maxWidth: "100%" }}>
           <div className="row">
@@ -67,7 +97,7 @@ const Main = () => {
                   <div className="table-wrapper-scroll-y my-custom-scrollbar">
                     <CheckIn />
                   </div>
-                  <Link to="/CheckInForm" style={{ textDecoration: "none" }}>
+                  <Link to="/saveclient" style={{ textDecoration: "none" }}>
                     <button
                       type="button"
                       className="btn btn-success btn-lg btn-block"
