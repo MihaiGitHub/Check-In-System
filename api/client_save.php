@@ -21,7 +21,7 @@ include_once 'objects/client.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// instantiate user object
+// instantiate client object
 $client = new Client($db);
 
 // get posted data
@@ -33,7 +33,7 @@ $jwt=isset($data->jwt) ? $data->jwt : "";
 // if jwt is not empty
 if($jwt){
 
-    // if decode succeed, show user details
+    // if decode succeed, show client details
     try {
         $key = "XXXX";
 
@@ -41,13 +41,13 @@ if($jwt){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set client property values
-        $client->fname = $data->user->fname;
-        $client->lname = $data->user->lname;
-        $client->address = $data->user->address;
-        $client->city = $data->user->city;
-        $client->state = $data->user->state;
-        $client->zip = $data->user->zip;
-        $client->email = $data->user->email;
+        $client->fname = $data->client->fname;
+        $client->lname = $data->client->lname;
+        $client->address = $data->client->address;
+        $client->city = $data->client->city;
+        $client->state = $data->client->state;
+        $client->zip = $data->client->zip;
+        $client->email = $data->client->email;
         
         if($client->save()){
             // set response code
