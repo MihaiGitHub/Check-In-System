@@ -41,7 +41,6 @@ if($jwt){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set client property values
-        $client->c_id = $data->user->c_id;
         $client->fname = $data->user->fname;
         $client->lname = $data->user->lname;
         $client->address = $data->user->address;
@@ -51,14 +50,13 @@ if($jwt){
         $client->email = $data->user->email;
         
         if($client->save()){
-            
             // set response code
             http_response_code(200);
             
             // response in json format
             echo json_encode(
                     array(
-                        "message" => "Client saved successfully!"
+                        "message" => "Client updated and saved successfully!"
                     )
                 );
         }
