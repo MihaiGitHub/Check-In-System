@@ -25,6 +25,7 @@ $user->username = $data->username;
 $user->password = $data->password;
 
 // generate json web token
+include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
 include_once 'libs/php-jwt-master/src/ExpiredException.php';
 include_once 'libs/php-jwt-master/src/SignatureInvalidException.php';
@@ -51,7 +52,7 @@ if($user->login()){
 
     echo json_encode(
          array(
-             "message" => "Successfully logged in!",
+             "success" => "Successfully logged in!",
              "jwt" => $jwt
          )
      );
@@ -59,8 +60,7 @@ if($user->login()){
 else {
     echo json_encode(
          array(
-             "message" => "Invalid username or password!",
-             "jwt" => $jwt
+             "error" => "Invalid username or password!"
          )
     );
 }
