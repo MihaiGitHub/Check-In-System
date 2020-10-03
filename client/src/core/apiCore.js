@@ -11,17 +11,6 @@ export const doLogin = ({ username, password }) => {
     .catch((error) => console.log(error));
 };
 
-export const getSession = () => {
-  return axios
-    .post(`${API}`)
-    .then((response) => {
-      console.log("response ", response);
-
-      return response;
-    })
-    .catch((error) => console.log(error));
-};
-
 export const getClients = () => {
   const jwt = sessionStorage.getItem("jwt");
 
@@ -32,5 +21,17 @@ export const getClients = () => {
     .then((response) => {
       return response;
     })
+    .catch((error) => console.log(error));
+};
+
+export const saveClient = (client) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/client_save.php`, {
+      client,
+      jwt,
+    })
+    .then((response) => response)
     .catch((error) => console.log(error));
 };

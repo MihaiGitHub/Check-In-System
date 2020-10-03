@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { doLogin } from "./apiCore";
 import Navigation from "./Navigation";
+import { errorMessage } from "./Error";
 
 const Login = () => {
   const [error, setError] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({
     username: "",
@@ -20,8 +22,10 @@ const Login = () => {
       if (data.jwt) {
         sessionStorage.setItem("jwt", data.jwt);
         setRedirect(true);
-      } else {
+      }
+      if (data.error) {
         setError(true);
+        setErrMsg(data.error);
       }
     });
   };
@@ -30,12 +34,6 @@ const Login = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const showError = () => (
-    <div className="alert alert-danger" role="alert">
-      <b>Error!</b> Invalid username or password.
-    </div>
-  );
-
   const showLogin = () => (
     <div className="cotainer" style={{ marginTop: 15 }}>
       <div className="row justify-content-center">
@@ -43,7 +41,7 @@ const Login = () => {
           <div className="card">
             <div className="card-header">Client Check In System</div>
             <div className="card-body">
-              {error && showError()}
+              {error && errorMessage(errorMsg)}
               <form action="" method="">
                 <div className="form-group row">
                   <label
