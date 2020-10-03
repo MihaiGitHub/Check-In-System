@@ -30,8 +30,8 @@ $data = json_decode(file_get_contents("php://input"));
 // get jwt
 $jwt=isset($data->jwt) ? $data->jwt : "";
 
-// if jwt is not empty
-if($jwt){
+// if jwt and email are not empty proceed
+if($jwt && $data->client->email){
 
     // if decode succeed, show client details
     try {
@@ -56,29 +56,34 @@ if($jwt){
             // response in json format
             echo json_encode(
                     array(
-                        "message" => "Client updated and saved successfully!"
+                        "success" => "Client updated and saved successfully!"
                     )
                 );
         }
         else {
     
             // set response code
-            http_response_code(400);
+            http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("message" => "Unable to save client!"));
+            echo json_encode(array("error" => "Unable to save client!"));
         }
     }
     catch (Exception $e){
 
         // set response code
-        http_response_code(401);
+        http_response_code(200);
     
         // show error message
         echo json_encode(array(
-            "message" => "Access denied.",
             "error" => $e->getMessage()
         ));
     }
+}
+else {
+    // show error message
+    echo json_encode(array(
+        "error" => "Missing email or jwt token!"
+    ));
 }
 ?>
