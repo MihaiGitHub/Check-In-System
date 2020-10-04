@@ -1,8 +1,13 @@
 import React from "react";
+import { updateClient } from "./apiCore";
 
 const Modal = ({ client, type }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    updateClient(client.id, type).then((response) => {
+      console.log("response ", response);
+    });
 
     console.log("type", type);
     console.log("client ", client);

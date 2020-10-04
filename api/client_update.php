@@ -54,17 +54,17 @@ if($jwt){
             // response in json format
             echo json_encode(
                     array(
-                        "message" => "User was updated."
+                        "success" => "User was updated."
                     )
                 );
         }
         else {
     
             // set response code
-            http_response_code(400);
+            http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("message" => "Unable to update client!"));
+            echo json_encode(array("error" => "Unable to update client!"));
         }
     }
 
@@ -76,9 +76,17 @@ if($jwt){
     
         // show error message
         echo json_encode(array(
-            "message" => "Access denied.",
             "error" => $e->getMessage()
         ));
     }
+}
+else {
+            // set response code
+        http_response_code(200);
+    
+        // show error message
+        echo json_encode(array(
+            "error" => "No json web token"
+        ));
 }
 ?>
