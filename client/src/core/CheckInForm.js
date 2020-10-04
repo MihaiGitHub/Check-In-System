@@ -16,6 +16,8 @@ const CheckInForm = () => {
     state: "AZ",
     zip: "",
     email: "",
+    familyNumber: 0,
+    specificRequest: "",
   });
 
   const { email } = values;
@@ -135,6 +137,38 @@ const CheckInForm = () => {
               id="inputEmail"
               onChange={handleChange("email")}
             />
+          </div>
+          <div className="form-group col-md-6">
+            <label htmlFor="inputFamilyNumber">How many in your family?</label>
+
+            <div className="input-group mb-3">
+              <select
+                onChange={handleChange("familyNumber")}
+                className="custom-select"
+                id="inputFamilyNumber"
+              >
+                <option defaultValue>Choose...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+                <option value="4">Four</option>
+                <option value="5">Five</option>
+                <option value="6">Six</option>
+                <option value="7">Seven</option>
+                <option value="8">Eight</option>
+                <option value="9">Nine</option>
+                <option value="10">Ten</option>
+              </select>
+            </div>
+          </div>
+          <div className="form-group col-sm">
+            <label htmlFor="specificRequest">Specific request</label>
+            <textarea
+              onChange={handleChange("specificRequest")}
+              className="form-control"
+              id="specificRequest"
+              rows="3"
+            ></textarea>
           </div>
         </div>
         <button onClick={handleSubmit} className="btn btn-success">

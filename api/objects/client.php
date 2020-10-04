@@ -17,6 +17,8 @@ class Client{
 	public $zip;
 	public $email;
 	public $status;
+	public $familyNumber;
+	public $specificRequest;
 
 	// constructor
 	public function __construct($db){
@@ -69,9 +71,9 @@ class Client{
         	if($updateResult){
         	    // insert query
             	$query = "INSERT INTO " . $this->table_name . "
-            	        (c_id, fname, lname, address, city, state, zip, email)
+            	        (c_id, fname, lname, address, city, state, zip, email, familyNumber, specificRequest)
                             VALUES 
-                        (:c_id, :fname, :lname, :address, :city, :state, :zip, :email)";
+                        (:c_id, :fname, :lname, :address, :city, :state, :zip, :email, :familyNumber, :specificRequest)";
             
             	// prepare the query
             	$stmt = $this->conn->prepare($query);
@@ -84,6 +86,8 @@ class Client{
             	$this->state=htmlspecialchars(strip_tags($this->state));
             	$this->zip=htmlspecialchars(strip_tags($this->zip));
             	$this->email=htmlspecialchars(strip_tags($this->email));
+            	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
+            	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
             
             	// bind the values
             	$stmt->bindParam(':c_id', $client['id']);
@@ -94,6 +98,8 @@ class Client{
             	$stmt->bindParam(':state', $this->state);
             	$stmt->bindParam(':zip', $this->zip);
             	$stmt->bindParam(':email', $this->email);
+            	$stmt->bindParam(':familyNumber', $this->familyNumber);
+            	$stmt->bindParam(':specificRequest', $this->specificRequest);
             
             	// execute the query, also check if query was successful
             	if($stmt->execute()){

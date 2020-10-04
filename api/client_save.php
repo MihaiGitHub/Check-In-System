@@ -48,6 +48,9 @@ if($jwt && $data->client->email){
         $client->state = $data->client->state;
         $client->zip = $data->client->zip;
         $client->email = $data->client->email;
+        $client->familyNumber = $data->client->familyNumber;
+        $client->specificRequest = $data->client->specificRequest;
+
         
         if($client->save()){
             // set response code

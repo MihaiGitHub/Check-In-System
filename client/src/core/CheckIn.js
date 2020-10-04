@@ -38,6 +38,8 @@ const CheckIn = () => {
                   <th scope="col">#</th>
                   <th scope="col">First</th>
                   <th scope="col">Last</th>
+                  <th scope="col">Number in family</th>
+                  <th scope="col">Specific request</th>
                 </tr>
               </thead>
               <tbody>
@@ -50,9 +52,11 @@ const CheckIn = () => {
                     data-toggle="modal"
                     data-target="#clientModal"
                   >
-                    <th scope="row">{client.id}</th>
+                    <th scope="row">{index + 1}</th>
                     <td>{client.fname}</td>
                     <td>{client.lname}</td>
+                    <td>{client.familyNumber}</td>
+                    <td>{client.specificRequest}</td>
                   </tr>
                 ))}
               </tbody>
