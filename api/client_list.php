@@ -55,10 +55,10 @@ if($jwt){
         else {
     
             // set response code
-            http_response_code(400);
+            http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("message" => "Error! Invalid token."));
+            echo json_encode(array("error" => "No records found"));
         }
     }
     // if decode fails, it means jwt is invalid
@@ -69,7 +69,6 @@ if($jwt){
     
         // show error message
         echo json_encode(array(
-            "message" => "Access denied.",
             "error" => $e->getMessage()
         ));
     }
