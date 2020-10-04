@@ -66,7 +66,7 @@ if($jwt && $data->client->email){
             http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("error" => "Unable to save client!"));
+            echo json_encode(array("error" => "Email address not found. Please update email address at front desk."));
         }
     }
     catch (Exception $e){
