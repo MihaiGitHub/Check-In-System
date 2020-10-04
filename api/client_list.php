@@ -1,5 +1,3 @@
-
-application/x-httpd-php client_list.php ( PHP script text )
 <?php
 // required headers
 header("Access-Control-Allow-Origin: *");
