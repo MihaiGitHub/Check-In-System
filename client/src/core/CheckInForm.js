@@ -18,6 +18,8 @@ const CheckInForm = () => {
     email: "",
   });
 
+  const { email } = values;
+
   useEffect(() => {
     if (sessionStorage.getItem("jwt")) {
     } else {
@@ -42,17 +44,23 @@ const CheckInForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    saveClient(values)
-      .then(({ data }) => {
-        console.log("data ", data);
+    if (email !== "") {
+      saveClient(values)
+        .then(({ data }) => {
+          console.log("data ", data);
 
-        if (data.error) {
-          setError(true);
-          setErrMsg(data.error);
-        } else {
-        }
-      })
-      .catch((error) => console.log(error));
+          if (data.error) {
+            setError(true);
+            setErrMsg(data.error);
+          } else {
+            setRedirect(true);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      setError(true);
+      setErrMsg("Email address must not be blank");
+    }
   };
 
   return (

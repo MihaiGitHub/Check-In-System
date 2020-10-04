@@ -8,37 +8,58 @@ const CheckIn = () => {
 
   useEffect(() => {
     getClients().then(({ data }) => {
-      setClients(data.clients);
+      if (!data.error) {
+        setClients(data.clients);
+      }
     });
   }, []);
 
   return (
     <Fragment>
-      <table className="table table-bordered table-striped mb-0">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-          </tr>
-        </thead>
-        <tbody>
-          {clients.map((client, index) => (
-            <tr
-              data-id={client.id}
-              id="modalLaunch"
-              key={index}
-              onClick={() => setClient(client)}
-              data-toggle="modal"
-              data-target="#clientModal"
+      {clients.length == 0 && (
+        <div className="row">
+          <div className="col-sm-6 offset-sm-3">
+            <div
+              className="alert alert-success"
+              role="alert"
+              style={{ textAlign: "center" }}
             >
-              <th scope="row">{client.id}</th>
-              <td>{client.fname}</td>
-              <td>{client.lname}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <strong>Please check in</strong>
+            </div>
+          </div>
+        </div>
+      )}
+      {clients.length > 0 && (
+        <div className="row">
+          <div className="col-sm">
+            <table className="table table-bordered table-striped mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients.map((client, index) => (
+                  <tr
+                    data-id={client.id}
+                    id="modalLaunch"
+                    key={index}
+                    onClick={() => setClient(client)}
+                    data-toggle="modal"
+                    data-target="#clientModal"
+                  >
+                    <th scope="row">{client.id}</th>
+                    <td>{client.fname}</td>
+                    <td>{client.lname}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
       <Modal client={client} type="Serving" />
     </Fragment>
   );

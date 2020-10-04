@@ -14,7 +14,11 @@ const Modal = ({ client, type }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="clientModalTitle">
-              Move {client.fname} {client.lname} to {type}?
+              Move{" "}
+              <span style={{ color: "green" }}>
+                {client.fname} {client.lname}
+              </span>{" "}
+              to {type}?
             </h5>
             <button
               type="button"
