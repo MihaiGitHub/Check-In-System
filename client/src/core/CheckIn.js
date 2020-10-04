@@ -7,7 +7,7 @@ const CheckIn = () => {
   const [client, setClient] = useState({});
 
   useEffect(() => {
-    getClients().then(({ data }) => {
+    getClients("checkin").then(({ data }) => {
       if (!data.error) {
         setClients(data.clients);
       }
@@ -64,7 +64,7 @@ const CheckIn = () => {
           </div>
         </div>
       )}
-      <Modal client={client} type="Serving" />
+      <Modal client={client} type="serving" />
     </Fragment>
   );
 };

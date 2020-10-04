@@ -88,6 +88,7 @@ class Client{
             	$this->email=htmlspecialchars(strip_tags($this->email));
             	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
             	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
+
             
             	// bind the values
             	$stmt->bindParam(':c_id', $client['id']);
@@ -121,11 +122,14 @@ class Client{
     function all(){
     
     	// insert query
-    	$query = "SELECT * FROM " . $this->table_name;
+    	$query = "SELECT * FROM " . $this->table_name . " WHERE status = :status";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
-        
+    	
+        // bind the values
+        $stmt->bindParam(':status', $this->status);
+
      	// execute the query, also check if query was successful
     	$result = $stmt->execute();
     	

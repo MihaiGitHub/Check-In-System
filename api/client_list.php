@@ -1,3 +1,5 @@
+
+application/x-httpd-php client_list.php ( PHP script text )
 <?php
 // required headers
 header("Access-Control-Allow-Origin: *");
@@ -39,6 +41,9 @@ if($jwt){
         
         // decode jwt, if it was a fake jwt it would not be able to decode it using this key
         $decoded = JWT::decode($jwt, $key, array('HS256'));
+        
+        // set client property values
+        $client->status = $data->status;
         
         if($client->all()){
             

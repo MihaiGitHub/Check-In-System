@@ -11,11 +11,12 @@ export const doLogin = ({ username, password }) => {
     .catch((error) => console.log(error));
 };
 
-export const getClients = () => {
+export const getClients = (status) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
     .post(`${API}/client_list.php`, {
+      status,
       jwt,
     })
     .then((response) => {

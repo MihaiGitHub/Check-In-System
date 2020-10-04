@@ -1,6 +1,13 @@
 import React from "react";
 
 const Modal = ({ client, type }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("type", type);
+    console.log("client ", client);
+  };
+
   return (
     <div
       className="modal fade"
@@ -38,7 +45,7 @@ const Modal = ({ client, type }) => {
             >
               Cancel
             </button>
-            <button type="button" className="btn btn-primary">
+            <button onClick={handleSubmit} className="btn btn-primary">
               Yes
             </button>
           </div>
