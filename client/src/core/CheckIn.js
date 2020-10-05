@@ -60,7 +60,7 @@ const CheckIn = () => {
                     key={index}
                     onClick={() => setClient(client)}
                     data-toggle="modal"
-                    data-target="#clientModal"
+                    data-target="#checkinModal"
                   >
                     <th scope="row">{index + 1}</th>
                     <td>{client.fname}</td>
@@ -74,7 +74,12 @@ const CheckIn = () => {
           </div>
         </div>
       )}
-      <Modal client={client} type="serving" refreshFunction={refreshCheckin} />
+      <Modal
+        modalId="checkinModal"
+        client={client}
+        type="serving"
+        refreshFunction={refreshCheckin}
+      />
     </Fragment>
   );
 };

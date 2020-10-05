@@ -1,7 +1,7 @@
 import React from "react";
 import { updateClient } from "./apiCore";
 
-const Modal = ({ client, type, refreshFunction }) => {
+const Modal = ({ modalId, client, type, refreshFunction }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -13,7 +13,7 @@ const Modal = ({ client, type, refreshFunction }) => {
   return (
     <div
       className="modal fade"
-      id="clientModal"
+      id={modalId}
       tabIndex="-1"
       role="dialog"
       aria-labelledby="clientModalTitle"

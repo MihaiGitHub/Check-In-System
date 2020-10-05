@@ -14,7 +14,7 @@ const Serving = () => {
     });
   }, []);
 
-  const refreshCheckout = () => {
+  const refreshServing = () => {
     getClients("serving").then(({ data }) => {
       if (!data.error) {
         setClients(data.clients);
@@ -60,7 +60,7 @@ const Serving = () => {
                     key={index}
                     onClick={() => setClient(client)}
                     data-toggle="modal"
-                    data-target="#clientModal"
+                    data-target="#servingModal"
                   >
                     <th scope="row">{index + 1}</th>
                     <td>{client.fname}</td>
@@ -75,9 +75,10 @@ const Serving = () => {
         </div>
       )}
       <Modal
+        modalId="servingModal"
         client={client}
         type="checkout"
-        refreshFunction={refreshCheckout}
+        refreshFunction={refreshServing}
       />
     </Fragment>
   );

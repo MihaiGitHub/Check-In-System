@@ -8,13 +8,13 @@ const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/saveclient">
+        <Route path="/beta/checkin/saveclient">
           <CheckInForm />
         </Route>
-        <Route path="/main">
+        <Route path="/beta/checkin/main">
           <Main />
         </Route>
-        <Route path="/">
+        <Route path="/beta/checkin">
           <Login />
         </Route>
       </Switch>

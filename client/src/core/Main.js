@@ -22,7 +22,7 @@ const Main = () => {
   };
 
   if (redirect) {
-    return <Redirect to="/" />;
+    return <Redirect to="/beta/checkin" />;
   }
 
   return (
@@ -87,7 +87,10 @@ const Main = () => {
                   <div className="table-wrapper-scroll-y my-custom-scrollbar">
                     <CheckIn />
                   </div>
-                  <Link to="/saveclient" style={{ textDecoration: "none" }}>
+                  <Link
+                    to="/beta/checkin/saveclient"
+                    style={{ textDecoration: "none" }}
+                  >
                     <button
                       type="button"
                       className="btn btn-success btn-lg btn-block"

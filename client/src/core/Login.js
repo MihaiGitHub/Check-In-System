@@ -98,11 +98,11 @@ const Login = () => {
   );
 
   if (redirect) {
-    return <Redirect to="/main" />;
+    return <Redirect to="/beta/checkin/main" />;
   }
 
   if (sessionStorage.getItem("jwt")) {
-    return <Redirect to="/main" />;
+    return <Redirect to="/beta/checkin/main" />;
   }
 
   return (
