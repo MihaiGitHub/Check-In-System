@@ -16,6 +16,7 @@ const CheckInForm = () => {
     state: "AZ",
     zip: "",
     email: "",
+    status: "checkin",
     familyNumber: 0,
     specificRequest: "",
   });

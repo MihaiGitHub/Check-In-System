@@ -48,6 +48,7 @@ if($jwt && $data->client->email){
         $client->state = $data->client->state;
         $client->zip = $data->client->zip;
         $client->email = $data->client->email;
+        $client->status = $data->client->status;
         $client->familyNumber = $data->client->familyNumber;
         $client->specificRequest = $data->client->specificRequest;
 

@@ -71,9 +71,9 @@ class Client{
         	if($updateResult){
         	    // insert query
             	$query = "INSERT INTO " . $this->table_name . "
-            	        (c_id, fname, lname, address, city, state, zip, email, familyNumber, specificRequest)
+            	        (c_id, fname, lname, address, city, state, zip, email, status, familyNumber, specificRequest)
                             VALUES 
-                        (:c_id, :fname, :lname, :address, :city, :state, :zip, :email, :familyNumber, :specificRequest)";
+                        (:c_id, :fname, :lname, :address, :city, :state, :zip, :email, :status, :familyNumber, :specificRequest)";
             
             	// prepare the query
             	$stmt = $this->conn->prepare($query);
@@ -88,7 +88,6 @@ class Client{
             	$this->email=htmlspecialchars(strip_tags($this->email));
             	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
             	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
-
             
             	// bind the values
             	$stmt->bindParam(':c_id', $client['id']);
@@ -99,6 +98,7 @@ class Client{
             	$stmt->bindParam(':state', $this->state);
             	$stmt->bindParam(':zip', $this->zip);
             	$stmt->bindParam(':email', $this->email);
+            	$stmt->bindParam(':status', $this->status);
             	$stmt->bindParam(':familyNumber', $this->familyNumber);
             	$stmt->bindParam(':specificRequest', $this->specificRequest);
             
