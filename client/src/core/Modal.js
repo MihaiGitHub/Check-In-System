@@ -1,22 +1,13 @@
 import React from "react";
-import { updateClient, getClients } from "./apiCore";
-//import { Redirect } from "react-router-dom";
+import { updateClient } from "./apiCore";
 
-//const Modal = ({ client, type, refreshCheckin }) => {
 const Modal = ({ client, type, refreshFunction }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
     updateClient(client.id, type).then((response) => {
-      console.log("response ", response);
-
       refreshFunction();
-
-      //return <Redirect to="/" />;
     });
-
-    console.log("type", type);
-    console.log("client ", client);
   };
 
   return (
