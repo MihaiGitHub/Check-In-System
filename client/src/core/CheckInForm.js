@@ -37,7 +37,7 @@ const CheckInForm = () => {
   };
 
   if (redirect) {
-    return <Redirect to="/beta/checkin" />;
+    return <Redirect to="/" />;
   }
 
   const handleChange = (name) => (event) => {

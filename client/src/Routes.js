@@ -1,24 +1,24 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import CheckInForm from "./core/CheckInForm";
 import Main from "./core/Main";
 import Login from "./core/Login";
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
-        <Route path="/beta/checkin/saveclient">
+        <Route path="/saveclient">
           <CheckInForm />
         </Route>
-        <Route path="/beta/checkin/main">
+        <Route path="/main">
           <Main />
         </Route>
-        <Route path="/beta/checkin">
+        <Route path="/">
           <Login />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
