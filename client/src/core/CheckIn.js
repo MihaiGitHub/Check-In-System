@@ -14,6 +14,16 @@ const CheckIn = () => {
     });
   }, []);
 
+  const refreshCheckin = () => {
+    getClients("checkin").then(({ data }) => {
+      if (!data.error) {
+        setClients(data.clients);
+      } else {
+        setClients([]);
+      }
+    });
+  };
+
   return (
     <Fragment>
       {clients.length == 0 && (
@@ -64,7 +74,7 @@ const CheckIn = () => {
           </div>
         </div>
       )}
-      <Modal client={client} type="serving" />
+      <Modal client={client} type="serving" refreshFunction={refreshCheckin} />
     </Fragment>
   );
 };
