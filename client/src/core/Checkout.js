@@ -8,12 +8,19 @@ const Checkout = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getClients("checkout").then(({ data }) => {
-        if (!data.error) {
-          setClients(data.clients);
+      getClients("checkout").then((response) => {
+        if (response) {
+          if (response.data.error) {
+            console.log("Response error: ", response.data.error);
+          } else {
+            setClients(response.data.clients);
+          }
+        } else {
+          console.log("No response error");
         }
       });
-    }, 10000);
+    }, 5000);
+
     // This is the equivilent of componentWillUnmount in a React Class component.
     return () => clearInterval(interval);
   }, []);

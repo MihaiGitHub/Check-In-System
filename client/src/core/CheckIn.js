@@ -7,9 +7,15 @@ const CheckIn = () => {
   const [client, setClient] = useState({});
 
   useEffect(() => {
-    getClients("checkin").then(({ data }) => {
-      if (!data.error) {
-        setClients(data.clients);
+    getClients("checkin").then((response) => {
+      if (response) {
+        if (response.data.error) {
+          console.log("Response error: ", response.data.error);
+        } else {
+          setClients(response.data.clients);
+        }
+      } else {
+        console.log("No response error");
       }
     });
   }, []);
