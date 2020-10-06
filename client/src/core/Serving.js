@@ -7,11 +7,15 @@ const Serving = () => {
   const [client, setClient] = useState({});
 
   useEffect(() => {
-    getClients("serving").then(({ data }) => {
-      if (!data.error) {
-        setClients(data.clients);
-      }
-    });
+    const interval = setInterval(() => {
+      getClients("serving").then(({ data }) => {
+        if (!data.error) {
+          setClients(data.clients);
+        }
+      });
+    }, 10000);
+    // This is the equivilent of componentWillUnmount in a React Class component.
+    return () => clearInterval(interval);
   }, []);
 
   const refreshServing = () => {

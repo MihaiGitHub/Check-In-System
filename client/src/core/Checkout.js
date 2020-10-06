@@ -4,25 +4,19 @@ import Modal from "./Modal";
 
 const Checkout = () => {
   const [clients, setClients] = useState([]);
-  const [client, setClient] = useState({});
+  //const [client, setClient] = useState({});
 
   useEffect(() => {
-    getClients("checkout").then(({ data }) => {
-      if (!data.error) {
-        setClients(data.clients);
-      }
-    });
+    const interval = setInterval(() => {
+      getClients("checkout").then(({ data }) => {
+        if (!data.error) {
+          setClients(data.clients);
+        }
+      });
+    }, 10000);
+    // This is the equivilent of componentWillUnmount in a React Class component.
+    return () => clearInterval(interval);
   }, []);
-
-  const refreshCheckout = () => {
-    getClients("checkout").then(({ data }) => {
-      if (!data.error) {
-        setClients(data.clients);
-      } else {
-        setClients([]);
-      }
-    });
-  };
 
   return (
     <Fragment>
@@ -56,11 +50,11 @@ const Checkout = () => {
                 {clients.map((client, index) => (
                   <tr
                     data-id={client.id}
-                    id="modalLaunch"
+                    //    id="modalLaunch"
                     key={index}
-                    onClick={() => setClient(client)}
-                    data-toggle="modal"
-                    data-target="#clientModal"
+                    //   onClick={() => setClient(client)}
+                    //  data-toggle="modal"
+                    //   data-target="#clientModal"
                   >
                     <th scope="row">{index + 1}</th>
                     <td>{client.fname}</td>
