@@ -122,14 +122,11 @@ class Client{
     function all(){
     
     	// insert query
-    	$query = "SELECT * FROM " . $this->table_name . " WHERE status = :status";
+    	$query = "SELECT * FROM " . $this->table_name;
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
     	
-        // bind the values
-        $stmt->bindParam(':status', $this->status);
-
      	// execute the query, also check if query was successful
     	$result = $stmt->execute();
     	

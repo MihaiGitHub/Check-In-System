@@ -1,43 +1,45 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { getClients } from "./apiCore";
-import Modal from "./Modal";
+import React, { Fragment, useState, useContext } from "react";
+import { getClients } from "./common/apiCore";
+import Modal from "./common/Modal";
+import { ClientContext } from "./common/ClientContext";
 
 const Serving = () => {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getClients("serving").then((response) => {
-        if (response) {
-          if (response.data.error) {
-            console.log("Response error: ", response.data.error);
-          } else {
-            setClients(response.data.clients);
-          }
-        } else {
-          console.log("No response error");
-        }
-      });
-    }, 5000);
-
-    // This is the equivilent of componentWillUnmount in a React Class component.
-    return () => clearInterval(interval);
-  }, []);
-
   const refreshServing = () => {
-    getClients("serving").then(({ data }) => {
-      if (!data.error) {
-        setClients(data.clients);
+    getClients().then((response) => {
+      if (response) {
+        if (response.data.error) {
+          console.log("Response error: ", response.data.error);
+        } else {
+          const checkedIn = response.data.clients.filter((client) => {
+            return client.status === "checkin";
+          });
+
+          const serving = response.data.clients.filter((client) => {
+            return client.status === "serving";
+          });
+
+          const checkedOut = response.data.clients.filter((client) => {
+            return client.status === "checkout";
+          });
+
+          setClients((prevClients) => {
+            return { checkedIn, serving, checkedOut };
+          });
+        }
       } else {
-        setClients([]);
+        console.log("No response error");
       }
     });
   };
 
+  const { serving } = clients;
+
   return (
     <Fragment>
-      {clients.length == 0 && (
+      {serving.length == 0 && (
         <div className="row">
           <div className="col-sm-6 offset-sm-3">
             <div
@@ -50,7 +52,7 @@ const Serving = () => {
           </div>
         </div>
       )}
-      {clients.length > 0 && (
+      {serving.length > 0 && (
         <div className="row">
           <div className="col-sm">
             <table className="table table-bordered table-striped mb-0">
@@ -64,7 +66,7 @@ const Serving = () => {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client, index) => (
+                {serving.map((client, index) => (
                   <tr
                     data-id={client.id}
                     id="modalLaunch"

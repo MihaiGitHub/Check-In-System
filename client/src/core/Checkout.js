@@ -1,33 +1,14 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { getClients } from "./apiCore";
-import Modal from "./Modal";
+import React, { Fragment, useContext } from "react";
+import { ClientContext } from "./common/ClientContext";
 
 const Checkout = () => {
-  const [clients, setClients] = useState([]);
-  //const [client, setClient] = useState({});
+  const [clients, setClients] = useContext(ClientContext);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getClients("checkout").then((response) => {
-        if (response) {
-          if (response.data.error) {
-            console.log("Response error: ", response.data.error);
-          } else {
-            setClients(response.data.clients);
-          }
-        } else {
-          console.log("No response error");
-        }
-      });
-    }, 5000);
-
-    // This is the equivilent of componentWillUnmount in a React Class component.
-    return () => clearInterval(interval);
-  }, []);
+  const { checkedOut } = clients;
 
   return (
     <Fragment>
-      {clients.length == 0 && (
+      {checkedOut.length == 0 && (
         <div className="row">
           <div className="col-sm-6 offset-sm-3">
             <div
@@ -40,7 +21,7 @@ const Checkout = () => {
           </div>
         </div>
       )}
-      {clients.length > 0 && (
+      {checkedOut.length > 0 && (
         <div className="row">
           <div className="col-sm">
             <table className="table table-bordered table-striped mb-0">
@@ -54,15 +35,8 @@ const Checkout = () => {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client, index) => (
-                  <tr
-                    data-id={client.id}
-                    //    id="modalLaunch"
-                    key={index}
-                    //   onClick={() => setClient(client)}
-                    //  data-toggle="modal"
-                    //   data-target="#clientModal"
-                  >
+                {checkedOut.map((client, index) => (
+                  <tr data-id={client.id} key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{client.fname}</td>
                     <td>{client.lname}</td>
@@ -75,11 +49,6 @@ const Checkout = () => {
           </div>
         </div>
       )}
-      {/* <Modal
-        client={client}
-        type="checkout"
-        refreshFunction={refreshCheckout}
-      /> */}
     </Fragment>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { saveClient } from "./apiCore";
-import Navigation from "./Navigation";
-import { errorMessage } from "./Error";
+import { saveClient } from "./common/apiCore";
+import Navigation from "./common/Navigation";
+import { errorMessage } from "./common/Error";
 
 const CheckInForm = () => {
   const [error, setError] = useState(false);

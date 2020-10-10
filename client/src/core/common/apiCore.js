@@ -1,4 +1,4 @@
-import { API } from "../config";
+import { API } from "../../config";
 import axios from "axios";
 
 export const doLogin = ({ username, password }) => {
@@ -11,12 +11,11 @@ export const doLogin = ({ username, password }) => {
     .catch((error) => console.log(error));
 };
 
-export const getClients = (status) => {
+export const getClients = () => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
     .post(`${API}/client_list.php`, {
-      status,
       jwt,
     })
     .then((response) => {

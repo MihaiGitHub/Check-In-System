@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { doLogin } from "./apiCore";
-import Navigation from "./Navigation";
-import { errorMessage } from "./Error";
+import { doLogin } from "./common/apiCore";
+import Navigation from "./common/Navigation";
+import { errorMessage } from "./common/Error";
 
 const Login = () => {
   const [error, setError] = useState(false);
