@@ -2,6 +2,7 @@ import React, { Fragment, useState, useContext } from "react";
 import { getClients } from "./common/apiCore";
 import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
+import { clientUpdateStatus } from "./common/ClientHelpers";
 
 const Serving = () => {
   const [clients, setClients] = useContext(ClientContext);
@@ -13,17 +14,9 @@ const Serving = () => {
         if (response.data.error) {
           console.log("Response error: ", response.data.error);
         } else {
-          const checkedIn = response.data.clients.filter((client) => {
-            return client.status === "checkin";
-          });
-
-          const serving = response.data.clients.filter((client) => {
-            return client.status === "serving";
-          });
-
-          const checkedOut = response.data.clients.filter((client) => {
-            return client.status === "checkout";
-          });
+          const { checkedIn, serving, checkedOut } = clientUpdateStatus(
+            response.data.clients
+          );
 
           setClients((prevClients) => {
             return { checkedIn, serving, checkedOut };

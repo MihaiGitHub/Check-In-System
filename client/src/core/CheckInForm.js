@@ -73,65 +73,9 @@ const CheckInForm = () => {
       <form style={{ padding: 15 }}>
         <div className="form-row">
           <div className="form-group col-md-6">
-            <label htmlFor="inputFname">First Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputFname"
-              placeholder="First Name"
-              onChange={handleChange("fname")}
-            />
-          </div>
-          <div className="form-group col-md-6">
-            <label htmlFor="inputLname">Last Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputLname"
-              placeholder="Last Name"
-              onChange={handleChange("lname")}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="inputAddress">Address</label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputAddress"
-            placeholder="1234 Main St"
-            onChange={handleChange("address")}
-          />
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            <label htmlFor="inputCity">City</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputCity"
-              onChange={handleChange("city")}
-            />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="inputState">State</label>
-            <select id="inputState" className="form-control">
-              <option>Arizona</option>
-            </select>
-          </div>
-          <div className="form-group col-md-2">
-            <label htmlFor="inputZip">Zip</label>
-            <input
-              type="text"
-              className="form-control"
-              id="inputZip"
-              onChange={handleChange("zip")}
-            />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-6">
-            <label htmlFor="inputEmail">Email</label>
+            <label htmlFor="inputEmail">
+              <strong>Email</strong>
+            </label>
             <input
               type="email"
               className="form-control"
@@ -140,7 +84,9 @@ const CheckInForm = () => {
             />
           </div>
           <div className="form-group col-md-6">
-            <label htmlFor="inputFamilyNumber">How many in your family?</label>
+            <label htmlFor="inputFamilyNumber">
+              <strong>How many in your family?</strong>
+            </label>
 
             <div className="input-group mb-3">
               <select
@@ -163,13 +109,81 @@ const CheckInForm = () => {
             </div>
           </div>
           <div className="form-group col-sm">
-            <label htmlFor="specificRequest">Specific request</label>
-            <textarea
-              onChange={handleChange("specificRequest")}
-              className="form-control"
-              id="specificRequest"
-              rows="3"
-            ></textarea>
+            <label htmlFor="specificRequest">
+              <strong>Specific request</strong>
+            </label>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="catFood"
+              />
+              <label className="form-check-label" htmlFor="catFood">
+                Cat Food
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="dogFood"
+              />
+              <label className="form-check-label" htmlFor="dogFood">
+                Dog Food
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="hygiene"
+              />
+              <label className="form-check-label" htmlFor="hygiene">
+                Hygiene
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="babyEssentials"
+              />
+              <label className="form-check-label" htmlFor="babyEssentials">
+                Baby Essentials
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="householdSupplies"
+              />
+              <label className="form-check-label" htmlFor="householdSupplies">
+                Household Supplies
+              </label>
+            </div>
+
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="glutenFree"
+              />
+              <label className="form-check-label" htmlFor="glutenFree">
+                Gluten Free
+              </label>
+            </div>
           </div>
         </div>
         <button onClick={handleSubmit} className="btn btn-success">
