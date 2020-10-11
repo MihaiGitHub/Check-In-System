@@ -88,7 +88,7 @@ class Client{
             	$this->email=htmlspecialchars(strip_tags($this->email));
             	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
             	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
-            
+
             	// bind the values
             	$stmt->bindParam(':c_id', $client['id']);
             	$stmt->bindParam(':fname', $this->fname);
@@ -116,6 +116,34 @@ class Client{
     	else {
     	   return false;
     	}
+    }
+    
+    // get client
+    function detail(){
+    
+    	// insert query
+    	$query = "SELECT * FROM clients WHERE email LIKE '%" . $this->email . "%'";
+    
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	// sanitize
+        $this->fname=htmlspecialchars(strip_tags($this->email));
+
+        // bind the values
+        $stmt->bindParam(':email', $this->email);
+    	
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    	    $client = $stmt->fetch();
+    	    
+    		return $client;
+    	}
+    	
+    	return false;
     }
     
     // get clients
