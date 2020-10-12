@@ -118,11 +118,11 @@ class Client{
     	}
     }
     
-    // get client
-    function detail(){
+       // get client
+	   function detail(){
     
     	// insert query
-    	$query = "SELECT * FROM clients WHERE email LIKE '%" . $this->email . "%'";
+    	$query = "SELECT * FROM clients WHERE email = '" . $this->email . "'";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
