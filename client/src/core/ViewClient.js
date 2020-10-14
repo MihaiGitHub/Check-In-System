@@ -1,28 +1,49 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { saveClient } from "./common/apiCore";
 
 const ViewClient = ({ client, values }) => {
-  console.log("props ", client, values);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
+
+  console.log("client ", client, values);
+
+  const handleCheckIn = (e) => {
+    e.preventDefault();
+
+    // saveClient(values).then(({ data }) => {
+    //   console.log("data ", data);
+
+    //   if (data.error) {
+    //     setError(true);
+    //     setErrMsg(data.error);
+    //   } else {
+    //     setRedirect(true);
+    //   }
+    // });
+  };
 
   const buttons = () => (
     <div className="row" style={{ paddingTop: 15 }}>
       <div className="col-sm">
-        <Link to="/saveclient" style={{ textDecoration: "none" }}>
+        <button
+          onClick={handleCheckIn}
+          className="btn btn-success btn-lg btn-block"
+        >
+          Check In
+        </button>
+      </div>
+      <div className="col-sm">
+        <Link
+          to={{
+            pathname: "/updateclient",
+            state: {
+              client,
+            },
+          }}
+          style={{ textDecoration: "none" }}
+        >
           <button type="button" className="btn btn-primary btn-lg btn-block">
-            Back
-          </button>
-        </Link>
-      </div>
-      <div className="col-sm">
-        <Link to="/main" style={{ textDecoration: "none" }}>
-          <button type="button" className="btn btn-success btn-lg btn-block">
-            Check In
-          </button>
-        </Link>
-      </div>
-      <div className="col-sm">
-        <Link to="/main" style={{ textDecoration: "none" }}>
-          <button type="button" className="btn btn-secondary btn-lg btn-block">
             Update Info
           </button>
         </Link>
@@ -39,6 +60,9 @@ const ViewClient = ({ client, values }) => {
               <tr>
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
+                <th scope="col">Address</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
                 <th scope="col">Number in family</th>
                 <th scope="col">Specific request</th>
               </tr>
@@ -47,8 +71,13 @@ const ViewClient = ({ client, values }) => {
               <tr>
                 <td>{client.fname}</td>
                 <td>{client.lname}</td>
+                <td>{client.address}</td>
+                <td>{client.email}</td>
+                <td>{client.phone}</td>
                 <td>{values.familyNumber}</td>
-                <td>{values.specificRequest}</td>
+                <td>
+                  {values.specificRequest.map((request) => request + ", ")}
+                </td>
               </tr>
             </tbody>
           </table>

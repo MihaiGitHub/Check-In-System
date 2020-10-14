@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { saveClient, getClient } from "./common/apiCore";
+import { getClient } from "./common/apiCore";
 import Navigation from "./common/Navigation";
 import { errorMessage } from "./common/Error";
 import ViewClient from "./ViewClient";
@@ -13,7 +13,7 @@ const CheckInForm = () => {
   const [values, setValues] = useState({
     email: "",
     status: "checkin",
-    familyNumber: 0,
+    familyNumber: "0",
     specificRequest: [],
   });
 
@@ -50,35 +50,15 @@ const CheckInForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("values ", values);
-
-    if (email !== "" && familyNumber !== "") {
-      // saveClient(values)
-      //   .then(({ data }) => {
-      //     console.log("data ", data);
-      //     if (data.error) {
-      //       setError(true);
-      //       setErrMsg(data.error);
-      //     } else {
-      //       setRedirect(true);
-      //     }
-      //   })
-      //   .catch((error) => console.log(error));
+    if (email !== "" && familyNumber !== "0") {
       getClient(email).then((response) => {
         if (response) {
           if (response.data.error) {
             setError(true);
             setErrMsg(response.data.error);
           } else {
-            console.log("success");
+            setError(false);
             setClient(response.data.client);
-            // const { checkedIn, serving, checkedOut } = clientUpdateStatus(
-            //   response.data.clients
-            // );
-
-            // setClients((prevClients) => {
-            //   return { checkedIn, serving, checkedOut };
-            // });
           }
         } else {
           setError(true);
@@ -116,7 +96,9 @@ const CheckInForm = () => {
               className="custom-select"
               id="inputFamilyNumber"
             >
-              <option defaultValue>Choose...</option>
+              <option defaultValue value="0">
+                Choose...
+              </option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
