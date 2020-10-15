@@ -30,7 +30,7 @@ $data = json_decode(file_get_contents("php://input"));
 // get jwt
 $jwt=isset($data->jwt) ? $data->jwt : "";
 
-// if jwt and email are not empty proceed
+// if jwt and name are not empty proceed
 if($jwt && $data->client->email){
 
     // if decode succeed, show client details
@@ -43,15 +43,10 @@ if($jwt && $data->client->email){
         // set client property values
         $client->fname = $data->client->fname;
         $client->lname = $data->client->lname;
-        $client->address = $data->client->address;
-        $client->city = $data->client->city;
-        $client->state = $data->client->state;
-        $client->zip = $data->client->zip;
-        $client->email = $data->client->email;
         $client->status = $data->client->status;
         $client->familyNumber = $data->client->familyNumber;
         $client->specificRequest = $data->client->specificRequest;
-
+        $client->email = $data->client->email;
         
         if($client->save()){
             // set response code
@@ -70,7 +65,7 @@ if($jwt && $data->client->email){
             http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("error" => "Email address not found. Please update email address at front desk."));
+            echo json_encode(array("error" => "Unable to checkin client"));
         }
     }
     catch (Exception $e){
