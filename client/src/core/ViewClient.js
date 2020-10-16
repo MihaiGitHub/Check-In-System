@@ -1,26 +1,42 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { saveClient } from "./common/apiCore";
+import { errorMessage } from "./common/Error";
 
 const ViewClient = ({ client, values }) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
-  console.log("client ", client, values);
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   const handleCheckIn = (e) => {
     e.preventDefault();
 
-    // saveClient(values).then(({ data }) => {
-    //   console.log("data ", data);
+    const data = {
+      fname: client.fname,
+      lname: client.lname,
+      status: values.status,
+      familyNumber: values.familyNumber,
+      specificRequest: values.specificRequest.toString(),
+      email: values.email,
+    };
 
-    //   if (data.error) {
-    //     setError(true);
-    //     setErrMsg(data.error);
-    //   } else {
-    //     setRedirect(true);
-    //   }
-    // });
+    saveClient(data).then((response) => {
+      if (response) {
+        if (response.data.error) {
+          setError(true);
+          setErrMsg(response.data.error);
+        } else {
+          setRedirect(true);
+        }
+      } else {
+        setError(true);
+        setErrMsg("No response from server");
+      }
+    });
   };
 
   const buttons = () => (
@@ -53,6 +69,8 @@ const ViewClient = ({ client, values }) => {
 
   return (
     <Fragment>
+      {error && errorMessage(errorMsg)}
+
       <div className="row">
         <div className="col-sm">
           <table className="table table-bordered table-striped mb-0">
@@ -76,7 +94,7 @@ const ViewClient = ({ client, values }) => {
                 <td>{client.phone}</td>
                 <td>{values.familyNumber}</td>
                 <td>
-                  {values.specificRequest.map((request) => request + ", ")}
+                  {values.specificRequest.map((request) => request + " | ")}
                 </td>
               </tr>
             </tbody>

@@ -1,10 +1,13 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { getClients } from "./common/apiCore";
 import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
 import { clientUpdateStatus } from "./common/ClientHelpers";
+import { errorMessage } from "./common/Error";
 
 const CheckIn = () => {
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
   const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
@@ -12,7 +15,8 @@ const CheckIn = () => {
     getClients().then((response) => {
       if (response) {
         if (response.data.error) {
-          console.log("Response error: ", response.data.error);
+          setError(true);
+          setErrMsg(response.data.error);
         } else {
           const { checkedIn, serving, checkedOut } = clientUpdateStatus(
             response.data.clients
@@ -23,7 +27,8 @@ const CheckIn = () => {
           });
         }
       } else {
-        console.log("No response error");
+        setError(true);
+        setErrMsg("No response from server");
       }
     });
   };
@@ -32,6 +37,8 @@ const CheckIn = () => {
 
   return (
     <Fragment>
+      {error && errorMessage(errorMsg)}
+
       {checkedIn.length == 0 && (
         <div className="row">
           <div className="col-sm-6 offset-sm-3">
@@ -59,22 +66,29 @@ const CheckIn = () => {
                 </tr>
               </thead>
               <tbody>
-                {checkedIn.map((client, index) => (
-                  <tr
-                    data-id={client.id}
-                    id="modalLaunch"
-                    key={index}
-                    onClick={() => setClient(client)}
-                    data-toggle="modal"
-                    data-target="#checkinModal"
-                  >
-                    <th scope="row">{index + 1}</th>
-                    <td>{client.fname}</td>
-                    <td>{client.lname}</td>
-                    <td>{client.familyNumber}</td>
-                    <td>{client.specificRequest}</td>
-                  </tr>
-                ))}
+                {checkedIn.map((client, index) => {
+                  const clientRequest = client.specificRequest.replace(
+                    /,/g,
+                    " | "
+                  );
+
+                  return (
+                    <tr
+                      data-id={client.id}
+                      id="modalLaunch"
+                      key={index}
+                      onClick={() => setClient(client)}
+                      data-toggle="modal"
+                      data-target="#checkinModal"
+                    >
+                      <th scope="row">{index + 1}</th>
+                      <td>{client.fname}</td>
+                      <td>{client.lname}</td>
+                      <td>{client.familyNumber}</td>
+                      <td>{clientRequest}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
