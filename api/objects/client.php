@@ -62,47 +62,47 @@ class Client{
             $selectStmtCheckin->setFetchMode(PDO::FETCH_ASSOC);
         	$clientCheckedIn = $selectStmtCheckin->fetch();
     	
-			if(!$clientCheckedIn){
-			
-				// insert query
-				$query = "INSERT INTO " . $this->table_name . "
-						(c_id, fname, lname, status, familyNumber, specificRequest)
-							VALUES 
-						(:c_id, :fname, :lname, :status, :familyNumber, :specificRequest)";
-			
-				// prepare the query
-				$stmt = $this->conn->prepare($query);
-			
-				// sanitize
-				$this->fname=htmlspecialchars(strip_tags($this->fname));
-				$this->lname=htmlspecialchars(strip_tags($this->lname));
-				$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
-				$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
+    	if(!$clientCheckedIn){
+	    
+    	    // insert query
+        	$query = "INSERT INTO " . $this->table_name . "
+        	        (c_id, fname, lname, status, familyNumber, specificRequest)
+                        VALUES 
+                    (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest)";
+        
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        
+        	// sanitize
+        	$this->fname=htmlspecialchars(strip_tags($this->fname));
+        	$this->lname=htmlspecialchars(strip_tags($this->lname));
+        	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
+        	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
 
-				// bind the values
-				$stmt->bindParam(':c_id', $client['id']);
-				$stmt->bindParam(':fname', $this->fname);
-				$stmt->bindParam(':lname', $this->lname);
-				$stmt->bindParam(':status', $this->status);
-				$stmt->bindParam(':familyNumber', $this->familyNumber);
-				$stmt->bindParam(':specificRequest', $this->specificRequest);
-			
-				// execute the query, also check if query was successful
-				if($stmt->execute()){
-					return true;
-				}
-				
-				return false;
-			}
-			else {
-				return false;
-			}
+        	// bind the values
+        	$stmt->bindParam(':c_id', $client['id']);
+        	$stmt->bindParam(':fname', $this->fname);
+        	$stmt->bindParam(':lname', $this->lname);
+        	$stmt->bindParam(':status', $this->status);
+        	$stmt->bindParam(':familyNumber', $this->familyNumber);
+        	$stmt->bindParam(':specificRequest', $this->specificRequest);
+        
+        	// execute the query, also check if query was successful
+        	if($stmt->execute()){
+        		return true;
+        	}
+        	
+        	return false;
+    	}
+    	else {
+    	    return false;
+    	}
     	}
     	else {
     	   return false;
     	}
     }
-	
+    
     // get client
     function detail(){
     
@@ -153,7 +153,7 @@ class Client{
     	return false;
     }
     
-    // update clients
+    // update client status
     function update(){
     
     	// update query
@@ -166,6 +166,48 @@ class Client{
     	
     	// bind the value
     	$stmt->bindParam(':status', $this->status);
+    	$stmt->bindParam(':id', $this->id);
+        
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    return true;
+    	}
+    	
+    	return false;
+    }
+    
+    // update clients
+    function updateClientInfo(){
+    
+        	// update query
+    	$query = "UPDATE clients
+            		SET fname = :fname, lname = :lname, address = :address, city = :city, state = :state, postalCode = :zip, phone = :phone, email = :email
+            		WHERE id = :id";
+    
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	// sanitize
+    	$this->fname=htmlspecialchars(strip_tags($this->fname));
+    	$this->lname=htmlspecialchars(strip_tags($this->lname));
+    	$this->address=htmlspecialchars(strip_tags($this->address));
+    	$this->city=htmlspecialchars(strip_tags($this->city));
+    	$this->state=htmlspecialchars(strip_tags($this->state));
+    	$this->zip=htmlspecialchars(strip_tags($this->zip));
+    	$this->phone=htmlspecialchars(strip_tags($this->phone));
+    	$this->email=htmlspecialchars(strip_tags($this->email));
+
+    	// bind the values
+    	$stmt->bindParam(':fname', $this->fname);
+    	$stmt->bindParam(':lname', $this->lname);
+    	$stmt->bindParam(':address', $this->address);
+    	$stmt->bindParam(':city', $this->city);
+    	$stmt->bindParam(':state', $this->state);
+    	$stmt->bindParam(':zip', $this->zip);
+    	$stmt->bindParam(':phone', $this->phone);
+    	$stmt->bindParam(':email', $this->email);
     	$stmt->bindParam(':id', $this->id);
         
      	// execute the query, also check if query was successful
