@@ -1,10 +1,15 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
 import Navigation from "./common/Navigation";
+import { updateClientInfo } from "./common/apiCore";
+import { errorMessage } from "./common/Error";
 
 const UpdateClient = ({ location }) => {
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [values, setValues] = useState({
+    id: 0,
     fname: "",
     lname: "",
     address: "",
@@ -20,10 +25,12 @@ const UpdateClient = ({ location }) => {
       const { client } = location.state;
 
       setValues({
+        id: client.id,
         fname: client.fname,
         lname: client.lname,
         address: client.address,
         city: client.city,
+        state: "AZ",
         postalCode: client.postalCode,
         email: client.email,
         phone: client.phone,
@@ -54,7 +61,19 @@ const UpdateClient = ({ location }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("values ", values);
+    updateClientInfo(values).then((response) => {
+      if (response) {
+        if (response.data.error) {
+          setError(true);
+          setErrMsg(response.data.error);
+        } else {
+          setRedirect(true);
+        }
+      } else {
+        setError(true);
+        setErrMsg("No response from server");
+      }
+    });
   };
 
   const form = () => (
@@ -179,6 +198,7 @@ const UpdateClient = ({ location }) => {
   return (
     <Fragment>
       <Navigation logoutFunction={doLogout} logoutLink={true} />
+      {error && errorMessage(errorMsg)}
 
       {form()}
     </Fragment>

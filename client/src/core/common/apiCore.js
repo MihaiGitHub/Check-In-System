@@ -53,3 +53,12 @@ export const getClient = (email) => {
     .then((response) => response)
     .catch((error) => console.log(error));
 };
+
+export const updateClientInfo = (client) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/client_update_info.php`, { client, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
