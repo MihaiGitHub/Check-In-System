@@ -1,11 +1,11 @@
 import React from "react";
-import { updateClient } from "./apiCore";
+import { updateClientStatus } from "./apiCore";
 
 const Modal = ({ modalId, client, type, refreshFunction }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    updateClient(client.id, type).then((response) => {
+    updateClientStatus(client.id, type).then((response) => {
       refreshFunction();
     });
   };

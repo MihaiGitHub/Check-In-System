@@ -65,8 +65,6 @@ export const ClientProvider = (props) => {
     return () => clearInterval(interval);
   }, []);
 
-  console.log("clients ", clients);
-
   return (
     <ClientContext.Provider value={[clients, setClients]}>
       {props.children}
