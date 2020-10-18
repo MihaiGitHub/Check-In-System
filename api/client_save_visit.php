@@ -31,7 +31,7 @@ $data = json_decode(file_get_contents("php://input"));
 $jwt=isset($data->jwt) ? $data->jwt : "";
 
 // if jwt and id are not empty proceed
-if($jwt && $data->client->c_id){
+if($jwt && $data->visit->c_id){
 
     // if decode succeed, save visit details
     try {
@@ -41,13 +41,13 @@ if($jwt && $data->client->c_id){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set visit property values
-        $visit->c_id = $data->client->c_id;
-        $visit->place_of_service = $data->client->place_of_service;
-        $visit->date_of_visit = $data->client->date_of_visit;
-        $visit->item = $data->client->item;
-        $visit->notes = $data->client->notes;
-        $visit->weight = $data->client->weight;
-        $visit->numOfItems = $data->client->numOfItems;
+        $visit->c_id = $data->visit->c_id;
+        $visit->place_of_service = $data->visit->place_of_service;
+        $visit->date_of_visit = $data->visit->date_of_visit;
+        $visit->item = $data->visit->item;
+        $visit->notes = $data->visit->notes;
+        $visit->weight = $data->visit->weight;
+        $visit->numOfItems = $data->visit->numOfItems;
 
         if($visit->saveVisit()){
             // set response code
