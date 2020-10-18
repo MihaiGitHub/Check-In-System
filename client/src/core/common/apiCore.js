@@ -62,3 +62,12 @@ export const updateClientInfo = (client) => {
     .then((response) => response)
     .catch((error) => console.log(error));
 };
+
+export const saveClientVisit = visit => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+  .post(`${API}/client_save_visit.php`, { visit, jwt })
+  .then((response) => response)
+  .catch((error) => console.log(error));
+};
