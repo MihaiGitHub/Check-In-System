@@ -21,10 +21,10 @@ class Visit{
 		$this->conn = $db;
 	}
     
-    // update visits
+    // save visit
     function saveVisit(){
     
-        // update query
+        // insert query
     	$query = "INSERT INTO ". $this->table_name . " (client_id, place_of_service, date_of_visit, program, visitNotes, weight, numOfItems) VALUES (:c_id, :place_of_service, :date_of_visit, :item, :notes, :weight, :numOfItems)";
     
     	// prepare the query
@@ -52,7 +52,20 @@ class Visit{
     	$result = $stmt->execute();
     	
     	if($result){
-    	    return true;
+    	    // insert query
+        	$query = "UPDATE clients_checkin SET status = 'checkout' WHERE id = :id";
+        
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        	
+        	// sanitize
+        	$this->id=htmlspecialchars(strip_tags($this->id));
+    
+        	// bind the values
+        	$stmt->bindParam(':id', $this->id);
+            
+         	// execute the query, also check if query was successful
+        	$result = $stmt->execute();
     	}
     	
     	return false;

@@ -41,6 +41,7 @@ if($jwt && $data->visit->c_id){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set visit property values
+        $visit->id = $data->visit->id;
         $visit->c_id = $data->visit->c_id;
         $visit->place_of_service = $data->visit->place_of_service;
         $visit->date_of_visit = $data->visit->date_of_visit;
