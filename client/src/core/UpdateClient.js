@@ -45,7 +45,7 @@ const UpdateClient = ({ location }) => {
   };
 
   if (redirect) {
-    return <Redirect to="/" />;
+    return <Redirect to="/saveclient" />;
   }
 
   if (!location.state) {
