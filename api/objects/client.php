@@ -19,6 +19,7 @@ class Client{
 	public $status;
 	public $familyNumber;
 	public $specificRequest;
+	public $error;
 
 	// constructor
 	public function __construct($db){
@@ -62,43 +63,45 @@ class Client{
             $selectStmtCheckin->setFetchMode(PDO::FETCH_ASSOC);
         	$clientCheckedIn = $selectStmtCheckin->fetch();
     	
-			if(!$clientCheckedIn){
-			
-				// insert query
-				$query = "INSERT INTO " . $this->table_name . "
-						(c_id, fname, lname, status, familyNumber, specificRequest)
-							VALUES 
-						(:c_id, :fname, :lname, :status, :familyNumber, :specificRequest)";
-			
-				// prepare the query
-				$stmt = $this->conn->prepare($query);
-			
-				// sanitize
-				$this->fname=htmlspecialchars(strip_tags($this->fname));
-				$this->lname=htmlspecialchars(strip_tags($this->lname));
-				$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
-				$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
+    	if(!$clientCheckedIn){
+	    
+    	    // insert query
+        	$query = "INSERT INTO " . $this->table_name . "
+        	        (c_id, fname, lname, status, familyNumber, specificRequest)
+                        VALUES 
+                    (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest)";
+        
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        
+        	// sanitize
+        	$this->fname=htmlspecialchars(strip_tags($this->fname));
+        	$this->lname=htmlspecialchars(strip_tags($this->lname));
+        	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
+        	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
 
-				// bind the values
-				$stmt->bindParam(':c_id', $client['id']);
-				$stmt->bindParam(':fname', $this->fname);
-				$stmt->bindParam(':lname', $this->lname);
-				$stmt->bindParam(':status', $this->status);
-				$stmt->bindParam(':familyNumber', $this->familyNumber);
-				$stmt->bindParam(':specificRequest', $this->specificRequest);
-			
-				// execute the query, also check if query was successful
-				if($stmt->execute()){
-					return true;
-				}
-				
-				return false;
-			}
-			else {
-				return false;
-			}
+        	// bind the values
+        	$stmt->bindParam(':c_id', $client['id']);
+        	$stmt->bindParam(':fname', $this->fname);
+        	$stmt->bindParam(':lname', $this->lname);
+        	$stmt->bindParam(':status', $this->status);
+        	$stmt->bindParam(':familyNumber', $this->familyNumber);
+        	$stmt->bindParam(':specificRequest', $this->specificRequest);
+        
+        	// execute the query, also check if query was successful
+        	if($stmt->execute()){
+        		return true;
+        	}
+        	
+        	return false;
     	}
     	else {
+    	    $this->error = "Client is already checked in";
+    	    return false;
+    	}
+    	}
+    	else {
+    	    $this->error = "Client not found";
     	   return false;
     	}
     }

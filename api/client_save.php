@@ -65,7 +65,7 @@ if($jwt && $data->client->email){
             http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("error" => "Unable to checkin client"));
+            echo json_encode(array("error" => $client->error));
         }
     }
     catch (Exception $e){
