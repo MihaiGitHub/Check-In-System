@@ -49,7 +49,7 @@ if($jwt && $data->place_of_service){
             // response in json format
             echo json_encode(
                     array(
-                        "success" => $item->getItems()
+                        "items" => $item->getItems()
                     )
                 );
         }
