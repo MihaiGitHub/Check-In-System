@@ -1,53 +1,42 @@
 import React, { Fragment, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { saveClient } from "./common/apiCore";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import Navigation from "./common/Navigation";
 import { errorMessage } from "./common/Error";
 
-const ViewClient = ({ client, values }) => {
+const ViewClient = (props) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  if (redirect) {
+  // redirect if client is not defined
+  if (redirect || typeof props.location.state === "undefined") {
     return <Redirect to="/" />;
   }
 
-  const handleCheckIn = (e) => {
-    e.preventDefault();
+  const { client } = props.location.state;
 
-    const data = {
-      fname: client.fname,
-      lname: client.lname,
-      status: values.status,
-      familyNumber: values.familyNumber,
-      specificRequest: values.specificRequest.toString(),
-      email: values.email,
-    };
-
-    saveClient(data).then((response) => {
-      if (response) {
-        if (response.data.error) {
-          setError(true);
-          setErrMsg(response.data.error);
-        } else {
-          setRedirect(true);
-        }
-      } else {
-        setError(true);
-        setErrMsg("No response from server");
-      }
-    });
+  const doLogout = () => {
+    sessionStorage.setItem("jwt", "");
+    sessionStorage.clear();
+    setRedirect(true);
   };
 
   const buttons = () => (
     <div className="row" style={{ paddingTop: 15 }}>
       <div className="col-sm">
-        <button
-          onClick={handleCheckIn}
-          className="btn btn-success btn-lg btn-block"
+        <Link
+          to={{
+            pathname: "/placeofservice",
+            state: {
+              client,
+            },
+          }}
+          style={{ textDecoration: "none" }}
         >
-          Check In
-        </button>
+          <button type="button" className="btn btn-success btn-lg btn-block">
+            Check In
+          </button>
+        </Link>
       </div>
       <div className="col-sm">
         <Link
@@ -69,6 +58,7 @@ const ViewClient = ({ client, values }) => {
 
   return (
     <Fragment>
+      <Navigation logoutFunction={doLogout} logoutLink={true} />
       {error && errorMessage(errorMsg)}
 
       <div className="row">
@@ -81,8 +71,6 @@ const ViewClient = ({ client, values }) => {
                 <th scope="col">Address</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
-                <th scope="col">Number in family</th>
-                <th scope="col">Specific request</th>
               </tr>
             </thead>
             <tbody>
@@ -92,10 +80,6 @@ const ViewClient = ({ client, values }) => {
                 <td>{client.address}</td>
                 <td>{client.email}</td>
                 <td>{client.phone}</td>
-                <td>{values.familyNumber}</td>
-                <td>
-                  {values.specificRequest.map((request) => request + " | ")}
-                </td>
               </tr>
             </tbody>
           </table>
@@ -106,4 +90,4 @@ const ViewClient = ({ client, values }) => {
   );
 };
 
-export default ViewClient;
+export default withRouter(ViewClient);

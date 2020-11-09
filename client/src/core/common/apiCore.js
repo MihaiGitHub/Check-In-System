@@ -63,11 +63,29 @@ export const updateClientInfo = (client) => {
     .catch((error) => console.log(error));
 };
 
-export const saveClientVisit = visit => {
+export const saveClientVisit = (visit) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
-  .post(`${API}/client_save_visit.php`, { visit, jwt })
-  .then((response) => response)
-  .catch((error) => console.log(error));
+    .post(`${API}/client_save_visit.php`, { visit, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getPlaceOfService = () => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/item_placeofservice.php`, { jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const getItems = (place_of_service) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/items.php`, { place_of_service, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
 };

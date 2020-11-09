@@ -67,9 +67,8 @@ const CheckIn = () => {
               </thead>
               <tbody>
                 {checkedIn.map((client, index) => {
-                  const clientRequest = client.specificRequest.replace(
-                    /,/g,
-                    " | "
+                  const items = JSON.parse(
+                    client.specificRequest.replace(/&quot;/g, '"')
                   );
 
                   return (
@@ -85,7 +84,13 @@ const CheckIn = () => {
                       <td>{client.fname}</td>
                       <td>{client.lname}</td>
                       <td>{client.familyNumber}</td>
-                      <td>{clientRequest}</td>
+                      <td>
+                        <ul>
+                          {items.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </td>
                     </tr>
                   );
                 })}
