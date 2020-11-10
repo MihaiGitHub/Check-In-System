@@ -105,7 +105,20 @@ const PlaceOfService = (props) => {
       email: client.email,
     };
 
-    saveClient(clientUpdated).then(() => history.push("/"));
+    saveClient(clientUpdated).then((response) => {
+      if (response) {
+        if (response.data.error) {
+          setError(true);
+          setErrMsg(response.data.error);
+        } else {
+          setError(false);
+          history.push("/");
+        }
+      } else {
+        setError(true);
+        setErrMsg("No response from server");
+      }
+    });
   };
 
   const form = () => (
