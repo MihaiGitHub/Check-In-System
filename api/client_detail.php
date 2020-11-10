@@ -60,8 +60,8 @@ if($jwt){
             // set response code
             http_response_code(200);
         
-            // display message: unable to create user
-            echo json_encode(array("error" => "No records found"));
+            // display message: unable to get client
+            echo json_encode(array("error" => "Client not found"));
         }
     }
     // if decode fails, it means jwt is invalid
