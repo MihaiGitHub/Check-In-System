@@ -4,7 +4,7 @@ import { getClient } from "./common/apiCore";
 import Navigation from "./common/Navigation";
 import { errorMessage } from "./common/Error";
 
-const CheckInForm = () => {
+const SearchClient = () => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -115,4 +115,4 @@ const CheckInForm = () => {
   );
 };
 
-export default CheckInForm;
+export default SearchClient;
