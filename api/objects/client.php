@@ -18,6 +18,7 @@ class Client{
 	public $email;
 	public $status;
 	public $familyNumber;
+	public $placeOfService;
 	public $specificRequest;
 	public $error;
 
@@ -67,9 +68,9 @@ class Client{
 	    
     	    // insert query
         	$query = "INSERT INTO " . $this->table_name . "
-        	        (c_id, fname, lname, status, familyNumber, specificRequest)
+        	        (c_id, fname, lname, status, familyNumber, specificRequest, placeOfService)
                         VALUES 
-                    (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest)";
+                    (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest, :placeOfService)";
         
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
@@ -79,6 +80,7 @@ class Client{
         	$this->lname=htmlspecialchars(strip_tags($this->lname));
         	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
         	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
+        	$this->placeOfService=htmlspecialchars(strip_tags($this->placeOfService));
 
         	// bind the values
         	$stmt->bindParam(':c_id', $client['id']);
@@ -87,6 +89,7 @@ class Client{
         	$stmt->bindParam(':status', $this->status);
         	$stmt->bindParam(':familyNumber', $this->familyNumber);
         	$stmt->bindParam(':specificRequest', $this->specificRequest);
+        	$stmt->bindParam(':placeOfService', $this->placeOfService);
         
         	// execute the query, also check if query was successful
         	if($stmt->execute()){

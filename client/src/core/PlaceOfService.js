@@ -16,6 +16,7 @@ const PlaceOfService = (props) => {
 
   // items checked
   const [clientItems, setClientItems] = useState([]);
+  const [clientPlaceOfService, setClientPlaceOfService] = useState("");
 
   useEffect(() => {
     console.log("component mounted");
@@ -71,6 +72,9 @@ const PlaceOfService = (props) => {
     // clear items selected after place switch
     setClientItems([]);
 
+    // set client place of service
+    setClientPlaceOfService(event.target.value);
+
     getItems(event.target.value).then((response) => {
       if (response) {
         if (response.data.error) {
@@ -101,6 +105,7 @@ const PlaceOfService = (props) => {
       lname: client.lname,
       status: "checkin",
       familyNumber: client.inHouse,
+      placeOfService: clientPlaceOfService,
       specificRequest: JSON.stringify(clientItems),
       email: client.email,
     };
