@@ -97,12 +97,8 @@ const Login = () => {
     </div>
   );
 
-  if (redirect) {
-    return <Redirect to="/main" />;
-  }
-
-  if (sessionStorage.getItem("jwt")) {
-    return <Redirect to="/main" />;
+  if (redirect || sessionStorage.getItem("jwt")) {
+    return <Redirect to="/storehouse" />;
   }
 
   return (

@@ -1,16 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment } from "react";
+import { Link, withRouter } from "react-router-dom";
 
-const Navigation = ({ logoutFunction, logoutLink }) => {
+const isActive = (history, path) => {
+  if (history.location.pathname === path) {
+    return { color: "#ff9900", textDecoration: "none" };
+  } else {
+    return { color: "#FFFFFF", textDecoration: "none" };
+  }
+};
+
+const Navigation = ({ logoutFunction, logoutLink, history }) => {
   return (
     <nav className="navbar navbar-dark bg-dark">
-      <Link style={style.navLink} to="/main">
-        Tucson Neighborhood Food Pantry
-      </Link>
-      {logoutLink && (
-        <Link style={style.navLink} onClick={logoutFunction} to="#">
-          Log out
+      {!logoutLink && (
+        <Link style={style.navLink} to="/storehouse">
+          Gods Vast Resources
         </Link>
+      )}
+      {logoutLink && (
+        <Fragment>
+          <Link style={isActive(history, "/storehouse")} to="/storehouse">
+            Storehouse
+          </Link>
+          <Link style={isActive(history, "/foodpantry")} to="foodpantry">
+            Food Pantry
+          </Link>
+          <Link style={isActive(history, "/mrc")} to="mrc">
+            Mobile Resource Center
+          </Link>
+          <Link style={style.navLink} onClick={logoutFunction} to="#">
+            Clear Check Out
+          </Link>
+          <Link style={style.navLink} onClick={logoutFunction} to="#">
+            Log out
+          </Link>
+        </Fragment>
       )}
     </nav>
   );
@@ -18,9 +42,9 @@ const Navigation = ({ logoutFunction, logoutLink }) => {
 
 const style = {
   navLink: {
-    color: "white",
+    color: "#FFFFFF",
     textDecoration: "none",
   },
 };
 
-export default Navigation;
+export default withRouter(Navigation);

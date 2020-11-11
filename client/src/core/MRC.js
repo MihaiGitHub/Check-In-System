@@ -1,13 +1,14 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, withRouter } from "react-router-dom";
 import Navigation from "./common/Navigation";
 import Checkout from "./Checkout";
 import Serving from "./Serving";
 import CheckIn from "./CheckIn";
 import { ClientProvider } from "./common/ClientContext";
 
-const Main = () => {
+const MRC = (props) => {
   const [redirect, setRedirect] = useState(false);
+  //const [active, setActive] = useState("");
 
   useEffect(() => {
     if (sessionStorage.getItem("jwt")) {
@@ -15,6 +16,11 @@ const Main = () => {
       setRedirect(true);
     }
   }, []);
+
+  // useEffect(() => {
+  //   console.log("props changed ", props);
+  //   setActive(props.location.state.active);
+  // }, [props]);
 
   const doLogout = () => {
     sessionStorage.setItem("jwt", "");
@@ -128,4 +134,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default withRouter(MRC);

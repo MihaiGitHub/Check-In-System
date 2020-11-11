@@ -4,7 +4,9 @@ import SearchClient from "./core/SearchClient";
 import UpdateClient from "./core/UpdateClient";
 import ViewClient from "./core/ViewClient";
 import PlaceOfService from "./core/PlaceOfService";
-import Main from "./core/Main";
+import Storehouse from "./core/Storehouse";
+import FoodPantry from "./core/FoodPantry";
+import MRC from "./core/MRC";
 import Login from "./core/Login";
 
 const Routes = () => {
@@ -24,8 +26,14 @@ const Routes = () => {
         <Route path="/searchclient">
           <SearchClient />
         </Route>
-        <Route path="/main">
-          <Main />
+        <Route path="/storehouse">
+          <Storehouse />
+        </Route>
+        <Route path="/foodpantry">
+          <FoodPantry />
+        </Route>
+        <Route path="/mrc">
+          <MRC />
         </Route>
         <Route path="/">
           <Login />
