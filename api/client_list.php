@@ -42,6 +42,7 @@ if($jwt){
         
         // set client property values
         $client->status = $data->status;
+        $client->placeOfService = $data->placeOfService;
         
         if($client->all()){
             

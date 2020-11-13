@@ -137,27 +137,30 @@ class Client{
     	return false;
     }
     
-    // get clients
-    function all(){
-    
-    	// insert query
-    	$query = "SELECT * FROM " . $this->table_name;
-    
-    	// prepare the query
-    	$stmt = $this->conn->prepare($query);
-    	
-     	// execute the query, also check if query was successful
-    	$result = $stmt->execute();
-    	
-    	if($result){
-    	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    	    $clients = $stmt->fetchAll();
-    	    
-    		return $clients;
-    	}
-    	
-    	return false;
-    }
+	// get clients
+	function all(){
+
+		// insert query
+		$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+	
+		// prepare the query
+		$stmt = $this->conn->prepare($query);
+		
+		// bind the values
+		$stmt->bindParam(':placeOfService', $this->placeOfService);
+		
+			// execute the query, also check if query was successful
+		$result = $stmt->execute();
+		
+		if($result){
+			$stmt->setFetchMode(PDO::FETCH_ASSOC);
+			$clients = $stmt->fetchAll();
+			
+			return $clients;
+		}
+		
+		return false;
+	}
     
     // update client status
     function updateStatus(){
