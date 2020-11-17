@@ -1,18 +1,34 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import { getClients } from "./common/apiCore";
 import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
 import { clientUpdateStatus } from "./common/ClientHelpers";
 import { errorMessage } from "./common/Error";
 
-const CheckIn = () => {
+const CheckIn = (props) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
+  if (props.location.state !== undefined) {
+    var { place } = props.location.state;
+  } else {
+    var place = "Storehouse";
+  }
+
+  useEffect(() => {
+    setClients((prevClients) => {
+      return {
+        ...prevClients,
+        place,
+      };
+    });
+  }, []);
+
   const refreshCheckin = () => {
-    getClients().then((response) => {
+    getClients(place).then((response) => {
       if (response) {
         if (response.data.error) {
           setError(true);
@@ -21,9 +37,8 @@ const CheckIn = () => {
           const { checkedIn, serving, checkedOut } = clientUpdateStatus(
             response.data.clients
           );
-
           setClients((prevClients) => {
-            return { checkedIn, serving, checkedOut };
+            return { ...prevClients, place, checkedIn, serving, checkedOut };
           });
         }
       } else {
@@ -109,4 +124,4 @@ const CheckIn = () => {
   );
 };
 
-export default CheckIn;
+export default withRouter(CheckIn);

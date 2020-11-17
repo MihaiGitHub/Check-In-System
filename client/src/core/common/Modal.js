@@ -1,45 +1,93 @@
-import React, { Fragment, useState } from "react";
-import { updateClientStatus, saveClientVisit } from "./apiCore";
+import React, { Fragment, useState, useContext } from "react";
+import { ClientContext } from "../common/ClientContext";
+import { clientUpdateStatus } from "../common/ClientHelpers";
+import { errorMessage } from "../common/Error";
+import {
+  updateClientStatus,
+  saveClientVisit,
+  getClients,
+  clearCheckout,
+} from "./apiCore";
 
-const Modal = ({ modalId, client, type, refreshFunction }) => {
+const Modal = ({ modalId, client, type, refreshFunction, place }) => {
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrMsg] = useState("");
+  const [clients, setClients] = useContext(ClientContext);
+
   const [visit, setVisit] = useState({
-    place_of_service: '',
-    date_of_visit: '',
-    item: '',
-    notes: '',
-    weight: '',
-    numOfItems: ''
+    place_of_service: "",
+    date_of_visit: "",
+    item: "",
+    notes: "",
+    weight: "",
+    numOfItems: "",
   });
 
-  const { place_of_service, date_of_visit, item, notes, weight, numOfItems } = visit;
+  const {
+    place_of_service,
+    date_of_visit,
+    item,
+    notes,
+    weight,
+    numOfItems,
+  } = visit;
 
-  const handleChange = name => event => {
-    if(name == 'item'){
-      switch (event.target.value){
-        case 'Food':
-          setVisit({ ...visit, item: event.target.value, weight: 0, numOfItems: '' });
+  const handleChange = (name) => (event) => {
+    if (name == "item") {
+      switch (event.target.value) {
+        case "Food":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            weight: 0,
+            numOfItems: "",
+          });
           break;
-        case 'Hygiene items':
-          setVisit({ ...visit, item: event.target.value, numOfItems: 0, weight: '' });
+        case "Hygiene items":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            numOfItems: 0,
+            weight: "",
+          });
           break;
-        case 'Baby essentials':
-          setVisit({ ...visit, item: event.target.value, numOfItems: 0, weight: '' });
+        case "Baby essentials":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            numOfItems: 0,
+            weight: "",
+          });
           break;
-        case 'Pet food':
-          setVisit({ ...visit, item: event.target.value, numOfItems: 0, weight: '' });
+        case "Pet food":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            numOfItems: 0,
+            weight: "",
+          });
           break;
-        case 'Thanksgiving food box':
-          setVisit({ ...visit, item: event.target.value, weight: 0, numOfItems: '' });
+        case "Thanksgiving food box":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            weight: 0,
+            numOfItems: "",
+          });
           break;
-        case 'Christmas food box':
-          setVisit({ ...visit, item: event.target.value, numOfItems: 0, weight: '' });
+        case "Christmas food box":
+          setVisit({
+            ...visit,
+            item: event.target.value,
+            numOfItems: 0,
+            weight: "",
+          });
           break;
       }
-    }
-    else {
+    } else {
       setVisit({ ...visit, [name]: event.target.value });
     }
-  }
+  };
 
   const handleServing = (e) => {
     e.preventDefault();
@@ -49,7 +97,7 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
     });
   };
 
-  const handleCheckout = e => {
+  const handleCheckout = (e) => {
     e.preventDefault();
 
     const visit = {
@@ -60,13 +108,48 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
       item,
       notes,
       weight,
-      numOfItems
-    }
+      numOfItems,
+    };
 
-    saveClientVisit(visit).then(response => {
+    saveClientVisit(visit).then((response) => {
       refreshFunction();
     });
-  }
+  };
+
+  const handleClearCheckout = (e) => {
+    e.preventDefault();
+
+    clearCheckout(place).then((response) => {
+      getClients(place).then((response) => {
+        if (response) {
+          if (response.data.error) {
+            // response can come back as error if there are no other clients in this place
+            // (checkedIn, serving) after being cleared from checkout
+            setClients((prevClients) => {
+              return { ...prevClients, checkedOut: [] };
+            });
+          } else {
+            const { checkedIn, serving, checkedOut } = clientUpdateStatus(
+              response.data.clients
+            );
+
+            setClients((prevClients) => {
+              return {
+                ...prevClients,
+                place,
+                checkedIn,
+                serving,
+                checkedOut,
+              };
+            });
+          }
+        } else {
+          setError(true);
+          setErrMsg("No response from server");
+        }
+      });
+    });
+  };
 
   const serving = () => (
     <div
@@ -80,6 +163,7 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
+            {error && errorMessage(errorMsg)}
             <h5 className="modal-title" id="clientModalTitle">
               Move{" "}
               <span style={{ color: "green" }}>
@@ -148,32 +232,11 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
           </div>
           <div className="modal-body">
             <div className="form-group col-sm">
-              <label htmlFor="placeOfService">
-                <strong>Place of service</strong>
-              </label>
-
-              <div className="input-group mb-3">
-                <select
-                  onChange={handleChange('place_of_service')}
-                  className="custom-select"
-                  id="placeOfService"
-                >
-                  <option defaultValue value="0">
-                    Choose...
-                  </option>
-                  <option value="Food pantry">Food pantry</option>
-                  <option value="Storehouse">Storehouse</option>
-                  <option value="Mobile resource center">Mobile resource center</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-group col-sm">
               <label htmlFor="dateOfVisit">
                 <strong>Date of Visit</strong>
               </label>
               <input
-                onChange={handleChange('date_of_visit')}
+                onChange={handleChange("date_of_visit")}
                 type="date"
                 className="form-control"
                 id="dateOfVisit"
@@ -186,7 +249,7 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
 
               <div className="input-group mb-3">
                 <select
-                  onChange={handleChange('item')}
+                  onChange={handleChange("item")}
                   className="custom-select"
                   id="item"
                 >
@@ -194,15 +257,26 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
                     Choose...
                   </option>
                   <option value="Food">Food (weight)</option>
-                  <option value="Hygiene items">Hygiene items (# of items)</option>
-                  <option value="Baby essentials">Baby essentials (# of items)</option>
+                  <option value="Hygiene items">
+                    Hygiene items (# of items)
+                  </option>
+                  <option value="Baby essentials">
+                    Baby essentials (# of items)
+                  </option>
                   <option value="Pet food">Pet food (# of items)</option>
-                  <option value="Thanksgiving food box">Thanksgiving food box (weight)</option>
-                  <option value="Christmas food box">Christmas food box (# of items)</option>
+                  <option value="Thanksgiving food box">
+                    Thanksgiving food box (weight)
+                  </option>
+                  <option value="Christmas food box">
+                    Christmas food box (# of items)
+                  </option>
                 </select>
               </div>
             </div>
-          <div className="form-group col-sm" style={{ display: weight !== '' ? 'block' : 'none' }}>
+            <div
+              className="form-group col-sm"
+              style={{ display: weight !== "" ? "block" : "none" }}
+            >
               <label htmlFor="weight">
                 <strong>Weight</strong>
               </label>
@@ -212,8 +286,11 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
                 id="weight"
                 onChange={handleChange("weight")}
               />
-          </div>
-          <div className="form-group col-sm" style={{ display: numOfItems !== '' ? 'block' : 'none' }}>
+            </div>
+            <div
+              className="form-group col-sm"
+              style={{ display: numOfItems !== "" ? "block" : "none" }}
+            >
               <label htmlFor="numOfItems">
                 <strong>Number of items</strong>
               </label>
@@ -223,13 +300,18 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
                 id="numOfItems"
                 onChange={handleChange("numOfItems")}
               />
-          </div>
-          <div className="form-group col-sm">
-                <label htmlFor="notes"><strong>Notes</strong></label>
-                <textarea                
-                  onChange={handleChange('notes')}
-                  className="form-control rounded-0" id="notes" rows="3"></textarea>
-              </div>     
+            </div>
+            <div className="form-group col-sm">
+              <label htmlFor="notes">
+                <strong>Notes</strong>
+              </label>
+              <textarea
+                onChange={handleChange("notes")}
+                className="form-control rounded-0"
+                id="notes"
+                rows="3"
+              ></textarea>
+            </div>
           </div>
           <div className="modal-footer">
             <button
@@ -239,8 +321,57 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
             >
               Cancel
             </button>
+            <button className="btn btn-success" data-dismiss="modal">
+              Save
+            </button>
             <button
               onClick={handleCheckout}
+              className="btn btn-primary"
+              data-dismiss="modal"
+            >
+              Move to checkout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const clearClients = () => (
+    <div
+      className="modal fade"
+      id={modalId}
+      tabIndex="-1"
+      role="dialog"
+      aria-labelledby="clientModalTitle"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="clientModalTitle">
+              Clear checked out clients?
+            </h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">The list will be cleared</div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleClearCheckout}
               className="btn btn-primary"
               data-dismiss="modal"
             >
@@ -254,8 +385,9 @@ const Modal = ({ modalId, client, type, refreshFunction }) => {
 
   return (
     <Fragment>
-      {type == 'serving' && serving()}      
-      {type == 'checkout' && checkout()}
+      {type == "serving" && serving()}
+      {type == "checkout" && checkout()}
+      {type == "clearcheckout" && clearClients()}
     </Fragment>
   );
 };

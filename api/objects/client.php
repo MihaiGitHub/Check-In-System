@@ -137,30 +137,30 @@ class Client{
     	return false;
     }
     
-	// get clients
-	function all(){
-
-		// insert query
-		$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
-	
-		// prepare the query
-		$stmt = $this->conn->prepare($query);
-		
-		// bind the values
-		$stmt->bindParam(':placeOfService', $this->placeOfService);
-		
-			// execute the query, also check if query was successful
-		$result = $stmt->execute();
-		
-		if($result){
-			$stmt->setFetchMode(PDO::FETCH_ASSOC);
-			$clients = $stmt->fetchAll();
-			
-			return $clients;
-		}
-		
-		return false;
-	}
+    // get clients
+    function all(){
+    
+    	// insert query
+    	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+    
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	// bind the values
+        $stmt->bindParam(':placeOfService', $this->placeOfService);
+    	 
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    	    $clients = $stmt->fetchAll();
+    	    
+    		return $clients;
+    	}
+    	
+    	return false;
+    }
     
     // update client status
     function updateStatus(){
@@ -182,6 +182,45 @@ class Client{
     	
     	if($result){
     	    return true;
+    	}
+    	
+    	return false;
+    }
+    
+    // clear checked out clients
+    function clearCheckout(){
+    
+    	// delete query
+    	$query = "DELETE FROM " . $this->table_name . " WHERE status = 'checkout' AND placeOfService = :placeOfService";
+    
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	// bind the value
+    	$stmt->bindParam(':placeOfService', $this->placeOfService);
+        
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    // select the remaining clients
+        	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+        
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        	
+        	// bind the value
+    	    $stmt->bindParam(':placeOfService', $this->placeOfService);
+            
+         	// execute the query, also check if query was successful
+        	$result = $stmt->execute();
+    	
+    	    if($result){
+        	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        	    $clients = $stmt->fetchAll();
+        	    
+        		return $clients;
+        	}
     	}
     	
     	return false;

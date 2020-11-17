@@ -1,10 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { getClient } from "./common/apiCore";
 import Navigation from "./common/Navigation";
+import ViewClient from "./ViewClient";
 import { errorMessage } from "./common/Error";
 
-const SearchClient = () => {
+const SearchClient = (props) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -32,18 +33,8 @@ const SearchClient = () => {
   };
 
   if (redirect) {
+    console.log("REDIRECT");
     return <Redirect to="/" />;
-  }
-
-  if (Object.entries(client).length > 0) {
-    return (
-      <Redirect
-        to={{
-          pathname: "/viewclient",
-          state: { client },
-        }}
-      />
-    );
   }
 
   const handleChange = (name) => (event) => {
@@ -110,9 +101,10 @@ const SearchClient = () => {
     <Fragment>
       <Navigation logoutFunction={doLogout} logoutLink={true} />
       {error && errorMessage(errorMsg)}
-      {Object.entries(client).length === 0 && form()}
+      {form()}
+      {Object.entries(client).length > 0 && <ViewClient client={client} />}
     </Fragment>
   );
 };
 
-export default SearchClient;
+export default withRouter(SearchClient);

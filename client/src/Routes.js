@@ -10,7 +10,6 @@ import MRC from "./core/MRC";
 import Login from "./core/Login";
 
 const Routes = () => {
-  // browserrouter for going back in browser
   return (
     <HashRouter>
       <Switch>

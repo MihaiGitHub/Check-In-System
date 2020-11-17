@@ -11,12 +11,13 @@ export const doLogin = ({ username, password }) => {
     .catch((error) => console.log(error));
 };
 
-export const getClients = () => {
+export const getClients = (placeOfService) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
     .post(`${API}/client_list.php`, {
       jwt,
+      placeOfService,
     })
     .then((response) => {
       return response;
@@ -86,6 +87,15 @@ export const getItems = (place_of_service) => {
 
   return axios
     .post(`${API}/items.php`, { place_of_service, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+export const clearCheckout = (place) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/client_checkout.php`, { place, jwt })
     .then((response) => response)
     .catch((error) => console.log(error));
 };

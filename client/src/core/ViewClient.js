@@ -1,25 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Link, Redirect, withRouter } from "react-router-dom";
-import Navigation from "./common/Navigation";
-import { errorMessage } from "./common/Error";
 
-const ViewClient = (props) => {
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrMsg] = useState("");
+const ViewClient = ({ client }) => {
   const [redirect, setRedirect] = useState(false);
 
-  // redirect if client is not defined
-  if (redirect || typeof props.location.state === "undefined") {
+  if (redirect) {
     return <Redirect to="/" />;
   }
-
-  const { client } = props.location.state;
-
-  const doLogout = () => {
-    sessionStorage.setItem("jwt", "");
-    sessionStorage.clear();
-    setRedirect(true);
-  };
 
   const buttons = () => (
     <div className="row" style={{ paddingTop: 15 }}>
@@ -58,9 +45,6 @@ const ViewClient = (props) => {
 
   return (
     <Fragment>
-      <Navigation logoutFunction={doLogout} logoutLink={true} />
-      {error && errorMessage(errorMsg)}
-
       <div className="row">
         <div className="col-sm">
           <table className="table table-bordered table-striped mb-0">

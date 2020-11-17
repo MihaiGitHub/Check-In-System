@@ -4,12 +4,12 @@ import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
 import { clientUpdateStatus } from "./common/ClientHelpers";
 
-const Serving = () => {
+const Serving = (props) => {
   const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
   const refreshServing = () => {
-    getClients().then((response) => {
+    getClients(props.place).then((response) => {
       if (response) {
         if (response.data.error) {
           console.log("Response error: ", response.data.error);
@@ -19,7 +19,13 @@ const Serving = () => {
           );
 
           setClients((prevClients) => {
-            return { checkedIn, serving, checkedOut };
+            return {
+              ...prevClients,
+              place: props.place,
+              checkedIn,
+              serving,
+              checkedOut,
+            };
           });
         }
       } else {
@@ -59,22 +65,34 @@ const Serving = () => {
                 </tr>
               </thead>
               <tbody>
-                {serving.map((client, index) => (
-                  <tr
-                    data-id={client.id}
-                    id="modalLaunch"
-                    key={index}
-                    onClick={() => setClient(client)}
-                    data-toggle="modal"
-                    data-target="#servingModal"
-                  >
-                    <th scope="row">{index + 1}</th>
-                    <td>{client.fname}</td>
-                    <td>{client.lname}</td>
-                    <td>{client.familyNumber}</td>
-                    <td>{client.specificRequest}</td>
-                  </tr>
-                ))}
+                {serving.map((client, index) => {
+                  const items = JSON.parse(
+                    client.specificRequest.replace(/&quot;/g, '"')
+                  );
+
+                  return (
+                    <tr
+                      data-id={client.id}
+                      id="modalLaunch"
+                      key={index}
+                      onClick={() => setClient(client)}
+                      data-toggle="modal"
+                      data-target="#servingModal"
+                    >
+                      <th scope="row">{index + 1}</th>
+                      <td>{client.fname}</td>
+                      <td>{client.lname}</td>
+                      <td>{client.familyNumber}</td>
+                      <td>
+                        <ul>
+                          {items.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

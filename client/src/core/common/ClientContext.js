@@ -4,14 +4,15 @@ import { getClients } from "./apiCore";
 export const ClientContext = createContext();
 
 export const ClientProvider = (props) => {
-  const [clients, setClients] = useState({
+  var [clients, setClients] = useState({
+    place: "",
     checkedIn: [],
     serving: [],
     checkedOut: [],
   });
 
   useEffect(() => {
-    getClients().then((response) => {
+    getClients(clients.place).then((response) => {
       if (response) {
         if (response.data.error) {
           console.log("Response error: ", response.data.error);
@@ -28,7 +29,15 @@ export const ClientProvider = (props) => {
             return client.status === "checkout";
           });
 
-          setClients({ checkedIn, serving, checkedOut });
+          setClients((prevClients) => {
+            return {
+              ...prevClients,
+              place: clients.place,
+              checkedIn,
+              serving,
+              checkedOut,
+            };
+          });
         }
       } else {
         console.log("No response error");
@@ -36,7 +45,7 @@ export const ClientProvider = (props) => {
     });
 
     const interval = setInterval(() => {
-      getClients().then((response) => {
+      getClients(clients.place).then((response) => {
         if (response) {
           if (response.data.error) {
             console.log("Response error: ", response.data.error);
@@ -53,7 +62,15 @@ export const ClientProvider = (props) => {
               return client.status === "checkout";
             });
 
-            setClients({ checkedIn, serving, checkedOut });
+            setClients((prevClients) => {
+              return {
+                ...prevClients,
+                place: clients.place,
+                checkedIn,
+                serving,
+                checkedOut,
+              };
+            });
           }
         } else {
           console.log("No response error");
@@ -63,7 +80,7 @@ export const ClientProvider = (props) => {
 
     // This is the equivilent of componentWillUnmount in a React Class component.
     return () => clearInterval(interval);
-  }, []);
+  }, [clients.place, clients.updateCheckout]); // fire whats inside this again when a place changes; component only mounts once, but can re-render (update) multiple times
 
   return (
     <ClientContext.Provider value={[clients, setClients]}>

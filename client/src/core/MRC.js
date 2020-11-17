@@ -8,7 +8,6 @@ import { ClientProvider } from "./common/ClientContext";
 
 const MRC = (props) => {
   const [redirect, setRedirect] = useState(false);
-  //const [active, setActive] = useState("");
 
   useEffect(() => {
     if (sessionStorage.getItem("jwt")) {
@@ -16,11 +15,6 @@ const MRC = (props) => {
       setRedirect(true);
     }
   }, []);
-
-  // useEffect(() => {
-  //   console.log("props changed ", props);
-  //   setActive(props.location.state.active);
-  // }, [props]);
 
   const doLogout = () => {
     sessionStorage.setItem("jwt", "");
@@ -93,7 +87,7 @@ const MRC = (props) => {
                     aria-labelledby="nav-home-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <CheckIn />
+                      <CheckIn place="Mobile Resource Center" />
                     </div>
                     <Link to="/searchclient" style={{ textDecoration: "none" }}>
                       <button
@@ -111,7 +105,7 @@ const MRC = (props) => {
                     aria-labelledby="nav-profile-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <Serving />
+                      <Serving place="Mobile Resource Center" />
                     </div>
                   </div>
                   <div
@@ -121,7 +115,7 @@ const MRC = (props) => {
                     aria-labelledby="nav-about-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <Checkout />
+                      <Checkout place="Mobile Resource Center" />
                     </div>
                   </div>
                 </div>

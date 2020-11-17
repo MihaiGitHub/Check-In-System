@@ -1,15 +1,15 @@
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 
-const isActive = (history, path) => {
-  if (history.location.pathname === path) {
-    return { color: "#ff9900", textDecoration: "none" };
-  } else {
-    return { color: "#FFFFFF", textDecoration: "none" };
-  }
-};
-
 const Navigation = ({ logoutFunction, logoutLink, history }) => {
+  const isActive = (history, path) => {
+    if (history.location.pathname === path) {
+      return { color: "#ff9900", textDecoration: "none" };
+    } else {
+      return { color: "#FFFFFF", textDecoration: "none" };
+    }
+  };
+
   return (
     <nav className="navbar navbar-dark bg-dark">
       {!logoutLink && (
@@ -19,17 +19,38 @@ const Navigation = ({ logoutFunction, logoutLink, history }) => {
       )}
       {logoutLink && (
         <Fragment>
-          <Link style={isActive(history, "/storehouse")} to="/storehouse">
+          <Link
+            style={isActive(history, "/storehouse")}
+            to={{
+              pathname: "/storehouse",
+              state: {
+                place: "Storehouse",
+              },
+            }}
+          >
             Storehouse
           </Link>
-          <Link style={isActive(history, "/foodpantry")} to="foodpantry">
+          <Link
+            style={isActive(history, "/foodpantry")}
+            to={{
+              pathname: "/foodpantry",
+              state: {
+                place: "Food pantry",
+              },
+            }}
+          >
             Food Pantry
           </Link>
-          <Link style={isActive(history, "/mrc")} to="mrc">
+          <Link
+            style={isActive(history, "/mrc")}
+            to={{
+              pathname: "/mrc",
+              state: {
+                place: "Mobile resource center",
+              },
+            }}
+          >
             Mobile Resource Center
-          </Link>
-          <Link style={style.navLink} onClick={logoutFunction} to="#">
-            Clear Check Out
           </Link>
           <Link style={style.navLink} onClick={logoutFunction} to="#">
             Log out
