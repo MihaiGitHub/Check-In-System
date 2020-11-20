@@ -12,6 +12,7 @@ import {
 const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
+  const [visitSaved, setVisitSaved] = useState(false);
   const [clients, setClients] = useContext(ClientContext);
 
   const [visit, setVisit] = useState({
@@ -23,14 +24,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
     numOfItems: "",
   });
 
-  const {
-    place_of_service,
-    date_of_visit,
-    item,
-    notes,
-    weight,
-    numOfItems,
-  } = visit;
+  const { date_of_visit, item, notes, weight, numOfItems } = visit;
 
   const handleChange = (name) => (event) => {
     if (name == "item") {
@@ -97,13 +91,13 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
     });
   };
 
-  const handleCheckout = (e) => {
+  const handleVisitBeforeCheckout = (e) => {
     e.preventDefault();
 
     const visit = {
       id: client.id,
       c_id: client.c_id,
-      place_of_service,
+      place_of_service: client.placeOfService,
       date_of_visit,
       item,
       notes,
@@ -112,7 +106,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
     };
 
     saveClientVisit(visit).then((response) => {
-      refreshFunction();
+      setVisitSaved(true);
     });
   };
 
@@ -221,6 +215,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
               </span>{" "}
               and move to {type}?
             </h5>
+
             <button
               type="button"
               className="close"
@@ -232,6 +227,14 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
           </div>
           <div className="modal-body">
             <div className="form-group col-sm">
+              <div
+                className="alert alert-success"
+                role="alert"
+                style={{ display: visitSaved ? "block" : "none" }}
+              >
+                Client visit has been saved!
+              </div>
+
               <label htmlFor="dateOfVisit">
                 <strong>Date of Visit</strong>
               </label>
@@ -321,11 +324,14 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
             >
               Cancel
             </button>
-            <button className="btn btn-success" data-dismiss="modal">
+            <button
+              onClick={handleVisitBeforeCheckout}
+              className="btn btn-success"
+            >
               Save
             </button>
             <button
-              onClick={handleCheckout}
+              onClick={handleServing}
               className="btn btn-primary"
               data-dismiss="modal"
             >
