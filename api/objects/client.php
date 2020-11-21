@@ -49,7 +49,7 @@ class Client{
     	
     	if($client){
         	
-    	    // select query
+    	    // check if client is not checked in already
             $selectQueryCheckin = "SELECT * FROM " . $this->table_name . " WHERE c_id = :c_id";
 
             // prepare the query
@@ -66,7 +66,7 @@ class Client{
     	
     	if(!$clientCheckedIn){
 	    
-    	    // insert query
+    	    // insert without the email
         	$query = "INSERT INTO " . $this->table_name . "
         	        (c_id, fname, lname, status, familyNumber, specificRequest, placeOfService)
                         VALUES 
@@ -99,8 +99,59 @@ class Client{
         	return false;
     	}
     	else {
-    	    $this->error = "Client is already checked in";
-    	    return false;
+    	    // client has been checked in before
+    	    // check if client is in the last 7 days
+            $selectQueryLast7days = "SELECT * FROM `clients_checkin` WHERE timestamp >= DATE(NOW()) - INTERVAL 7 DAY AND c_id = :c_id";
+
+            // prepare the query
+        	$selectStmtLast7days = $this->conn->prepare($selectQueryLast7days);
+        	
+        	// bind the value
+        	$selectStmtLast7days->bindParam(':c_id', $client['id']);
+        	
+        	// execute the query, also check if query was successful
+        	$resultSelectLast7days = $selectStmtLast7days->execute();
+        	
+            $selectStmtLast7days->setFetchMode(PDO::FETCH_ASSOC);
+        	$clientCheckedInLast7days = $selectStmtLast7days->fetch();
+    	
+        	if($clientCheckedInLast7days){
+        	    $this->error = "Weekly limit exceeded.";
+    	        return false; 
+        	}
+        	else {
+        	    // insert without the email
+            	$query = "INSERT INTO " . $this->table_name . "
+            	        (c_id, fname, lname, status, familyNumber, specificRequest, placeOfService)
+                            VALUES 
+                        (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest, :placeOfService)";
+            
+            	// prepare the query
+            	$stmt = $this->conn->prepare($query);
+            
+            	// sanitize
+            	$this->fname=htmlspecialchars(strip_tags($this->fname));
+            	$this->lname=htmlspecialchars(strip_tags($this->lname));
+            	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
+            	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
+            	$this->placeOfService=htmlspecialchars(strip_tags($this->placeOfService));
+    
+            	// bind the values
+            	$stmt->bindParam(':c_id', $client['id']);
+            	$stmt->bindParam(':fname', $this->fname);
+            	$stmt->bindParam(':lname', $this->lname);
+            	$stmt->bindParam(':status', $this->status);
+            	$stmt->bindParam(':familyNumber', $this->familyNumber);
+            	$stmt->bindParam(':specificRequest', $this->specificRequest);
+            	$stmt->bindParam(':placeOfService', $this->placeOfService);
+            
+            	// execute the query, also check if query was successful
+            	if($stmt->execute()){
+            		return true;
+            	}
+            	
+            	return false;
+        	}
     	}
     	}
     	else {
