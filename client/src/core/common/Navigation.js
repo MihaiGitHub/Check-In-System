@@ -28,7 +28,7 @@ const Navigation = ({ logoutFunction, logoutLink, history }) => {
               },
             }}
           >
-            Storehouse
+            Clothing Bank
           </Link>
           <Link
             style={isActive(history, "/foodpantry")}
