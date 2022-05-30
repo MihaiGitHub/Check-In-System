@@ -101,13 +101,14 @@ class Client{
     	else {
     	    // client has been checked in before
     	    // check if client is in the last 7 days
-            $selectQueryLast7days = "SELECT * FROM `clients_checkin` WHERE timestamp >= DATE(NOW()) - INTERVAL 7 DAY AND c_id = :c_id";
+            $selectQueryLast7days = "SELECT * FROM `clients_checkin` WHERE timestamp >= DATE(NOW()) - INTERVAL 7 DAY AND c_id = :c_id AND placeOfService = :placeOfService";
 
             // prepare the query
         	$selectStmtLast7days = $this->conn->prepare($selectQueryLast7days);
         	
         	// bind the value
         	$selectStmtLast7days->bindParam(':c_id', $client['id']);
+        	$selectStmtLast7days->bindParam(':placeOfService', $this->placeOfService);
         	
         	// execute the query, also check if query was successful
         	$resultSelectLast7days = $selectStmtLast7days->execute();
