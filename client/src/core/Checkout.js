@@ -1,13 +1,39 @@
 import React, { Fragment, useState, useContext } from "react";
 import { ClientContext } from "./common/ClientContext";
+import { getClients } from "./common/apiCore";
+import { clientUpdateStatus } from "./common/ClientHelpers";
 import Modal from "./common/Modal";
 import { errorMessage } from "./common/Error";
 
 const Checkout = (props) => {
+  const { place } = props;
   const [clients, setClients] = useContext(ClientContext);
+  const [client, setClient] = useState({});
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const { checkedOut } = clients;
+
+  const refreshCheckout = () => {
+    getClients(place).then((response) => {
+      console.log(response);
+      if (response) {
+        if (response.data.error) {
+          setError(true);
+          setErrMsg(response.data.error);
+        } else {
+          const { checkedIn, serving, checkedOut } = clientUpdateStatus(
+            response.data.clients
+          );
+          setClients((prevClients) => {
+            return { ...prevClients, place, checkedIn, serving, checkedOut };
+          });
+        }
+      } else {
+        setError(true);
+        setErrMsg("No response from server");
+      }
+    });
+  };
 
   return (
     <Fragment>
@@ -54,7 +80,14 @@ const Checkout = (props) => {
                   );
 
                   return (
-                    <tr data-id={client.id} id="modalLaunch" key={index}>
+                    <tr
+                      data-id={client.id}
+                      id="modalLaunch"
+                      key={index}
+                      onClick={() => setClient(client)}
+                      data-toggle="modal"
+                      data-target="#moveBackToServingModal"
+                    >
                       <th scope="row">{index + 1}</th>
                       <td>{client.fname}</td>
                       <td>{client.lname}</td>
@@ -75,10 +108,16 @@ const Checkout = (props) => {
         </div>
       )}
       <Modal
+        modalId="moveBackToServingModal"
+        client={client}
+        type="serving"
+        refreshFunction={refreshCheckout}
+      />
+      <Modal
         modalId="checkoutModal"
         client="Clear checkout"
         type="clearcheckout"
-        place={props.place}
+        place={place}
       />
     </Fragment>
   );
