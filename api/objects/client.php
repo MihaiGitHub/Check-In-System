@@ -165,7 +165,7 @@ class Client{
     function detail(){
     
     	// insert query
-    	$query = "SELECT * FROM clients WHERE email = '" . $this->email . "'";
+    	$query = "SELECT * FROM clients WHERE email = '" . $this->email . "' OR phone = '" . $this->email . "'";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
