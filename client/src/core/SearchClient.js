@@ -6,6 +6,8 @@ import ViewClient from "./ViewClient";
 import { errorMessage } from "./common/Error";
 
 const SearchClient = (props) => {
+  const { myClient } = props.location;
+
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -33,7 +35,6 @@ const SearchClient = (props) => {
   };
 
   if (redirect) {
-    console.log("REDIRECT");
     return <Redirect to="/" />;
   }
 
@@ -103,6 +104,7 @@ const SearchClient = (props) => {
       {error && errorMessage(errorMsg)}
       {form()}
       {Object.entries(client).length > 0 && <ViewClient client={client} />}
+      {myClient && <ViewClient client={myClient} />}
     </Fragment>
   );
 };

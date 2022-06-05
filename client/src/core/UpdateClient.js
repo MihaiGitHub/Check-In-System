@@ -45,7 +45,14 @@ const UpdateClient = ({ location }) => {
   };
 
   if (redirect) {
-    return <Redirect to="/searchclient" />;
+    return (
+      <Redirect
+        to={{
+          pathname: "/searchclient",
+          myClient: location.state.client,
+        }}
+      />
+    );
   }
 
   if (!location.state) {
