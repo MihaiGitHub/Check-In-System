@@ -87,7 +87,7 @@ const Storehouse = (props) => {
                     aria-labelledby="nav-home-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <CheckIn place="Storehouse" />
+                      <CheckIn place="Clothing Bank" />
                     </div>
                     <Link to="/searchclient" style={{ textDecoration: "none" }}>
                       <button
@@ -105,7 +105,7 @@ const Storehouse = (props) => {
                     aria-labelledby="nav-profile-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <Serving place="Storehouse" />
+                      <Serving place="Clothing Bank" />
                     </div>
                   </div>
                   <div
@@ -115,7 +115,7 @@ const Storehouse = (props) => {
                     aria-labelledby="nav-about-tab"
                   >
                     <div className="table-wrapper-scroll-y my-custom-scrollbar">
-                      <Checkout place="Storehouse" />
+                      <Checkout place="Clothing Bank" />
                     </div>
                   </div>
                 </div>

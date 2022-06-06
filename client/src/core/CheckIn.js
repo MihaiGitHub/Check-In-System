@@ -15,7 +15,7 @@ const CheckIn = (props) => {
   if (props.location.state !== undefined) {
     var { place } = props.location.state;
   } else {
-    var place = "Storehouse";
+    var place = "Clothing Bank";
   }
 
   useEffect(() => {

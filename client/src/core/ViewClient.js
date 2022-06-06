@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import { Link, Redirect, withRouter } from "react-router-dom";
 
 const ViewClient = ({ client }) => {
-  console.log("Client1111 ", client);
   const [redirect, setRedirect] = useState(false);
 
   if (redirect) {

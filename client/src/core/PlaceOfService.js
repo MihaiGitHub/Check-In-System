@@ -51,8 +51,30 @@ const PlaceOfService = (props) => {
   }, [clientItems]);
 
   // redirect if client is not defined
-  if (redirect || typeof props.location.state === "undefined") {
+  if (typeof props.location.state === "undefined") {
     return <Redirect to="/" />;
+  }
+
+  if (redirect) {
+    let defaultPlace = "";
+    switch (clientPlaceOfService) {
+      case "Food pantry":
+        defaultPlace = "foodpantry";
+        break;
+      case "Mobile Resource Center":
+        defaultPlace = "mrc";
+        break;
+      default:
+        defaultPlace = "storehouse";
+    }
+
+    return (
+      <Redirect
+        to={{
+          pathname: `/${defaultPlace}`,
+        }}
+      />
+    );
   }
 
   const doLogout = () => {
@@ -117,7 +139,7 @@ const PlaceOfService = (props) => {
           setErrMsg(response.data.error);
         } else {
           setError(false);
-          history.push("/");
+          setRedirect(true);
         }
       } else {
         setError(true);

@@ -24,7 +24,7 @@ const Navigation = ({ logoutFunction, logoutLink, history }) => {
             to={{
               pathname: "/storehouse",
               state: {
-                place: "Storehouse",
+                place: "Clothing Bank",
               },
             }}
           >
