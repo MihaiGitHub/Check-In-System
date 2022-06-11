@@ -1,5 +1,6 @@
 # Check-In-System
-Progressive Web Application (PWA) for the check in and check out of clients at an organization developed for tablets
+
+Progressive Web Application (PWA) for the check in and check out of clients at a non-profit organization developed for tablets
 
 MySQL back-end database<br>
 PHP API layer<br>
