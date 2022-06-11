@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Phoenix');
+
 // 'client' object
 class Client{
 
@@ -100,13 +102,43 @@ class Client{
     	}
     	else {
     	    // client has been checked in before
-    	    // check if client is in the last 7 days
-            $selectQueryLast7days = "SELECT * FROM `clients_checkin` WHERE timestamp >= DATE(NOW()) - INTERVAL 7 DAY AND c_id = :c_id AND placeOfService = :placeOfService";
+    	    // Find date range needed for sql
+    	    $today = date("w", strtotime('today'));
+
+            $days = 0;
+            switch($today){
+                case 1:
+                    $days = 0;
+                break;
+                case 2:
+                    $days = -1;
+                break;
+                case 3:
+                    $days = -2;
+                break;
+                case 4:
+                    $days = -3;
+                break;
+                case 5:
+                    $days = -4;
+                break;
+                case 6:
+                    $days = -5;
+                break;
+            }
+            
+            $minDate = date('Y-m-d 01:00:00', strtotime("$days days"));
+            $maxDate = date("Y-m-d H:i:s");
+            
+    	    // check if client is in since Monday
+    	    $selectQueryLast7days = "SELECT * FROM `clients_checkin` WHERE timestamp >= :minDate AND timestamp <= :maxDate AND c_id = :c_id AND placeOfService = :placeOfService";
 
             // prepare the query
         	$selectStmtLast7days = $this->conn->prepare($selectQueryLast7days);
         	
         	// bind the value
+        	$selectStmtLast7days->bindParam(':minDate', $minDate);
+        	$selectStmtLast7days->bindParam(':maxDate', $maxDate);
         	$selectStmtLast7days->bindParam(':c_id', $client['id']);
         	$selectStmtLast7days->bindParam(':placeOfService', $this->placeOfService);
         	
@@ -191,9 +223,8 @@ class Client{
     
     // get clients
     function all(){
-    
-    	// insert query
-    	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+    	    	
+     	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
