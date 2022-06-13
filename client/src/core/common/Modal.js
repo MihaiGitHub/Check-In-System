@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { useEffect, Fragment, useState, useContext } from "react";
 import { ClientContext } from "../common/ClientContext";
 import { clientUpdateStatus } from "../common/ClientHelpers";
 import { errorMessage } from "../common/Error";
@@ -7,6 +7,7 @@ import {
   saveClientVisit,
   getClients,
   clearCheckout,
+  getItems,
 } from "./apiCore";
 
 const Modal = ({ modalId, client, type, refreshFunction, place }) => {
@@ -14,6 +15,8 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const [errorMsg, setErrMsg] = useState("");
   const [visitSaved, setVisitSaved] = useState(false);
   const [clients, setClients] = useContext(ClientContext);
+  // all items at the selected place
+  const [items, setItems] = useState([]);
 
   const [visit, setVisit] = useState({
     place_of_service: "",
@@ -25,6 +28,16 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   });
 
   const { date_of_visit, item, notes, weight, numOfItems } = visit;
+
+  useEffect(() => {
+    if (type === "checkout") {
+      getItems(place).then(({ data }) => {
+        setItems(data.items);
+      });
+    }
+  }, []);
+
+  console.log("items ", items);
 
   const handleChange = (name) => (event) => {
     if (name == "item") {
@@ -251,32 +264,20 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
               </label>
 
               <div className="input-group mb-3">
-                <select
-                  onChange={handleChange("item")}
-                  className="custom-select"
-                  id="item"
-                >
-                  <option defaultValue value="0">
-                    Choose...
-                  </option>
-                  <option value="Food">Food (weight)</option>
-                  <option value="Hygiene items">
-                    Hygiene items (# of items)
-                  </option>
-                  <option value="Baby essentials">
-                    Baby essentials (# of items)
-                  </option>
-                  <option value="Pet food">Pet food (# of items)</option>
-                  <option value="Thanksgiving food box">
-                    Thanksgiving food box (weight)
-                  </option>
-                  <option value="Christmas food box">
-                    Christmas food box (# of items)
-                  </option>
-                </select>
+                {items && (
+                  <select
+                    onChange={handleChange("item")}
+                    className="custom-select"
+                    id="item"
+                  >
+                    {items.map((item, index) => (
+                      <option value={item.name}>{item.name}</option>
+                    ))}
+                  </select>
+                )}
               </div>
             </div>
-            <div
+            {/* <div
               className="form-group col-sm"
               style={{ display: weight !== "" ? "block" : "none" }}
             >
@@ -289,7 +290,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 id="weight"
                 onChange={handleChange("weight")}
               />
-            </div>
+            </div> */}
             <div
               className="form-group col-sm"
               style={{ display: numOfItems !== "" ? "block" : "none" }}

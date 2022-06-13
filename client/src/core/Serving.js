@@ -103,6 +103,7 @@ const Serving = (props) => {
         client={client}
         type="checkout"
         refreshFunction={refreshServing}
+        place={props.place}
       />
     </Fragment>
   );
