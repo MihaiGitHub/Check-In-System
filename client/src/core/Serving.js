@@ -60,7 +60,7 @@ const Serving = (props) => {
                   <th scope="col">#</th>
                   <th scope="col">First</th>
                   <th scope="col">Last</th>
-                  <th scope="col">Number in family</th>
+                  <th scope="col"># in House</th>
                   <th scope="col">Specific request</th>
                 </tr>
               </thead>

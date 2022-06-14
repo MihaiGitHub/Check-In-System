@@ -126,7 +126,7 @@ const PlaceOfService = (props) => {
       fname: client.fname,
       lname: client.lname,
       status: "checkin",
-      familyNumber: client.inHouse,
+      familyNumber: client.inhouse,
       placeOfService: clientPlaceOfService,
       specificRequest: JSON.stringify(clientItems),
       email: client.email,
