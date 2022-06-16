@@ -44,7 +44,7 @@ class Item{
     function getItems(){
     
         // select query
-    	$query = "SELECT name FROM " . $this->table_name . " WHERE place_of_service = '" . $this->place_of_service . "'";
+    	$query = "SELECT name, itemType FROM " . $this->table_name . " WHERE place_of_service = '" . $this->place_of_service . "' ORDER BY sortOrder ASC";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
