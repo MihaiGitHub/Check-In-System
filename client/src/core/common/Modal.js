@@ -37,59 +37,26 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
     }
   }, []);
 
-  console.log("items ", items);
-
   const handleChange = (name) => (event) => {
     if (name == "item") {
-      switch (event.target.value) {
-        case "Food":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            weight: 0,
-            numOfItems: "",
-          });
-          break;
-        case "Hygiene items":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            numOfItems: 0,
-            weight: "",
-          });
-          break;
-        case "Baby essentials":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            numOfItems: 0,
-            weight: "",
-          });
-          break;
-        case "Pet food":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            numOfItems: 0,
-            weight: "",
-          });
-          break;
-        case "Thanksgiving food box":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            weight: 0,
-            numOfItems: "",
-          });
-          break;
-        case "Christmas food box":
-          setVisit({
-            ...visit,
-            item: event.target.value,
-            numOfItems: 0,
-            weight: "",
-          });
-          break;
+      const itemType = document.querySelector(
+        `option[value="${event.target.value}"]`
+      ).dataset.type;
+
+      if (itemType === "Weight") {
+        setVisit({
+          ...visit,
+          item: event.target.value,
+          weight: 0,
+          numOfItems: "",
+        });
+      } else {
+        setVisit({
+          ...visit,
+          item: event.target.value,
+          weight: "",
+          numOfItems: 0,
+        });
       }
     } else {
       setVisit({ ...visit, [name]: event.target.value });
@@ -271,13 +238,15 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                     id="item"
                   >
                     {items.map((item, index) => (
-                      <option value={item.name}>{item.name}</option>
+                      <option data-type={item.itemType} value={item.name}>
+                        {item.name}
+                      </option>
                     ))}
                   </select>
                 )}
               </div>
             </div>
-            {/* <div
+            <div
               className="form-group col-sm"
               style={{ display: weight !== "" ? "block" : "none" }}
             >
@@ -290,7 +259,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 id="weight"
                 onChange={handleChange("weight")}
               />
-            </div> */}
+            </div>
             <div
               className="form-group col-sm"
               style={{ display: numOfItems !== "" ? "block" : "none" }}
