@@ -237,11 +237,31 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                     className="custom-select"
                     id="item"
                   >
-                    {items.map((item, index) => (
-                      <option data-type={item.itemType} value={item.name}>
-                        {item.name}
-                      </option>
-                    ))}
+                    {items.map((item, index) => {
+                      if (client.specificRequest) {
+                        const itemsRequested = JSON.parse(
+                          client.specificRequest.replace(/&quot;/g, '"')
+                        );
+
+                        if (item.name === itemsRequested[0]) {
+                          return (
+                            <option
+                              selected
+                              data-type={item.itemType}
+                              value={item.name}
+                            >
+                              {item.name}
+                            </option>
+                          );
+                        }
+                      }
+
+                      return (
+                        <option data-type={item.itemType} value={item.name}>
+                          {item.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 )}
               </div>
