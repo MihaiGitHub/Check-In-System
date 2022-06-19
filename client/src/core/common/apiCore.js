@@ -37,11 +37,11 @@ export const saveClient = (client) => {
     .catch((error) => console.log(error));
 };
 
-export const updateClientStatus = (id, status) => {
+export const updateClientStatus = (id, status, visit) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
-    .post(`${API}/client_update_status.php`, { id, status, jwt })
+    .post(`${API}/client_update_status.php`, { id, status, visit, jwt })
     .then((response) => response)
     .catch((error) => console.log(error));
 };

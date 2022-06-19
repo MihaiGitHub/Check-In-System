@@ -66,7 +66,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const handleServing = (e) => {
     e.preventDefault();
 
-    updateClientStatus(client.id, type).then((response) => {
+    updateClientStatus(client.id, type, visit).then((response) => {
       refreshFunction();
     });
   };

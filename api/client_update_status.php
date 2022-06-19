@@ -36,7 +36,7 @@ if($jwt){
 
     // if decode succeed, show user details
     try {
-        $key = "XXXX";
+        $key = "Pantry_Check_In_System";
         
         // decode jwt, if it was a fake jwt it would not be able to decode it using this key
         $decoded = JWT::decode($jwt, $key, array('HS256'));
@@ -44,6 +44,7 @@ if($jwt){
         // set user property values
         $client->id = $data->id;
         $client->status = $data->status;
+        $client->visit = $data->visit;
         
         if($client->updateStatus()){
             
