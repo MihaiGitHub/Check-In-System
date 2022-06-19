@@ -97,6 +97,7 @@ const Checkout = (props) => {
                           {items.map((item, index) => (
                             <li key={index}>{item}</li>
                           ))}
+                          {client.notes}
                         </ul>
                       </td>
                     </tr>
