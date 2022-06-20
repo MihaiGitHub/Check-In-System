@@ -66,6 +66,8 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const handleServing = (e) => {
     e.preventDefault();
 
+    //  visit.item = JSON.stringify([visit.item]);
+
     updateClientStatus(client.id, type, visit).then((response) => {
       refreshFunction();
     });
@@ -246,6 +248,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                         if (item.name === itemsRequested[0]) {
                           return (
                             <option
+                              key={index}
                               selected
                               data-type={item.itemType}
                               value={item.name}
@@ -257,7 +260,11 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                       }
 
                       return (
-                        <option data-type={item.itemType} value={item.name}>
+                        <option
+                          key={index}
+                          data-type={item.itemType}
+                          value={item.name}
+                        >
                           {item.name}
                         </option>
                       );

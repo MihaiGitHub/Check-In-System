@@ -75,9 +75,9 @@ const Checkout = (props) => {
               </thead>
               <tbody>
                 {checkedOut.map((client, index) => {
-                  const items = JSON.parse(
-                    client.specificRequest.replace(/&quot;/g, '"')
-                  );
+                  // const items = JSON.parse(
+                  //   client.specificRequest.replace(/&quot;/g, '"')
+                  // );
 
                   return (
                     <tr
@@ -94,9 +94,11 @@ const Checkout = (props) => {
                       <td>{client.familyNumber}</td>
                       <td>
                         <ul>
-                          {items.map((item, index) => (
+                          {/* {items.map((item, index) => (
                             <li key={index}>{item}</li>
-                          ))}
+                          ))} */}
+                          {client.specificRequest}
+                          <br />
                           {client.notes}
                         </ul>
                       </td>
