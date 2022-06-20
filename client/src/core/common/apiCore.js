@@ -64,11 +64,11 @@ export const updateClientInfo = (client) => {
     .catch((error) => console.log(error));
 };
 
-export const saveClientVisit = (visit) => {
+export const saveClientVisitItem = (visit) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
-    .post(`${API}/client_save_visit.php`, { visit, jwt })
+    .post(`${API}/client_save_visit_items.php`, { visit, jwt })
     .then((response) => response)
     .catch((error) => console.log(error));
 };

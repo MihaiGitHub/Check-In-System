@@ -4,7 +4,7 @@ import { clientUpdateStatus } from "../common/ClientHelpers";
 import { errorMessage } from "../common/Error";
 import {
   updateClientStatus,
-  saveClientVisit,
+  saveClientVisitItem,
   getClients,
   clearCheckout,
   getItems,
@@ -66,8 +66,6 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const handleServing = (e) => {
     e.preventDefault();
 
-    //  visit.item = JSON.stringify([visit.item]);
-
     updateClientStatus(client.id, type, visit).then((response) => {
       refreshFunction();
     });
@@ -87,7 +85,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
       numOfItems,
     };
 
-    saveClientVisit(visit).then((response) => {
+    saveClientVisitItem(visit).then((response) => {
       setVisitSaved(true);
     });
   };

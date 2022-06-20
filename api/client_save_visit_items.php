@@ -15,14 +15,14 @@ use \Firebase\JWT\JWT;
 
 // files needed to connect to database
 include_once 'config/database.php';
-include_once 'objects/visit.php';
+include_once 'objects/visit_items.php';
 
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
 
 // instantiate visit object
-$visit = new Visit($db);
+$visitItems = new VisitItems($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -41,23 +41,19 @@ if($jwt && $data->visit->c_id){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set visit property values
-        $visit->id = $data->visit->id;
-        $visit->c_id = $data->visit->c_id;
-        $visit->place_of_service = $data->visit->place_of_service;
-        $visit->date_of_visit = $data->visit->date_of_visit;
-        $visit->item = $data->visit->item;
-        $visit->notes = $data->visit->notes;
-        $visit->weight = $data->visit->weight;
-        $visit->numOfItems = $data->visit->numOfItems;
+        $visitItems->id = $data->visit->id;
+        $visitItems->c_id = $data->visit->c_id;
+        $visitItems->item = $data->visit->item;
+        $visitItems->notes = $data->visit->notes;
 
-        if($visit->saveVisit()){
+        if($visitItems->saveVisitItem()){
             // set response code
             http_response_code(200);
             
             // response in json format
             echo json_encode(
                     array(
-                        "success" => "Client visit saved successfully!"
+                        "success" => "Client visit item saved successfully!"
                     )
                 );
         }
@@ -67,7 +63,7 @@ if($jwt && $data->visit->c_id){
             http_response_code(200);
         
             // display message: unable to create user
-            echo json_encode(array("error" => "Unable to save client visit"));
+            echo json_encode(array("error" => "Unable to save client visit item"));
         }
     }
     catch (Exception $e){
@@ -87,4 +83,3 @@ else {
         "error" => "Missing jwt token or client ID!"
     ));
 }
-?>
