@@ -44,4 +44,27 @@ class VisitItems{
     	
     	return false;
     }
+    
+    function getVisitItems(){
+        // select query
+    	$query = "SELECT item, notes FROM ". $this->table_name . " WHERE c_id = :c_id";
+    
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	// bind the values
+    	$stmt->bindParam(':c_id', $this->c_id);
+
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    	    $items = $stmt->fetchAll();
+    	    
+    		return $items;
+    	}
+    	
+    	return false;
+    }
 }

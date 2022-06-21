@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
-import { getClients } from "./apiCore";
+import { getClients, getVisitItems } from "./apiCore";
 
 export const ClientContext = createContext();
 
@@ -27,6 +27,13 @@ export const ClientProvider = (props) => {
 
           const checkedOut = response.data.clients.filter((client) => {
             return client.status === "checkout";
+          });
+
+          // add items to checked out clients
+          checkedOut.map(async (client, index) => {
+            await getVisitItems(client.c_id).then(({ data }) => {
+              client.items = data.items;
+            });
           });
 
           setClients((prevClients) => {

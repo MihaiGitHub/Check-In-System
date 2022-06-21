@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import { ClientContext } from "./common/ClientContext";
-import { getClients } from "./common/apiCore";
+import { getClients, getVisitItems } from "./common/apiCore";
 import { clientUpdateStatus } from "./common/ClientHelpers";
 import Modal from "./common/Modal";
 import { errorMessage } from "./common/Error";
+import DisplayItems from "./DisplayItems";
 
 const Checkout = (props) => {
   const { place } = props;
@@ -12,6 +13,8 @@ const Checkout = (props) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const { checkedOut } = clients;
+
+  const [checkedOutTotal, setCheckedOutTotal] = useState([]);
 
   const refreshCheckout = () => {
     getClients(place).then((response) => {
@@ -35,10 +38,15 @@ const Checkout = (props) => {
     });
   };
 
+  setTimeout(() => {
+    // update checkedOut clients with latest data with items
+    setCheckedOutTotal(checkedOut);
+  }, 2000);
+
   return (
     <Fragment>
       {error && errorMessage(errorMsg)}
-      {checkedOut.length == 0 && (
+      {checkedOutTotal.length == 0 && (
         <div className="row">
           <div className="col-sm-6 offset-sm-3">
             <div
@@ -51,7 +59,7 @@ const Checkout = (props) => {
           </div>
         </div>
       )}
-      {checkedOut.length > 0 && (
+      {checkedOutTotal.length > 0 && (
         <div className="row">
           <div className="col-sm">
             <button
@@ -74,11 +82,7 @@ const Checkout = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {checkedOut.map((client, index) => {
-                  // const items = JSON.parse(
-                  //   client.specificRequest.replace(/&quot;/g, '"')
-                  // );
-
+                {checkedOutTotal.map((client, index) => {
                   return (
                     <tr
                       data-id={client.id}
@@ -94,12 +98,9 @@ const Checkout = (props) => {
                       <td>{client.familyNumber}</td>
                       <td>
                         <ul>
-                          {/* {items.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))} */}
-                          {client.specificRequest}
-                          <br />
-                          {client.notes}
+                          {client.items && (
+                            <DisplayItems client_id={client.c_id} />
+                          )}
                         </ul>
                       </td>
                     </tr>

@@ -99,3 +99,12 @@ export const clearCheckout = (place) => {
     .then((response) => response)
     .catch((error) => console.log(error));
 };
+
+export const getVisitItems = (client_id) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/visit_items.php`, { client_id, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
