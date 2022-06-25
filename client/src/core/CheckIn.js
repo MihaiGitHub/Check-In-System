@@ -82,9 +82,9 @@ const CheckIn = (props) => {
               </thead>
               <tbody>
                 {checkedIn.map((client, index) => {
-                  const items = JSON.parse(
-                    client.specificRequest.replace(/&quot;/g, '"')
-                  );
+                  // const items = JSON.parse(
+                  //   client.specificRequest.replace(/&quot;/g, '"')
+                  // );
 
                   return (
                     <tr
@@ -100,11 +100,11 @@ const CheckIn = (props) => {
                       <td>{client.lname}</td>
                       <td>{client.familyNumber}</td>
                       <td>
-                        <ul>
+                        {/* <ul>
                           {items.map((item, index) => (
                             <li key={index}>{item}</li>
                           ))}
-                        </ul>
+                        </ul> */}
                       </td>
                     </tr>
                   );

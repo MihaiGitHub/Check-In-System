@@ -73,6 +73,15 @@ export const saveClientVisitItem = (visit) => {
     .catch((error) => console.log(error));
 };
 
+export const saveClientVisitItems = (visit) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/save_visit_items.php`, { visit, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
 export const getPlaceOfService = () => {
   const jwt = sessionStorage.getItem("jwt");
 

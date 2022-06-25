@@ -66,6 +66,8 @@ const Serving = (props) => {
               </thead>
               <tbody>
                 {serving.map((client, index) => {
+                  console.log("client ", client);
+
                   const items = JSON.parse(
                     client.specificRequest.replace(/&quot;/g, '"')
                   );
