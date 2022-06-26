@@ -21,7 +21,6 @@ class Client{
 	public $status;
 	public $familyNumber;
 	public $placeOfService;
-	public $specificRequest;
 	public $error;
 
 	// constructor
@@ -70,9 +69,9 @@ class Client{
 	    
     	    // insert without the email
         	$query = "INSERT INTO " . $this->table_name . "
-        	        (c_id, fname, lname, status, familyNumber, specificRequest, placeOfService)
+        	        (c_id, fname, lname, status, familyNumber, placeOfService)
                         VALUES 
-                    (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest, :placeOfService)";
+                    (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService)";
         
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
@@ -81,7 +80,6 @@ class Client{
         	$this->fname=htmlspecialchars(strip_tags($this->fname));
         	$this->lname=htmlspecialchars(strip_tags($this->lname));
         	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
-        	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
         	$this->placeOfService=htmlspecialchars(strip_tags($this->placeOfService));
 
         	// bind the values
@@ -90,11 +88,28 @@ class Client{
         	$stmt->bindParam(':lname', $this->lname);
         	$stmt->bindParam(':status', $this->status);
         	$stmt->bindParam(':familyNumber', $this->familyNumber);
-        	$stmt->bindParam(':specificRequest', $this->specificRequest);
         	$stmt->bindParam(':placeOfService', $this->placeOfService);
         
         	// execute the query, also check if query was successful
         	if($stmt->execute()){
+        	    // insert items in items table
+        	    foreach ($this->items as $item) {
+        	        $query = "INSERT INTO visit_items
+        	        (c_id, item)
+                        VALUES 
+                    (:c_id, :item)";
+                    
+                    // prepare the query
+        	        $stmt = $this->conn->prepare($query);
+        	        
+        	        // bind the values
+        	        $stmt->bindParam(':c_id', $client['id']);
+        	        $stmt->bindParam(':item', $item);
+        	        
+        	        // execute the query
+        	        $stmt->execute();
+                }
+                
         		return true;
         	}
         	
@@ -155,9 +170,9 @@ class Client{
         	else {
         	    // insert without the email
             	$query = "INSERT INTO " . $this->table_name . "
-            	        (c_id, fname, lname, status, familyNumber, specificRequest, placeOfService)
+            	        (c_id, fname, lname, status, familyNumber, placeOfService)
                             VALUES 
-                        (:c_id, :fname, :lname, :status, :familyNumber, :specificRequest, :placeOfService)";
+                        (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService)";
             
             	// prepare the query
             	$stmt = $this->conn->prepare($query);
@@ -166,7 +181,6 @@ class Client{
             	$this->fname=htmlspecialchars(strip_tags($this->fname));
             	$this->lname=htmlspecialchars(strip_tags($this->lname));
             	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
-            	$this->specificRequest=htmlspecialchars(strip_tags($this->specificRequest));
             	$this->placeOfService=htmlspecialchars(strip_tags($this->placeOfService));
     
             	// bind the values
@@ -175,11 +189,27 @@ class Client{
             	$stmt->bindParam(':lname', $this->lname);
             	$stmt->bindParam(':status', $this->status);
             	$stmt->bindParam(':familyNumber', $this->familyNumber);
-            	$stmt->bindParam(':specificRequest', $this->specificRequest);
             	$stmt->bindParam(':placeOfService', $this->placeOfService);
             
             	// execute the query, also check if query was successful
             	if($stmt->execute()){
+            	    // insert items in items table
+            	    foreach ($this->items as $item) {
+            	        $query = "INSERT INTO visit_items
+            	        (c_id, item)
+                            VALUES 
+                        (:c_id, :item)";
+                        
+                        // prepare the query
+            	        $stmt = $this->conn->prepare($query);
+            	        
+            	        // bind the values
+            	        $stmt->bindParam(':c_id', $client['id']);
+            	        $stmt->bindParam(':item', $item);
+            	        
+            	        // execute the query
+            	        $stmt->execute();
+                    }
             		return true;
             	}
             	
