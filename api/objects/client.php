@@ -269,9 +269,29 @@ class Client{
     	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
     	    $clients = $stmt->fetchAll();
     	    
+    	    for($i = 0; $i < count($clients); $i++){
+        	        $query = "SELECT * FROM visit_items WHERE c_id = :c_id";
+
+                    // prepare the query
+        	        $stmt = $this->conn->prepare($query);
+        	        
+        	        // bind the values
+        	        $stmt->bindParam(':c_id', $clients[$i]['c_id']);
+
+        	        // execute the query
+        	        $result = $stmt->execute();
+        	        
+        	        if($result){
+        	            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    	                $clientItems = $stmt->fetchAll();
+    	                
+    	                $clients[$i]['items'] = $clientItems;
+        	        }
+            }
+    	    
     		return $clients;
     	}
-    	
+    		
     	return false;
     }
     
