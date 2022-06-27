@@ -1,15 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getVisitItems } from "./common/apiCore";
+import React from "react";
 
-const DisplayItems = ({ client_id }) => {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    getVisitItems(client_id).then(({ data }) => {
-      setItems(data.items);
-    });
-  }, []);
-
+const DisplayItems = ({ items }) => {
   return items.map((item, index) => (
     <li key={index}>
       {item.item} - {item.notes}

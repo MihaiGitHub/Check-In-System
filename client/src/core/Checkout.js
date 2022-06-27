@@ -14,8 +14,6 @@ const Checkout = (props) => {
   const [errorMsg, setErrMsg] = useState("");
   const { checkedOut } = clients;
 
-  const [checkedOutTotal, setCheckedOutTotal] = useState([]);
-
   const refreshCheckout = () => {
     getClients(place).then((response) => {
       console.log(response);
@@ -38,15 +36,10 @@ const Checkout = (props) => {
     });
   };
 
-  setTimeout(() => {
-    // update checkedOut clients with latest data with items
-    setCheckedOutTotal(checkedOut);
-  }, 2000);
-
   return (
     <Fragment>
       {error && errorMessage(errorMsg)}
-      {checkedOutTotal.length == 0 && (
+      {checkedOut.length == 0 && (
         <div className="row">
           <div className="col-sm-6 offset-sm-3">
             <div
@@ -59,7 +52,7 @@ const Checkout = (props) => {
           </div>
         </div>
       )}
-      {checkedOutTotal.length > 0 && (
+      {checkedOut.length > 0 && (
         <div className="row">
           <div className="col-sm">
             <button
@@ -82,7 +75,7 @@ const Checkout = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {checkedOutTotal.map((client, index) => {
+                {checkedOut.map((client, index) => {
                   return (
                     <tr
                       data-id={client.id}
@@ -99,7 +92,7 @@ const Checkout = (props) => {
                       <td>
                         <ul>
                           {client.items && (
-                            <DisplayItems client_id={client.c_id} />
+                            <DisplayItems items={client.items} />
                           )}
                         </ul>
                       </td>

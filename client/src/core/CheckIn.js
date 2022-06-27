@@ -5,6 +5,7 @@ import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
 import { clientUpdateStatus } from "./common/ClientHelpers";
 import { errorMessage } from "./common/Error";
+import DisplayItems from "./DisplayItems";
 
 const CheckIn = (props) => {
   const [error, setError] = useState(false);
@@ -82,10 +83,6 @@ const CheckIn = (props) => {
               </thead>
               <tbody>
                 {checkedIn.map((client, index) => {
-                  // const items = JSON.parse(
-                  //   client.specificRequest.replace(/&quot;/g, '"')
-                  // );
-
                   return (
                     <tr
                       data-id={client.id}
@@ -100,11 +97,11 @@ const CheckIn = (props) => {
                       <td>{client.lname}</td>
                       <td>{client.familyNumber}</td>
                       <td>
-                        {/* <ul>
-                          {items.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))}
-                        </ul> */}
+                        <ul>
+                          {client.items && (
+                            <DisplayItems items={client.items} />
+                          )}
+                        </ul>
                       </td>
                     </tr>
                   );

@@ -3,6 +3,7 @@ import { getClients } from "./common/apiCore";
 import Modal from "./common/Modal";
 import { ClientContext } from "./common/ClientContext";
 import { clientUpdateStatus } from "./common/ClientHelpers";
+import DisplayItems from "./DisplayItems";
 
 const Serving = (props) => {
   const [clients, setClients] = useContext(ClientContext);
@@ -66,12 +67,6 @@ const Serving = (props) => {
               </thead>
               <tbody>
                 {serving.map((client, index) => {
-                  console.log("client ", client);
-
-                  const items = JSON.parse(
-                    client.specificRequest.replace(/&quot;/g, '"')
-                  );
-
                   return (
                     <tr
                       data-id={client.id}
@@ -87,9 +82,9 @@ const Serving = (props) => {
                       <td>{client.familyNumber}</td>
                       <td>
                         <ul>
-                          {items.map((item, index) => (
-                            <li key={index}>{item}</li>
-                          ))}
+                          {client.items && (
+                            <DisplayItems items={client.items} />
+                          )}
                         </ul>
                       </td>
                     </tr>
