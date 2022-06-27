@@ -13,8 +13,10 @@ const CheckIn = (props) => {
   const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
-  if (props.location.state !== undefined) {
-    var { place } = props.location.state;
+  console.log("PROPS ", props.place);
+
+  if (props.place !== undefined) {
+    var place = props.place;
   } else {
     var place = "Clothing Bank";
   }
