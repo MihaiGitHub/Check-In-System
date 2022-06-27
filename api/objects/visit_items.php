@@ -11,6 +11,7 @@ class VisitItems{
 	public $c_id;
 	public $item;
 	public $notes;
+	public $place_of_service;
     
 	// constructor
 	public function __construct($db){
@@ -21,7 +22,7 @@ class VisitItems{
     function saveVisitItem(){
     
         // insert query
-    	$query = "INSERT INTO ". $this->table_name . " (c_id, item, notes) VALUES (:c_id, :item, :notes)";
+    	$query = "INSERT INTO ". $this->table_name . " (c_id, item, notes, place_of_service) VALUES (:c_id, :item, :notes, :place_of_service)";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -34,6 +35,7 @@ class VisitItems{
     	$stmt->bindParam(':c_id', $this->c_id);
     	$stmt->bindParam(':item', $this->item);
     	$stmt->bindParam(':notes', $this->notes);
+    	$stmt->bindParam(':place_of_service', $this->place_of_service);
 
      	// execute the query, also check if query was successful
     	$result = $stmt->execute();

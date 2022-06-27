@@ -95,9 +95,9 @@ class Client{
         	    // insert items in items table
         	    foreach ($this->items as $item) {
         	        $query = "INSERT INTO visit_items
-        	        (c_id, item)
+        	        (c_id, item, place_of_service)
                         VALUES 
-                    (:c_id, :item)";
+                    (:c_id, :item, :placeOfService)";
                     
                     // prepare the query
         	        $stmt = $this->conn->prepare($query);
@@ -105,6 +105,7 @@ class Client{
         	        // bind the values
         	        $stmt->bindParam(':c_id', $client['id']);
         	        $stmt->bindParam(':item', $item);
+        	        $stmt->bindParam(':placeOfService', $this->placeOfService);
         	        
         	        // execute the query
         	        $stmt->execute();
@@ -196,9 +197,9 @@ class Client{
             	    // insert items in items table
             	    foreach ($this->items as $item) {
             	        $query = "INSERT INTO visit_items
-            	        (c_id, item)
+            	        (c_id, item, place_of_service)
                             VALUES 
-                        (:c_id, :item)";
+                        (:c_id, :item, :placeOfService)";
                         
                         // prepare the query
             	        $stmt = $this->conn->prepare($query);
@@ -206,6 +207,7 @@ class Client{
             	        // bind the values
             	        $stmt->bindParam(':c_id', $client['id']);
             	        $stmt->bindParam(':item', $item);
+            	        $stmt->bindParam(':placeOfService', $this->placeOfService);
             	        
             	        // execute the query
             	        $stmt->execute();
@@ -323,8 +325,7 @@ class Client{
     
     // clear checked out clients
     function clearCheckout(){
-    
-    	// delete query
+    	// delete query client from clients_checkin
     	$query = "DELETE FROM " . $this->table_name . " WHERE status = 'checkout' AND placeOfService = :placeOfService";
     
     	// prepare the query
@@ -337,6 +338,19 @@ class Client{
     	$result = $stmt->execute();
     	
     	if($result){
+    	    // delete all items for that place
+    	    $query = "DELETE FROM visit_items WHERE place_of_service = :placeOfService";
+    
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        	
+        	// bind the value
+        	$stmt->bindParam(':placeOfService', $this->placeOfService);
+            
+         	// execute the query, also check if query was successful
+        	$result = $stmt->execute();
+    	
+    	
     	    // select the remaining clients
         	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
         

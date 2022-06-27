@@ -45,6 +45,7 @@ if($jwt && $data->visit->c_id){
         $visitItems->c_id = $data->visit->c_id;
         $visitItems->item = $data->visit->item;
         $visitItems->notes = $data->visit->notes;
+        $visitItems->place_of_service = $data->visit->place_of_service;
 
         if($visitItems->saveVisitItem()){
             // set response code
