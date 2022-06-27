@@ -291,7 +291,8 @@ class Client{
     	    
     		return $clients;
     	}
-    		
+    	
+    	
     	return false;
     }
     
@@ -300,7 +301,7 @@ class Client{
     
     	// update query
     	$query = "UPDATE " . $this->table_name . "
-            		SET status = :status, notes = :notes
+            		SET status = :status
             		WHERE id = :id";
     
     	// prepare the query
@@ -308,7 +309,6 @@ class Client{
     	
     	// bind the value
     	$stmt->bindParam(':status', $this->status);
-    	$stmt->bindParam(':notes', $this->visit->notes);
     	$stmt->bindParam(':id', $this->id);
         
      	// execute the query, also check if query was successful
