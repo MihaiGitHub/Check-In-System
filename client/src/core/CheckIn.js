@@ -13,8 +13,6 @@ const CheckIn = (props) => {
   const [clients, setClients] = useContext(ClientContext);
   const [client, setClient] = useState({});
 
-  console.log("PROPS ", props.place);
-
   if (props.place !== undefined) {
     var place = props.place;
   } else {
