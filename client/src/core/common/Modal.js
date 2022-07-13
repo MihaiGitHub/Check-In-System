@@ -33,9 +33,23 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
     if (type === "checkout") {
       getItems(place).then(({ data }) => {
         setItems(data.items);
+
+        if (client.items !== undefined && client.items.length > 0) {
+          let selectedItem = data.items.find(
+            (e) => e.name === client.items[0].item
+          );
+
+          if (selectedItem !== undefined) {
+            if (selectedItem.itemType === "Weight") {
+              setVisit({ ...visit, weight: 0, numOfItems: "" });
+            } else {
+              setVisit({ ...visit, weight: "", numOfItems: 0 });
+            }
+          }
+        }
       });
     }
-  }, []);
+  }, [client]);
 
   const handleChange = (name) => (event) => {
     if (name == "item") {
