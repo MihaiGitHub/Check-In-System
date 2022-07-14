@@ -109,6 +109,20 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const handleVisitBeforeCheckout = (e) => {
     e.preventDefault();
 
+    if (weight === 0) {
+      if (weightValue === "") {
+        alert("Weight value can not be empty");
+        return false;
+      }
+    }
+
+    if (numOfItems === 0) {
+      if (numItemsValue === "") {
+        alert("Number of items can not be empty");
+        return false;
+      }
+    }
+
     const visit = {
       id: client.id,
       c_id: client.c_id,
@@ -326,6 +340,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 id="weight"
                 onChange={handleChange("weight")}
                 value={weightValue}
+                required
               />
             </div>
             <div
@@ -341,6 +356,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 id="numOfItems"
                 onChange={handleChange("numOfItems")}
                 value={numItemsValue}
+                required
               />
             </div>
             <div className="form-group col-sm">
