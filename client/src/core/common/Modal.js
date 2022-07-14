@@ -15,6 +15,9 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const [errorMsg, setErrMsg] = useState("");
   const [visitSaved, setVisitSaved] = useState(false);
   const [clients, setClients] = useContext(ClientContext);
+  const [weightValue, setWeightValue] = useState("");
+  const [numItemsValue, setNumItemsValue] = useState("");
+
   // all items at the selected place
   const [items, setItems] = useState([]);
 
@@ -41,9 +44,19 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
 
           if (selectedItem !== undefined) {
             if (selectedItem.itemType === "Weight") {
-              setVisit({ ...visit, weight: 0, numOfItems: "" });
+              setVisit({
+                ...visit,
+                item: selectedItem.name,
+                weight: 0,
+                numOfItems: "",
+              });
             } else {
-              setVisit({ ...visit, weight: "", numOfItems: 0 });
+              setVisit({
+                ...visit,
+                item: selectedItem.name,
+                weight: "",
+                numOfItems: 0,
+              });
             }
           }
         }
@@ -73,6 +86,14 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
         });
       }
     } else {
+      if (name === "weight") {
+        setWeightValue(event.target.value);
+      }
+
+      if (name === "numOfItems") {
+        setNumItemsValue(event.target.value);
+      }
+
       setVisit({ ...visit, [name]: event.target.value });
     }
   };
@@ -101,6 +122,13 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
 
     saveClientVisitItem(visit).then((response) => {
       setVisitSaved(true);
+
+      setTimeout(() => {
+        setVisitSaved(false);
+        setWeightValue("");
+        setNumItemsValue("");
+        setVisit({ ...visit, notes: "" });
+      }, 2000);
     });
   };
 
@@ -297,6 +325,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 className="form-control"
                 id="weight"
                 onChange={handleChange("weight")}
+                value={weightValue}
               />
             </div>
             <div
@@ -311,6 +340,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 className="form-control"
                 id="numOfItems"
                 onChange={handleChange("numOfItems")}
+                value={numItemsValue}
               />
             </div>
             <div className="form-group col-sm">
@@ -322,7 +352,10 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                 className="form-control rounded-0"
                 id="notes"
                 rows="3"
-              ></textarea>
+                value={notes}
+              >
+                {notes}
+              </textarea>
             </div>
           </div>
           <div className="modal-footer">
