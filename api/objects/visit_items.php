@@ -10,6 +10,8 @@ class VisitItems{
 	public $id;
 	public $c_id;
 	public $item;
+	public $numOfItems;
+	public $weight;
 	public $notes;
 	public $place_of_service;
     
@@ -20,29 +22,101 @@ class VisitItems{
     
     // save visit item
     function saveVisitItem(){
-    
-        // insert query
-    	$query = "INSERT INTO ". $this->table_name . " (c_id, item, notes, place_of_service) VALUES (:c_id, :item, :notes, :place_of_service)";
+        $quantity = "";
+        if($this->numOfItems == ""){
+            $quantity = $this->weight;
+        }
+        else {
+            $quantity = $this->numOfItems;
+        }
+        
+         // delete query for checked in items
+    	$query1 = "DELETE FROM ". $this->table_name . " WHERE c_id = :c_id AND place_of_service = :place_of_service AND quantity = ''";
     
     	// prepare the query
-    	$stmt = $this->conn->prepare($query);
+    	$stmt1 = $this->conn->prepare($query1);
     	
     	// sanitize
     	$this->c_id=htmlspecialchars(strip_tags($this->c_id));
-    	$this->notes=htmlspecialchars(strip_tags($this->notes));
 
     	// bind the values
-    	$stmt->bindParam(':c_id', $this->c_id);
-    	$stmt->bindParam(':item', $this->item);
-    	$stmt->bindParam(':notes', $this->notes);
-    	$stmt->bindParam(':place_of_service', $this->place_of_service);
+    	$stmt1->bindParam(':c_id', $this->c_id);
+    	$stmt1->bindParam(':place_of_service', $this->place_of_service);
 
      	// execute the query, also check if query was successful
-    	$result = $stmt->execute();
+    	$result1 = $stmt1->execute();
+   	
+    	// if items exists, update item, else insert
+    	// select query
+    	$query2 = "SELECT item FROM ". $this->table_name . " WHERE c_id = :c_id AND place_of_service = :place_of_service AND item = :item";
+    
+    	// prepare the query
+    	$stmt2 = $this->conn->prepare($query2);
     	
-    	if($result){
-    	    return true;
+    	// bind the values
+    	$stmt2->bindParam(':c_id', $this->c_id);
+    	$stmt2->bindParam(':place_of_service', $this->place_of_service);
+    	$stmt2->bindParam(':item', $this->item);
+
+     	// execute the query, also check if query was successful
+    	$result2 = $stmt2->execute();
+    	
+    	if($result2){
+            $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+    	    $itemExists = $stmt2->fetchAll();
+    	    
+    	    if(count($itemExists) > 0){
+    	        // update query item
+            	$query3 = "UPDATE ". $this->table_name . " SET quantity = :quantity, notes = :notes WHERE c_id = :c_id AND place_of_service = :place_of_service AND item = :item";
+            
+            	// prepare the query
+            	$stmt3 = $this->conn->prepare($query3);
+            	
+            	// sanitize
+            	$this->c_id=htmlspecialchars(strip_tags($this->c_id));
+            	$this->notes=htmlspecialchars(strip_tags($this->notes));
+        
+            	// bind the values
+            	$stmt3->bindParam(':c_id', $this->c_id);
+            	$stmt3->bindParam(':item', $this->item);
+            	$stmt3->bindParam(':quantity', $quantity);
+            	$stmt3->bindParam(':notes', $this->notes);
+            	$stmt3->bindParam(':place_of_service', $this->place_of_service);
+        
+             	// execute the query, also check if query was successful
+            	$result3 = $stmt3->execute();
+            	
+            	if($result3){
+            	    return true;
+            	}  
+    	    }
+    	    else {
+    	     // insert query item
+            	$query = "INSERT INTO ". $this->table_name . " (c_id, item, quantity, notes, place_of_service) VALUES (:c_id, :item, :quantity, :notes, :place_of_service)";
+            
+            	// prepare the query
+            	$stmt = $this->conn->prepare($query);
+            	
+            	// sanitize
+            	$this->c_id=htmlspecialchars(strip_tags($this->c_id));
+            	$this->notes=htmlspecialchars(strip_tags($this->notes));
+        
+            	// bind the values
+            	$stmt->bindParam(':c_id', $this->c_id);
+            	$stmt->bindParam(':item', $this->item);
+            	$stmt->bindParam(':quantity', $quantity);
+            	$stmt->bindParam(':notes', $this->notes);
+            	$stmt->bindParam(':place_of_service', $this->place_of_service);
+        
+             	// execute the query, also check if query was successful
+            	$result = $stmt->execute();
+            	
+            	if($result){
+            	    return true;
+            	}   
+    	    }
     	}
+    	
     	
     	return false;
     }

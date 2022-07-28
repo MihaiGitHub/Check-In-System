@@ -44,6 +44,8 @@ if($jwt && $data->visit->c_id){
         $visitItems->id = $data->visit->id;
         $visitItems->c_id = $data->visit->c_id;
         $visitItems->item = $data->visit->item;
+        $visitItems->numOfItems = $data->visit->numOfItems;
+        $visitItems->weight = $data->visit->weight;
         $visitItems->notes = $data->visit->notes;
         $visitItems->place_of_service = $data->visit->place_of_service;
 

@@ -114,7 +114,15 @@ const PlaceOfService = (props) => {
   };
 
   const handleItems = (name) => (event) => {
-    setClientItems([...clientItems, event.target.value]);
+    console.log("event ", event.target.checked);
+    if (event.target.checked) {
+      setClientItems([...clientItems, event.target.value]);
+    } else {
+      let clientItemsFilter = clientItems.filter(
+        (item) => item !== event.target.value
+      );
+      setClientItems(clientItemsFilter);
+    }
   };
 
   const handleSubmit = (e) => {
