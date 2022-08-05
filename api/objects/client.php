@@ -256,7 +256,7 @@ class Client{
     // get clients
     function all(){
     	    	
-     	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+     	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService ORDER BY timestamp ASC";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
