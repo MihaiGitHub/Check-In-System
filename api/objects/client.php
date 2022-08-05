@@ -14,6 +14,7 @@ class Client{
 	public $fname;
 	public $lname;
 	public $address;
+	public $inhouse;
 	public $city;
 	public $state;
 	public $zip;
@@ -379,7 +380,7 @@ class Client{
     
         	// update query
     	$query = "UPDATE clients
-            		SET fname = :fname, lname = :lname, address = :address, city = :city, state = :state, postalCode = :zip, phone = :phone, email = :email
+            		SET fname = :fname, lname = :lname, address = :address, inhouse = :inhouse, city = :city, state = :state, postalCode = :zip, phone = :phone, email = :email
             		WHERE id = :id";
     
     	// prepare the query
@@ -389,6 +390,7 @@ class Client{
     	$this->fname=htmlspecialchars(strip_tags($this->fname));
     	$this->lname=htmlspecialchars(strip_tags($this->lname));
     	$this->address=htmlspecialchars(strip_tags($this->address));
+    	$this->inhouse=htmlspecialchars(strip_tags($this->inhouse));
     	$this->city=htmlspecialchars(strip_tags($this->city));
     	$this->state=htmlspecialchars(strip_tags($this->state));
     	$this->zip=htmlspecialchars(strip_tags($this->zip));
@@ -399,6 +401,7 @@ class Client{
     	$stmt->bindParam(':fname', $this->fname);
     	$stmt->bindParam(':lname', $this->lname);
     	$stmt->bindParam(':address', $this->address);
+    	$stmt->bindParam(':inhouse', $this->inhouse);
     	$stmt->bindParam(':city', $this->city);
     	$stmt->bindParam(':state', $this->state);
     	$stmt->bindParam(':zip', $this->zip);

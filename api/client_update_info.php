@@ -46,6 +46,7 @@ if($jwt){
         $client->fname = $data->client->fname;
         $client->lname = $data->client->lname;
         $client->address = $data->client->address;
+        $client->inhouse = $data->client->inhouse;
         $client->city = $data->client->city;
         $client->state = $data->client->state;
         $client->zip = $data->client->postalCode;

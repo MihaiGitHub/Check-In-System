@@ -13,6 +13,7 @@ const UpdateClient = ({ location }) => {
     fname: "",
     lname: "",
     address: "",
+    inhouse: "",
     city: "",
     state: "",
     postalCode: "",
@@ -29,6 +30,7 @@ const UpdateClient = ({ location }) => {
         fname: client.fname,
         lname: client.lname,
         address: client.address,
+        inhouse: client.inhouse,
         city: client.city,
         state: "AZ",
         postalCode: client.postalCode,
@@ -59,7 +61,8 @@ const UpdateClient = ({ location }) => {
     return <Redirect to="/" />;
   }
 
-  const { fname, lname, address, city, postalCode, email, phone } = values;
+  const { fname, lname, address, inhouse, city, postalCode, email, phone } =
+    values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -113,18 +116,33 @@ const UpdateClient = ({ location }) => {
           />
         </div>
       </div>
-      <div className="form-group" style={{ padding: 15 }}>
-        <label htmlFor="inputAddress">
-          <strong>Address</strong>
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputAddress"
-          placeholder="1234 Main St"
-          onChange={handleChange("address")}
-          value={address}
-        />
+      <div className="form-row" style={{ padding: 15 }}>
+        <div className="form-group col-md-6" style={{ padding: 15 }}>
+          <label htmlFor="inputAddress">
+            <strong>Address</strong>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputAddress"
+            placeholder="1234 Main St"
+            onChange={handleChange("address")}
+            value={address}
+          />
+        </div>
+        <div className="form-group col-md-6" style={{ padding: 15 }}>
+          <label htmlFor="inHouse">
+            <strong># in house</strong>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inHouse"
+            placeholder="# in house"
+            onChange={handleChange("inhouse")}
+            value={inhouse}
+          />
+        </div>
       </div>
       <div className="form-row" style={{ padding: 15 }}>
         <div className="form-group col-md-6">
