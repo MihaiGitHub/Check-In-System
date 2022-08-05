@@ -46,6 +46,7 @@ if($jwt && $data->client->email){
         $client->status = $data->client->status;
         $client->familyNumber = $data->client->familyNumber;
         $client->placeOfService = $data->client->placeOfService;
+        $client->methodOfPickup = $data->client->methodOfPickup;
         $client->items = $data->client->items;
         $client->email = $data->client->email;
         

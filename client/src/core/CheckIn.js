@@ -79,6 +79,7 @@ const CheckIn = (props) => {
                   <th scope="col">Last</th>
                   <th scope="col"># in House</th>
                   <th scope="col">Specific request</th>
+                  <th scope="col">Method of Pickup</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,6 +104,7 @@ const CheckIn = (props) => {
                           )}
                         </ul>
                       </td>
+                      <td>{client.methodOfPickup}</td>
                     </tr>
                   );
                 })}

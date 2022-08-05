@@ -11,12 +11,18 @@ const PlaceOfService = (props) => {
   const [places, setPlaces] = useState([]);
   const history = useHistory();
 
+  const [methodsOfPickup, setMethodsOfPickup] = useState([
+    "Drive-Thru",
+    "Walk-Up",
+  ]);
+
   // all items at the selected place
   const [items, setItems] = useState([]);
 
   // items checked
   const [clientItems, setClientItems] = useState([]);
   const [clientPlaceOfService, setClientPlaceOfService] = useState("");
+  const [clientMethodOfPickup, setClientMethodOfPickup] = useState("");
 
   useEffect(() => {
     console.log("component mounted");
@@ -83,6 +89,10 @@ const PlaceOfService = (props) => {
     setRedirect(true);
   };
 
+  const handleMethod = (name) => (event) => {
+    setClientMethodOfPickup(event.target.value);
+  };
+
   const handlePlace = (name) => (event) => {
     // clear checkboxes after place switch
     let inputs = document.querySelectorAll(".form-check-input");
@@ -138,6 +148,7 @@ const PlaceOfService = (props) => {
       placeOfService: clientPlaceOfService,
       items: clientItems,
       email: client.email,
+      methodOfPickup: clientMethodOfPickup,
     };
 
     saveClient(clientUpdated).then((response) => {
@@ -175,6 +186,26 @@ const PlaceOfService = (props) => {
               {places.map((place, index) => (
                 <option key={index} value={place.place_of_service}>
                   {place.place_of_service}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group col-sm">
+            <label>
+              <strong>Method of pickup</strong>
+            </label>
+            <select
+              onChange={handleMethod("method_of_pickup")}
+              className="custom-select"
+              id="methodsOfPickup"
+            >
+              <option defaultValue value="0">
+                Choose...
+              </option>
+              {methodsOfPickup.map((method, index) => (
+                <option key={index} value={method}>
+                  {method}
                 </option>
               ))}
             </select>

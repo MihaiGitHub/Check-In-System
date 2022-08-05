@@ -70,9 +70,9 @@ class Client{
 	    
     	    // insert without the email
         	$query = "INSERT INTO " . $this->table_name . "
-        	        (c_id, fname, lname, status, familyNumber, placeOfService)
+        	        (c_id, fname, lname, status, familyNumber, placeOfService, methodOfPickup)
                         VALUES 
-                    (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService)";
+                    (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService, :methodOfPickup)";
         
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
@@ -82,6 +82,8 @@ class Client{
         	$this->lname=htmlspecialchars(strip_tags($this->lname));
         	$this->familyNumber=htmlspecialchars(strip_tags($this->familyNumber));
         	$this->placeOfService=htmlspecialchars(strip_tags($this->placeOfService));
+        	$this->methodOfPickup=htmlspecialchars(strip_tags($this->methodOfPickup));
+
 
         	// bind the values
         	$stmt->bindParam(':c_id', $client['id']);
@@ -90,6 +92,7 @@ class Client{
         	$stmt->bindParam(':status', $this->status);
         	$stmt->bindParam(':familyNumber', $this->familyNumber);
         	$stmt->bindParam(':placeOfService', $this->placeOfService);
+        	$stmt->bindParam(':methodOfPickup', $this->methodOfPickup);
         
         	// execute the query, also check if query was successful
         	if($stmt->execute()){
