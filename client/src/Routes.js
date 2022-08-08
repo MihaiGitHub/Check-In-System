@@ -2,6 +2,7 @@ import React from "react";
 import { HashRouter, Switch, Route } from "react-router-dom";
 import SearchClient from "./core/SearchClient";
 import UpdateClient from "./core/UpdateClient";
+import RegisterClient from "./core/RegisterClient";
 import ViewClient from "./core/ViewClient";
 import PlaceOfService from "./core/PlaceOfService";
 import Storehouse from "./core/Storehouse";
@@ -21,6 +22,9 @@ const Routes = () => {
         </Route>
         <Route path="/updateclient">
           <UpdateClient />
+        </Route>
+        <Route path="/registerclient">
+          <RegisterClient />
         </Route>
         <Route path="/searchclient">
           <SearchClient />

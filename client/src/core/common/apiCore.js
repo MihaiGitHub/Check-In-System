@@ -64,6 +64,15 @@ export const updateClientInfo = (client) => {
     .catch((error) => console.log(error));
 };
 
+export const registerClient = (client) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/client_register.php`, { client, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
 export const saveClientVisitItem = (visit) => {
   const jwt = sessionStorage.getItem("jwt");
 

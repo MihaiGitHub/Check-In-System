@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter, Link } from "react-router-dom";
 import { getClient } from "./common/apiCore";
 import Navigation from "./common/Navigation";
 import ViewClient from "./ViewClient";
@@ -87,12 +87,28 @@ const SearchClient = (props) => {
             onChange={handleChange("email")}
           />
           <br />
-          <button
-            onClick={handleSubmit}
-            className="btn btn-success btn-lg btn-block"
-          >
-            Search Client
-          </button>
+          <div className="form-row">
+            <div className="col-sm-6">
+              <Link
+                style={{ textDecoration: "none" }}
+                to={{
+                  pathname: "/registerclient",
+                }}
+              >
+                <button className="btn btn-info btn-lg btn-block">
+                  Register Client
+                </button>
+              </Link>
+            </div>
+            <div className="col-sm-6">
+              <button
+                onClick={handleSubmit}
+                className="btn btn-success btn-lg btn-block"
+              >
+                Search Client
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
