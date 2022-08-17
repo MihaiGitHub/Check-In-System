@@ -312,10 +312,10 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
                       return (
                         <option
                           key={index}
-                          data-type={item.itemType}
-                          value={item.name}
+                          data-type={i.itemType}
+                          value={i.name}
                         >
-                          {item.name}
+                          {i.name}
                         </option>
                       );
                     })}

@@ -276,12 +276,13 @@ class Client{
     	    $clients = $stmt->fetchAll();
     	    
     	    for($i = 0; $i < count($clients); $i++){
-        	        $query = "SELECT * FROM visit_items WHERE c_id = :c_id";
+        	        $query = "SELECT visit_items.* FROM visit_items INNER JOIN items ON visit_items.item = items.name AND items.place_of_service= :placeOfService WHERE c_id = :c_id";
 
                     // prepare the query
         	        $stmt = $this->conn->prepare($query);
         	        
         	        // bind the values
+        	        $stmt->bindParam(':placeOfService', $this->placeOfService);
         	        $stmt->bindParam(':c_id', $clients[$i]['c_id']);
 
         	        // execute the query

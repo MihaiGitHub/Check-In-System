@@ -29,27 +29,6 @@ export const ClientProvider = (props) => {
             return client.status === "checkout";
           });
 
-          // // add items to checked out clients
-          // checkedIn.map(async (client, index) => {
-          //   await getVisitItems(client.c_id).then(({ data }) => {
-          //     client.items = data.items;
-          //   });
-          // });
-
-          // // add items to checked out clients
-          // serving.map(async (client, index) => {
-          //   await getVisitItems(client.c_id).then(({ data }) => {
-          //     client.items = data.items;
-          //   });
-          // });
-
-          // // add items to checked out clients
-          // checkedOut.map(async (client, index) => {
-          //   await getVisitItems(client.c_id).then(({ data }) => {
-          //     client.items = data.items;
-          //   });
-          // });
-
           setClients((prevClients) => {
             return {
               ...prevClients,
