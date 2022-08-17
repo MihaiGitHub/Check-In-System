@@ -417,7 +417,41 @@ class Client{
     	$result = $stmt->execute();
     	
     	if($result){
-    	    return true;
+    	    // update query
+        	$query2 = "UPDATE clients_checkin
+                		SET fname = :fname, lname = :lname, address = :address, familyNumber = :inhouse, city = :city, state = :state, zip = :zip, email = :email
+                		WHERE c_id = :id";
+        
+        	// prepare the query
+        	$stmt2 = $this->conn->prepare($query2);
+        	
+        	// sanitize
+        	$this->fname=htmlspecialchars(strip_tags($this->fname));
+        	$this->lname=htmlspecialchars(strip_tags($this->lname));
+        	$this->address=htmlspecialchars(strip_tags($this->address));
+        	$this->inhouse=htmlspecialchars(strip_tags($this->inhouse));
+        	$this->city=htmlspecialchars(strip_tags($this->city));
+        	$this->state=htmlspecialchars(strip_tags($this->state));
+        	$this->zip=htmlspecialchars(strip_tags($this->zip));
+        	$this->email=htmlspecialchars(strip_tags($this->email));
+    
+        	// bind the values
+        	$stmt2->bindParam(':fname', $this->fname);
+        	$stmt2->bindParam(':lname', $this->lname);
+        	$stmt2->bindParam(':address', $this->address);
+        	$stmt2->bindParam(':inhouse', $this->inhouse);
+        	$stmt2->bindParam(':city', $this->city);
+        	$stmt2->bindParam(':state', $this->state);
+        	$stmt2->bindParam(':zip', $this->zip);
+        	$stmt2->bindParam(':email', $this->email);
+        	$stmt2->bindParam(':id', $this->id);
+            
+         	// execute the query, also check if query was successful
+        	$result2 = $stmt2->execute();
+        	
+        	if($result2){
+        	    return true;
+        	}
     	}
     	
     	return false;
