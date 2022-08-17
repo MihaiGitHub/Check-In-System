@@ -138,6 +138,12 @@ const PlaceOfService = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (clientItems.length === 0 || clientMethodOfPickup === "") {
+      setError(true);
+      setErrMsg("Please fill in all the information");
+      return false;
+    }
+
     const { client } = props.location.state;
 
     const clientUpdated = {
