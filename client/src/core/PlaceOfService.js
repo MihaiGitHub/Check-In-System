@@ -124,7 +124,6 @@ const PlaceOfService = (props) => {
   };
 
   const handleItems = (name) => (event) => {
-    console.log("event ", event.target.checked);
     if (event.target.checked) {
       setClientItems([...clientItems, event.target.value]);
     } else {

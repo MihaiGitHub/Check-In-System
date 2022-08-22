@@ -126,3 +126,23 @@ export const getVisitItems = (client_id) => {
     .then((response) => response)
     .catch((error) => console.log(error));
 };
+
+export const updateCheckinItems = (
+  client_id,
+  placeOfService,
+  methodOfPickup,
+  items
+) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/update_visit_items.php`, {
+      client_id,
+      placeOfService,
+      methodOfPickup,
+      items,
+      jwt,
+    })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};

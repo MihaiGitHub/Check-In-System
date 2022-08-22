@@ -80,31 +80,64 @@ const CheckIn = (props) => {
                   <th scope="col"># in House</th>
                   <th scope="col">Specific request</th>
                   <th scope="col">Method of Pickup</th>
+                  <th>&nbsp;</th>
                 </tr>
               </thead>
               <tbody>
                 {checkedIn.map((client, index) => {
                   return (
-                    <tr
-                      data-id={client.id}
-                      id="modalLaunch"
-                      key={index}
-                      onClick={() => setClient(client)}
-                      data-toggle="modal"
-                      data-target="#checkinModal"
-                    >
+                    <tr data-id={client.id} id="modalLaunch" key={index}>
                       <th scope="row">{index + 1}</th>
-                      <td>{client.fname}</td>
-                      <td>{client.lname}</td>
-                      <td>{client.familyNumber}</td>
-                      <td>
+                      <td
+                        onClick={() => setClient(client)}
+                        data-toggle="modal"
+                        data-target="#checkinModal"
+                      >
+                        {client.fname}
+                      </td>
+                      <td
+                        onClick={() => setClient(client)}
+                        data-toggle="modal"
+                        data-target="#checkinModal"
+                      >
+                        {client.lname}
+                      </td>
+                      <td
+                        onClick={() => setClient(client)}
+                        data-toggle="modal"
+                        data-target="#checkinModal"
+                      >
+                        {client.familyNumber}
+                      </td>
+                      <td
+                        onClick={() => setClient(client)}
+                        data-toggle="modal"
+                        data-target="#checkinModal"
+                      >
                         <ul>
                           {client.items && (
                             <DisplayItems items={client.items} />
                           )}
                         </ul>
                       </td>
-                      <td>{client.methodOfPickup}</td>
+                      <td
+                        onClick={() => setClient(client)}
+                        data-toggle="modal"
+                        data-target="#checkinModal"
+                      >
+                        {client.methodOfPickup}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => setClient(client)}
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          data-toggle="modal"
+                          data-target="#editModal"
+                        >
+                          Edit
+                        </button>
+                      </td>
                     </tr>
                   );
                 })}
@@ -117,6 +150,12 @@ const CheckIn = (props) => {
         modalId="checkinModal"
         client={client}
         type="serving"
+        refreshFunction={refreshCheckin}
+      />
+      <Modal
+        modalId="editModal"
+        client={client}
+        type="editCheckin"
         refreshFunction={refreshCheckin}
       />
     </Fragment>

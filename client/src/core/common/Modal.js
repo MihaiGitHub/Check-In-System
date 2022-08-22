@@ -8,6 +8,7 @@ import {
   getClients,
   clearCheckout,
   getItems,
+  updateCheckinItems,
 } from "./apiCore";
 
 const Modal = ({ modalId, client, type, refreshFunction, place }) => {
@@ -17,6 +18,17 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const [clients, setClients] = useContext(ClientContext);
   const [weightValue, setWeightValue] = useState("");
   const [numItemsValue, setNumItemsValue] = useState("");
+
+  const [methodsOfPickup, setMethodsOfPickup] = useState([
+    "Drive-Thru",
+    "Walk-Up",
+  ]);
+
+  const [selectedMethodOfPickup, setSelectedMethodOfPickup] = useState("");
+
+  // all items at the selected place
+  const [itemsCheckin, setItemsCheckin] = useState([]);
+  const [clientItems, setClientItems] = useState([]);
 
   // all items at the selected place
   const [items, setItems] = useState([]);
@@ -33,6 +45,18 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
   const { date_of_visit, item, notes, weight, numOfItems } = visit;
 
   useEffect(() => {
+    if (type === "editCheckin") {
+      setSelectedMethodOfPickup(client.methodOfPickup);
+      getItems(client.placeOfService).then(({ data }) => {
+        setItemsCheckin(data.items);
+      });
+      let selectedItems = [];
+      if (client.items) {
+        client.items.map((i) => selectedItems.push(i.item));
+      }
+      setClientItems(selectedItems);
+    }
+
     if (type === "checkout") {
       getItems(place).then(({ data }) => {
         setItems(data.items);
@@ -180,6 +204,151 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
       });
     });
   };
+
+  const handleItems = (name) => (event) => {
+    if (event.target.checked) {
+      setClientItems([...clientItems, event.target.value]);
+    } else {
+      let clientItemsFilter = clientItems.filter(
+        (item) => item !== event.target.value
+      );
+      setClientItems(clientItemsFilter);
+    }
+  };
+
+  const handleEditCheckin = () => {
+    if (clientItems.length === 0 || selectedMethodOfPickup === "") {
+      alert("Please fill in all the information");
+      return false;
+    }
+
+    updateCheckinItems(
+      client.c_id,
+      client.placeOfService,
+      selectedMethodOfPickup,
+      clientItems
+    ).then((result) => {
+      console.log("result ", result);
+    });
+  };
+
+  const editCheckin = () => (
+    <div
+      className="modal fade"
+      id={modalId}
+      tabIndex="-1"
+      role="dialog"
+      aria-labelledby="clientModalTitle"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            {error && errorMessage(errorMsg)}
+            <h5 className="modal-title" id="clientModalTitle">
+              Edit
+            </h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="form-group col-sm">
+              <label>
+                <strong>Method of pickup</strong>
+              </label>
+              <select
+                onChange={(e) => setSelectedMethodOfPickup(e.target.value)}
+                className="custom-select"
+                id="methodsOfPickup"
+              >
+                <option defaultValue value="0">
+                  Choose...
+                </option>
+                {client &&
+                  methodsOfPickup.map((method, index) => {
+                    if (method === selectedMethodOfPickup) {
+                      return (
+                        <option key={index} selected value={method}>
+                          {method}
+                        </option>
+                      );
+                    }
+                    return (
+                      <option key={index} value={method}>
+                        {method}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
+            <div className="form-group col-sm">
+              <label>
+                <strong>Items</strong>
+              </label>
+
+              {itemsCheckin &&
+                itemsCheckin.map((item, index) => {
+                  let selectedItem = clientItems.find((i) => i === item.name);
+                  if (selectedItem) {
+                    return (
+                      <div className="form-check" key={index}>
+                        <input
+                          onChange={handleItems(index)}
+                          className="form-check-input"
+                          type="checkbox"
+                          value={item.name}
+                          id={index}
+                          checked
+                        />
+                        <label className="form-check-label" htmlFor={index}>
+                          {item.name}
+                        </label>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="form-check" key={index}>
+                      <input
+                        onChange={handleItems(index)}
+                        className="form-check-input"
+                        type="checkbox"
+                        value={item.name}
+                        id={index}
+                      />
+                      <label className="form-check-label" htmlFor={index}>
+                        {item.name}
+                      </label>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleEditCheckin}
+              className="btn btn-primary"
+              data-dismiss="modal"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   const serving = () => (
     <div
@@ -445,6 +614,7 @@ const Modal = ({ modalId, client, type, refreshFunction, place }) => {
 
   return (
     <Fragment>
+      {type == "editCheckin" && editCheckin()}
       {type == "serving" && serving()}
       {type == "checkout" && checkout()}
       {type == "clearcheckout" && clearClients()}

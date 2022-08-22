@@ -14,6 +14,8 @@ class VisitItems{
 	public $weight;
 	public $notes;
 	public $place_of_service;
+	public $methodOfPickup;
+	public $items;
     
 	// constructor
 	public function __construct($db){
@@ -45,6 +47,7 @@ class VisitItems{
 
      	// execute the query, also check if query was successful
     	$result1 = $stmt1->execute();
+  
    	
     	// if items exists, update item, else insert
     	// select query
@@ -66,6 +69,8 @@ class VisitItems{
     	    $itemExists = $stmt2->fetchAll();
     	    
     	    if(count($itemExists) > 0){
+    	        
+    	        // update
     	        // update query item
             	$query3 = "UPDATE ". $this->table_name . " SET quantity = :quantity, notes = :notes WHERE c_id = :c_id AND place_of_service = :place_of_service AND item = :item";
             
@@ -142,5 +147,61 @@ class VisitItems{
     	}
     	
     	return false;
+    }
+    
+    function updateVisitItems(){
+        // update query item
+            	$query = "DELETE FROM ".$this->table_name . " WHERE c_id = :c_id AND place_of_service = :place_of_service";
+            
+            	// prepare the query
+            	$stmt = $this->conn->prepare($query);
+            	
+            	// bind the values
+            	$stmt->bindParam(':c_id', $this->c_id);
+            	$stmt->bindParam(':place_of_service', $this->place_of_service);
+        
+             	// execute the query, also check if query was successful
+            	$result = $stmt->execute();
+            	
+            	if($result){
+            	    
+            	    // insert items in items table
+            	    foreach ($this->items as $item) {
+            	        $query = "INSERT INTO visit_items
+            	        (c_id, item, place_of_service)
+                            VALUES 
+                        (:c_id, :item, :placeOfService)";
+                        
+                        // prepare the query
+            	        $stmt = $this->conn->prepare($query);
+            	        
+            	        // bind the values
+            	        $stmt->bindParam(':c_id', $this->c_id);
+            	        $stmt->bindParam(':item', $item);
+            	        $stmt->bindParam(':placeOfService', $this->place_of_service);
+            	        
+            	        // execute the query
+            	        $stmt->execute();
+                    }
+                    
+                    $query2 = "UPDATE clients_checkin SET methodOfPickup = :methodOfPickup WHERE c_id = :c_id AND placeOfService = :place_of_service";
+            
+                	// prepare the query
+                	$stmt2 = $this->conn->prepare($query2);
+                	
+                	// bind the values
+                	$stmt2->bindParam(':methodOfPickup', $this->methodOfPickup);
+                	$stmt2->bindParam(':c_id', $this->c_id);
+                	$stmt2->bindParam(':place_of_service', $this->place_of_service);
+            
+                 	// execute the query, also check if query was successful
+                	$result2 = $stmt2->execute();
+                	
+                	if($result2){
+                	   return true;
+                	}
+            	    
+            	} 
+        
     }
 }
