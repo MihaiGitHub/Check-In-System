@@ -41,6 +41,7 @@ const RegisterClient = ({ location }) => {
     values;
 
   const handleChange = (name) => (event) => {
+    console.log("Zip ", event.target.value);
     setValues({ ...values, [name]: event.target.value });
   };
 

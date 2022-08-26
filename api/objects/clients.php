@@ -28,7 +28,7 @@ class Clients{
     function registerClient(){
     
         	// insert query
-        $query = "INSERT INTO clients (fname, lname, address, inhouse, city, state, postalCode, phone, email) VALUES (:fname, :lname, :address, :inhouse, :city, :state, :zip, :phone, :email)";
+        $query = "INSERT INTO clients (id, fname, lname, address, inhouse, city, state, postalCode, phone, email) VALUES (:id, :fname, :lname, :address, :inhouse, :city, :state, :zip, :phone, :email)";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -44,7 +44,8 @@ class Clients{
     	$this->phone=htmlspecialchars(strip_tags($this->phone));
     	$this->email=htmlspecialchars(strip_tags($this->email));
 
-    	// bind the values
+    	// bind the values 
+    	$stmt->bindParam(':id', uniqid());
     	$stmt->bindParam(':fname', $this->fname);
     	$stmt->bindParam(':lname', $this->lname);
     	$stmt->bindParam(':address', $this->address);

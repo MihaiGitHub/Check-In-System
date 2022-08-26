@@ -2,9 +2,16 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Redirect, withRouter, useHistory } from "react-router-dom";
 import Navigation from "./common/Navigation";
 import { errorMessage } from "./common/Error";
-import { getPlaceOfService, getItems, saveClient } from "./common/apiCore";
+import {
+  getPlaceOfService,
+  getItems,
+  saveClient,
+  getClientById,
+} from "./common/apiCore";
 
 const PlaceOfService = (props) => {
+  console.log("props ", props);
+
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -145,25 +152,40 @@ const PlaceOfService = (props) => {
 
     const { client } = props.location.state;
 
-    const clientUpdated = {
-      fname: client.fname,
-      lname: client.lname,
-      status: "checkin",
-      familyNumber: client.inhouse,
-      placeOfService: clientPlaceOfService,
-      items: clientItems,
-      email: client.email,
-      methodOfPickup: clientMethodOfPickup,
-    };
-
-    saveClient(clientUpdated).then((response) => {
+    getClientById(client.id).then((response) => {
+      console.log(response);
       if (response) {
         if (response.data.error) {
           setError(true);
           setErrMsg(response.data.error);
         } else {
-          setError(false);
-          setRedirect(true);
+          const { client } = response.data;
+
+          const clientUpdated = {
+            fname: client.fname,
+            lname: client.lname,
+            status: "checkin",
+            familyNumber: client.inhouse,
+            placeOfService: clientPlaceOfService,
+            items: clientItems,
+            email: client.email,
+            methodOfPickup: clientMethodOfPickup,
+          };
+
+          saveClient(clientUpdated).then((response) => {
+            if (response) {
+              if (response.data.error) {
+                setError(true);
+                setErrMsg(response.data.error);
+              } else {
+                setError(false);
+                setRedirect(true);
+              }
+            } else {
+              setError(true);
+              setErrMsg("No response from server");
+            }
+          });
         }
       } else {
         setError(true);

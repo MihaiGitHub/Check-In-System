@@ -55,6 +55,15 @@ export const getClient = (email) => {
     .catch((error) => console.log(error));
 };
 
+export const getClientById = (id) => {
+  const jwt = sessionStorage.getItem("jwt");
+
+  return axios
+    .post(`${API}/client_detail_by_id.php`, { id, jwt })
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
 export const updateClientInfo = (client) => {
   const jwt = sessionStorage.getItem("jwt");
 

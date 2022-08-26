@@ -233,7 +233,7 @@ class Client{
     function detail(){
     
     	// insert query
-    	$query = "SELECT * FROM clients WHERE email = '" . $this->email . "' OR phone = '" . $this->email . "'";
+    	$query = "SELECT * FROM clients WHERE email = :value OR phone = :value";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -242,7 +242,7 @@ class Client{
         $this->fname=htmlspecialchars(strip_tags($this->email));
 
         // bind the values
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':value', $this->email);
     	
      	// execute the query, also check if query was successful
     	$result = $stmt->execute();
@@ -452,6 +452,29 @@ class Client{
         	if($result2){
         	    return true;
         	}
+    	}
+    	
+    	return false;
+    }
+    
+    function detailById(){
+        
+    	// insert query
+    	$query = "SELECT * FROM clients WHERE id = :id";
+
+    	// prepare the query
+    	$stmt = $this->conn->prepare($query);
+    	
+    	$stmt->bindParam(':id', $this->c_id);
+
+     	// execute the query, also check if query was successful
+    	$result = $stmt->execute();
+    	
+    	if($result){
+    	    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    	    $client = $stmt->fetch();
+    	    
+    		return $client;
     	}
     	
     	return false;
