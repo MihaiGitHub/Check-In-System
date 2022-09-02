@@ -40,6 +40,9 @@ const UpdateClient = ({ location }) => {
     }
   }, []);
 
+  const { fname, lname, address, inhouse, city, postalCode, email, phone } =
+    values;
+
   const doLogout = () => {
     sessionStorage.setItem("jwt", "");
     sessionStorage.clear();
@@ -51,7 +54,8 @@ const UpdateClient = ({ location }) => {
       <Redirect
         to={{
           pathname: "/searchclient",
-          myClient: location.state.client,
+          email: email,
+          reload: true,
         }}
       />
     );
@@ -60,9 +64,6 @@ const UpdateClient = ({ location }) => {
   if (!location.state) {
     return <Redirect to="/" />;
   }
-
-  const { fname, lname, address, inhouse, city, postalCode, email, phone } =
-    values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });

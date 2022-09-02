@@ -6,7 +6,7 @@ import ViewClient from "./ViewClient";
 import { errorMessage } from "./common/Error";
 
 const SearchClient = (props) => {
-  const { myClient } = props.location;
+  console.log("props ", props);
 
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
@@ -25,6 +25,23 @@ const SearchClient = (props) => {
     if (sessionStorage.getItem("jwt")) {
     } else {
       setRedirect(true);
+    }
+
+    if (props.location.reload) {
+      getClient(props.location.email).then((response) => {
+        if (response) {
+          if (response.data.error) {
+            setError(true);
+            setErrMsg(response.data.error);
+          } else {
+            setError(false);
+            setClient(response.data.client);
+          }
+        } else {
+          setError(true);
+          setErrMsg("No response from server");
+        }
+      });
     }
   }, []);
 
@@ -120,7 +137,6 @@ const SearchClient = (props) => {
       {error && errorMessage(errorMsg)}
       {form()}
       {Object.entries(client).length > 0 && <ViewClient client={client} />}
-      {myClient && <ViewClient client={myClient} />}
     </Fragment>
   );
 };
