@@ -70,9 +70,9 @@ class Client{
 	    
     	    // insert without the email
         	$query = "INSERT INTO " . $this->table_name . "
-        	        (c_id, fname, lname, status, familyNumber, placeOfService, methodOfPickup)
+        	        (c_id, fname, lname, status, familyNumber, placeOfService, methodOfPickup, active)
                         VALUES 
-                    (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService, :methodOfPickup)";
+                    (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService, :methodOfPickup, 1)";
         
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
@@ -175,9 +175,9 @@ class Client{
         	else {
         	    // insert without the email
             	$query = "INSERT INTO " . $this->table_name . "
-            	        (c_id, fname, lname, status, familyNumber, placeOfService)
+            	        (c_id, fname, lname, status, familyNumber, placeOfService, active)
                             VALUES 
-                        (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService)";
+                        (:c_id, :fname, :lname, :status, :familyNumber, :placeOfService, 1)";
             
             	// prepare the query
             	$stmt = $this->conn->prepare($query);
@@ -260,7 +260,7 @@ class Client{
     // get clients
     function all(){
     	    	
-     	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService ORDER BY timestamp ASC";
+     	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService AND active = 1 ORDER BY timestamp ASC";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -303,10 +303,10 @@ class Client{
     	return false;
     }
     
-    // update client status
+    // update client status, update visit_items with checkout for that client
     function updateStatus(){
     
-    	// update query
+    	// update client checkin table with new status
     	$query = "UPDATE " . $this->table_name . "
             		SET status = :status
             		WHERE id = :id";
@@ -322,7 +322,21 @@ class Client{
     	$result = $stmt->execute();
     	
     	if($result){
-    	    return true;
+            $query = "UPDATE visit_items SET status = :status WHERE c_id = :c_id AND active = 1";
+    
+        	// prepare the query
+        	$stmt = $this->conn->prepare($query);
+        	
+        	// bind the value
+        	$stmt->bindParam(':status', $this->status);
+        	$stmt->bindParam(':c_id', $this->c_id);
+            
+         	// execute the query, also check if query was successful
+        	$result = $stmt->execute();
+        	
+        	if($result){
+        	    return true;
+        	}
     	}
     	
     	return false;
@@ -331,7 +345,7 @@ class Client{
     // clear checked out clients
     function clearCheckout(){
     	// delete query client from clients_checkin
-    	$query = "DELETE FROM " . $this->table_name . " WHERE status = 'checkout' AND placeOfService = :placeOfService";
+    	$query = "UPDATE " . $this->table_name . " SET active = 0 WHERE status = 'checkout' AND placeOfService = :placeOfService";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -344,7 +358,7 @@ class Client{
     	
     	if($result){
     	    // delete all items for that place
-    	    $query = "DELETE FROM visit_items WHERE place_of_service = :placeOfService";
+    	    $query = "UPDATE visit_items SET active = 0 WHERE place_of_service = :placeOfService";
     
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
@@ -357,7 +371,7 @@ class Client{
     	
     	
     	    // select the remaining clients
-        	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService";
+        	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService AND active = 1";
         
         	// prepare the query
         	$stmt = $this->conn->prepare($query);

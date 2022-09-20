@@ -43,6 +43,7 @@ if($jwt){
         
         // set user property values
         $client->id = $data->id;
+        $client->c_id = $data->visit->c_id;
         $client->status = $data->status;
         $client->visit = $data->visit;
         
