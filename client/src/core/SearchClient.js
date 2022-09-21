@@ -6,8 +6,6 @@ import ViewClient from "./ViewClient";
 import { errorMessage } from "./common/Error";
 
 const SearchClient = (props) => {
-  console.log("props ", props);
-
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);

@@ -41,7 +41,7 @@ if($jwt){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
          // set client property values
-        $client->placeOfService = $data->place;
+        $client->placeOfService = $data->placeOfService;
         
         if($client->clearCheckout()){
             

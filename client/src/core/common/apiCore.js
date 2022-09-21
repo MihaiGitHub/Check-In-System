@@ -37,11 +37,11 @@ export const saveClient = (client) => {
     .catch((error) => console.log(error));
 };
 
-export const updateClientStatus = (id, status, visit) => {
+export const updateClientStatus = (client) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
-    .post(`${API}/client_update_status.php`, { id, status, visit, jwt })
+    .post(`${API}/client_update_status.php`, { client, jwt })
     .then((response) => response)
     .catch((error) => console.log(error));
 };
@@ -118,11 +118,11 @@ export const getItems = (place_of_service) => {
     .catch((error) => console.log(error));
 };
 
-export const clearCheckout = (place) => {
+export const clearCheckout = (placeOfService) => {
   const jwt = sessionStorage.getItem("jwt");
 
   return axios
-    .post(`${API}/client_checkout.php`, { place, jwt })
+    .post(`${API}/client_checkout.php`, { placeOfService, jwt })
     .then((response) => response)
     .catch((error) => console.log(error));
 };

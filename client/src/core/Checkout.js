@@ -16,7 +16,6 @@ const Checkout = (props) => {
 
   const refreshCheckout = () => {
     getClients(place).then((response) => {
-      console.log(response);
       if (response) {
         if (response.data.error) {
           setError(true);
@@ -114,7 +113,7 @@ const Checkout = (props) => {
       />
       <Modal
         modalId="checkoutModal"
-        client="Clear checkout"
+        client={client}
         type="clearcheckout"
         place={place}
       />

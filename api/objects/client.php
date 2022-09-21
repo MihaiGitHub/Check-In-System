@@ -345,7 +345,7 @@ class Client{
     // clear checked out clients
     function clearCheckout(){
     	// delete query client from clients_checkin
-    	$query = "UPDATE " . $this->table_name . " SET active = 0 WHERE status = 'checkout' AND placeOfService = :placeOfService";
+    	$query = "UPDATE " . $this->table_name . " SET active = 0 WHERE status = 'checkout' AND placeOfService = :placeOfService AND active = 1";
     
     	// prepare the query
     	$stmt = $this->conn->prepare($query);
@@ -358,17 +358,16 @@ class Client{
     	
     	if($result){
     	    // delete all items for that place
-    	    $query = "UPDATE visit_items SET active = 0 WHERE place_of_service = :placeOfService";
+    	    $query = "UPDATE visit_items SET active = 0 WHERE status = 'checkout' AND active = 1";
     
         	// prepare the query
         	$stmt = $this->conn->prepare($query);
         	
         	// bind the value
-        	$stmt->bindParam(':placeOfService', $this->placeOfService);
+        	$stmt->bindParam(':c_id', $this->c_id);
             
          	// execute the query, also check if query was successful
         	$result = $stmt->execute();
-    	
     	
     	    // select the remaining clients
         	$query = "SELECT * FROM " . $this->table_name . " WHERE placeOfService = :placeOfService AND active = 1";

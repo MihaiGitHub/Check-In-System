@@ -42,11 +42,10 @@ if($jwt){
         $decoded = JWT::decode($jwt, $key, array('HS256'));
         
         // set user property values
-        $client->id = $data->id;
-        $client->c_id = $data->visit->c_id;
-        $client->status = $data->status;
-        $client->visit = $data->visit;
-        
+        $client->id = $data->client->id;
+        $client->c_id = $data->client->c_id;
+        $client->status = $data->client->status;
+
         if($client->updateStatus()){
             
             // set response code

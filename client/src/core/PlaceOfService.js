@@ -10,8 +10,6 @@ import {
 } from "./common/apiCore";
 
 const PlaceOfService = (props) => {
-  console.log("props ", props);
-
   const [error, setError] = useState(false);
   const [errorMsg, setErrMsg] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -153,7 +151,6 @@ const PlaceOfService = (props) => {
     const { client } = props.location.state;
 
     getClientById(client.id).then((response) => {
-      console.log(response);
       if (response) {
         if (response.data.error) {
           setError(true);
