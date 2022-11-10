@@ -67,12 +67,43 @@
       .nav-tabs .nav-link.active {
         background-color: #a4d6ef !important;
       }
-      .my-custom-scrollbar {
-        position: relative;
-        overflow: hidden;
+      .outer-wrapper {
+        margin: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+        max-width: 100%;
+        max-height: fit-content;
       }
       .table-wrapper-scroll-y {
-        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: fit-content;
+        max-height: 66.4vh;
+        margin-top: 22px;
+        margin: 15px;
+        padding-bottom: 20px;
+      }
+      table {
+        min-width: max-content;
+        border-collapse: separate;
+        border-spacing: 0px;
+      }
+      table th {
+        position: sticky;
+        top: 0px;
+        background-color: white;
+        text-align: center;
+        font-weight: normal;
+      }
+      table th,
+      table td {
+        padding: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      table td {
+        text-align: left;
+        padding-left: 20px;
       }
     </style>
   </head>

@@ -81,7 +81,7 @@ const Storehouse = (props) => {
                   id="nav-tabContent"
                 >
                   <div
-                    className="tab-pane fade show active"
+                    className="tab-pane fade show active outer-wrapper"
                     id="nav-home"
                     role="tabpanel"
                     aria-labelledby="nav-home-tab"
@@ -99,7 +99,7 @@ const Storehouse = (props) => {
                     </Link>
                   </div>
                   <div
-                    className="tab-pane fade"
+                    className="tab-pane fade outer-wrapper"
                     id="nav-profile"
                     role="tabpanel"
                     aria-labelledby="nav-profile-tab"
@@ -109,7 +109,7 @@ const Storehouse = (props) => {
                     </div>
                   </div>
                   <div
-                    className="tab-pane fade"
+                    className="tab-pane fade outer-wrapper"
                     id="nav-about"
                     role="tabpanel"
                     aria-labelledby="nav-about-tab"
