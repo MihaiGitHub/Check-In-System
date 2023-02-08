@@ -45,6 +45,7 @@ if($jwt){
         $client->id = $data->client->id;
         $client->c_id = $data->client->c_id;
         $client->status = $data->client->status;
+        $client->placeOfService = $data->client->placeOfService;
 
         if($client->updateStatus()){
             

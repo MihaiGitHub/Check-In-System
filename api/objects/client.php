@@ -96,6 +96,7 @@ class Client{
         
         	// execute the query, also check if query was successful
         	if($stmt->execute()){
+        	    
         	    // insert items in items table
         	    foreach ($this->items as $item) {
         	        $query = "INSERT INTO visit_items
@@ -198,6 +199,7 @@ class Client{
             
             	// execute the query, also check if query was successful
             	if($stmt->execute()){
+        	        
             	    // insert items in items table
             	    foreach ($this->items as $item) {
             	        $query = "INSERT INTO visit_items
@@ -322,21 +324,85 @@ class Client{
     	$result = $stmt->execute();
     	
     	if($result){
-            $query = "UPDATE visit_items SET status = :status WHERE c_id = :c_id AND active = 1";
+    	    if($this->status === "checkout"){
+    	     // select all items from visit_items for that user to be inserted into visits for main app only if its moving from serving to checkout
+    	   $query2 = "SELECT * FROM visit_items WHERE timestamp BETWEEN :startDate AND :endDate AND c_id = :c_id AND active = 1";
     
         	// prepare the query
-        	$stmt = $this->conn->prepare($query);
+        	$stmt2 = $this->conn->prepare($query2);
         	
         	// bind the value
-        	$stmt->bindParam(':status', $this->status);
-        	$stmt->bindParam(':c_id', $this->c_id);
+        	$stmt2->bindParam(':startDate', date("Y-m-d 1:00:00"));
+        	$stmt2->bindParam(':endDate', date("Y-m-d H:i:s"));
+        	$stmt2->bindParam(':c_id', $this->c_id);
             
          	// execute the query, also check if query was successful
-        	$result = $stmt->execute();
+        	$result2 = $stmt2->execute();
         	
-        	if($result){
-        	    return true;
-        	}
+        	if($result2){
+        	    $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+    	        $itemsArray = $stmt2->fetchAll();
+    	        
+    	        $items = [];
+    	        $quantity = 0;
+    	        
+    	        foreach($itemsArray as $key => $item){
+    	            array_push($items, $item['item']);
+    	            $quantity = $quantity + $item['quantity'];
+    	        }
+    	        
+        	    // insert into visits table also so that the visit appears in main app
+        	    $query3 = "INSERT INTO `visits` (`id`, `place_of_service`, `date_of_visit`, `program`, `numBags`, `weight`, `numOfItems`, `client_id`) VALUES (NULL, :placeOfService, :dateOfVisit, :program, 0, '', :numOfItems, :c_id)";
+        
+					  // prepare the query
+        	        $stmt3 = $this->conn->prepare($query3);
+        	        
+        	        // bind the values
+        	        $stmt3->bindParam(':placeOfService', $this->placeOfService);
+        	        $stmt3->bindParam(':dateOfVisit', date("Y-m-d"));
+        	        $stmt3->bindParam(':program', implode(", ", $items));
+        	        $stmt3->bindParam(':numOfItems', $quantity);
+        	        $stmt3->bindParam(':c_id', $this->c_id);
+        	        
+        	        // execute the query
+        	        $result3 = $stmt3->execute();
+        	        
+        	        if($result3){
+        	              $query4 = "UPDATE visit_items SET status = :status WHERE c_id = :c_id AND active = 1";
+    
+                        	// prepare the query
+                        	$stmt4 = $this->conn->prepare($query4);
+                        	
+                        	// bind the value
+                        	$stmt4->bindParam(':status', $this->status);
+                        	$stmt4->bindParam(':c_id', $this->c_id);
+                            
+                         	// execute the query, also check if query was successful
+                        	$result4 = $stmt4->execute();
+                        	
+                         	if($result4){
+                         	    return true;
+                         	}
+        	        }
+        	}   
+    	    }
+    	    else {
+                $query5 = "UPDATE visit_items SET status = :status WHERE c_id = :c_id AND active = 1";
+    
+            	// prepare the query
+            	$stmt5 = $this->conn->prepare($query5);
+            	
+            	// bind the value
+            	$stmt5->bindParam(':status', $this->status);
+            	$stmt5->bindParam(':c_id', $this->c_id);
+                
+             	// execute the query, also check if query was successful
+            	$result5 = $stmt5->execute();
+            	
+             	if($result5){
+             	    return true;
+             	}    	        
+    	    }
     	}
     	
     	return false;
